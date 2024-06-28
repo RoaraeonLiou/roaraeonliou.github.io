@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on RLTEA BLOG</title>
+    <link>https://roaraeonliou.github.io/posts/</link>
+    <description>Recent content in Posts on RLTEA BLOG</description>
+    <image>
+      <title>RLTEA BLOG</title>
+      <url>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.128.0</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 28 Jun 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://roaraeonliou.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to build this blog website</title>
+      <link>https://roaraeonliou.github.io/tutorial/how_to_build_this_blog_website/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/tutorial/how_to_build_this_blog_website/</guid>
+      <description>Preparation Github Account Needed: First, you need a github account. If you don&amp;rsquo;t have, don&amp;rsquo;t know, and don&amp;rsquo;t even ask google how to do, just see this blog HOW TO GET A GITHUB ACCOUNT. Two Special Repository Needed: Your need to create your github.io repository and fork SlothBlog repository, the forked repository we will call it &amp;ldquo;shadow repo&amp;rdquo; in the following content. We also prepare a guide book for this step here.</description>
+    </item>
+    <item>
+      <title>How to create a repository</title>
+      <link>https://roaraeonliou.github.io/tutorial/how_to_create_a_repostory/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/tutorial/how_to_create_a_repostory/</guid>
+      <description>Create Repository Create the io repository
+Click create repository button, and chose &amp;ldquo;new repository&amp;rdquo;.
+Enter the repository name, which must match the &amp;ldquo;username.github.io&amp;rdquo; format, and don&amp;rsquo;t forget replace the &amp;ldquo;username&amp;rdquo; with yours.
+Scroll all the way down, and click the &amp;ldquo;create repository&amp;rdquo; button. Fork the RoaraeonLiou/SlothBlog repository.</description>
+    </item>
+    <item>
+      <title>How to get a github account</title>
+      <link>https://roaraeonliou.github.io/tutorial/how_to_get_a_github_account/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/tutorial/how_to_get_a_github_account/</guid>
+      <description>Get a Github Account Here is the link of GitHub , click it and sign up a github account.
+If you really don&amp;rsquo;t know how to do it, no worry, just follow me.
+Click sign up button
+Click the continue button
+Set password
+Set username
+Click the continue button all the way, and follow the guidance of github to verify your account.
+When you finish the 5th step, you will receive an email, which contains the code that you need to fill in the boxes shown in the following picture.</description>
+    </item>
+    <item>
+      <title>How to organize the blogs</title>
+      <link>https://roaraeonliou.github.io/tutorial/organize_blogs/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/tutorial/organize_blogs/</guid>
+      <description>Organization See Content Organization.
+. └── content ├── posts | ├── firstpost.md // &amp;lt;- https://xxx.github.io/posts/firstpost/ | ├── happy | | └── ness.md // &amp;lt;- https://xxx.github.io/posts/happy/ness/ | └── secondpost.md // &amp;lt;- https://xxx.github.io/posts/secondpost/ └── docs ├── first.md // &amp;lt;- https://xxx.github.io/docs/first/ └── second.md // &amp;lt;- https://xxx.github.io/docs/second/ Header If you want to do some basic settings for your blog, you can add your own header definition.
+Fields Basic Header Fields +++ title = &amp;#34;title&amp;#34; description = &amp;#34;write your description&amp;#34; author = &amp;#34;rltea&amp;#34; slug = &amp;#34;define_your_slug&amp;#34; draft = false date = &amp;#34;2024-06-25&amp;#34; lastmod = &amp;#34;2024-06-28&amp;#34; url = &amp;#34;/posts/new_blog&amp;#34; tags = [&amp;#34;new&amp;#34;, &amp;#34;blog&amp;#34;] include_tags = [&amp;#34;test&amp;#34;, &amp;#34;old&amp;#34;] exclude_tags = [&amp;#34;sloth&amp;#34;] categories = [&amp;#34;new&amp;#34;, &amp;#34;blog&amp;#34;] include_categories = [&amp;#34;old&amp;#34;, &amp;#34;test&amp;#34;] exclude_categories = [&amp;#34;sloth&amp;#34;] status = &amp;#34;update&amp;#34; +++ blog content As shown in above, between the two &amp;ldquo;+++&amp;rdquo; lines, there are the header information of one markdown blog file which in toml format.</description>
+    </item>
+    <item>
+      <title>Support Comment</title>
+      <link>https://roaraeonliou.github.io/tutorial/support%20_comment/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/tutorial/support%20_comment/</guid>
+      <description>Giscus comment We use the github app giscus to make the comment function works.
+You need to install this app to your username.github.io repository, and than configure it in giscus app page, enter your io repository, and choose a mapping rule(we suggest the Discussion title contains page &amp;lt;title&amp;gt; mapping rule).
+Copy the generated script, copy it in layouts/partials/comment.html.</description>
+    </item>
+    <item>
+      <title>Support Latex</title>
+      <link>https://roaraeonliou.github.io/tutorial/support_latex/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/tutorial/support_latex/</guid>
+      <description>Support Latex According to the hugo official document of release v0.122.0, we already make the mathematics support as defalut if you use the default theme PaperMod.
+If you want to use other themes, make sure that you have set the following config in config/hugo.yaml.
+markup: goldmark: extensions: passthrough: delimiters: block: - - \[ - \] - - $$ - $$ inline: - - \( - \) - - $ - $ enable: true params: math: true And create the layouts/partials/math.</description>
+    </item>
+  </channel>
+</rss>
