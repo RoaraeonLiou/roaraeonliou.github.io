@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>数据库 on RLTEA BLOG</title>
+    <link>https://roaraeonliou.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <description>Recent content in 数据库 on RLTEA BLOG</description>
+    <image>
+      <title>RLTEA BLOG</title>
+      <url>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.134.3</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 26 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://roaraeonliou.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MongoDB</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/mongodb/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/mongodb/</guid>
+      <description>&lt;h1 id=&#34;mongodb&#34;&gt;MongoDB&lt;/h1&gt;
+&lt;p&gt;MongoDB 是一个基于 &lt;strong&gt;分布式文件存储&lt;/strong&gt; 的开源 NoSQL 数据库系统，由 &lt;strong&gt;C++&lt;/strong&gt; 编写的。MongoDB 提供了 &lt;strong&gt;面向文档&lt;/strong&gt; 的存储方式，操作起来比较简单和容易，支持“&lt;strong&gt;无模式&lt;/strong&gt;”的数据建模，可以存储比较复杂的数据类型，是一款非常流行的 &lt;strong&gt;文档类型数据库&lt;/strong&gt; 。
+在高负载的情况下，MongoDB 天然支持水平扩展和高可用，可以很方便地添加更多的节点/实例，以保证服务性能和可用性。在许多场景下，MongoDB 可以用于代替传统的关系型数据库或键/值存储方式，皆在为 Web 应用提供可扩展的高可用高性能数据存储解决方案。&lt;/p&gt;
+&lt;h1 id=&#34;1-mongodb基础&#34;&gt;1 MongoDB基础&lt;/h1&gt;
+&lt;h2 id=&#34;11-mongodb存储结构&#34;&gt;1.1 MongoDB存储结构&lt;/h2&gt;
+&lt;p&gt;MongoDB 的存储结构区别于传统的关系型数据库，主要由如下三个单元组成：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;文档（Document）&lt;/strong&gt;：MongoDB 中最基本的单元，由 BSON 键值对（key-value）组成，类似于关系型数据库中的行（Row）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;集合（Collection）&lt;/strong&gt;：一个集合可以包含多个文档，类似于关系型数据库中的表（Table）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据库（Database）&lt;/strong&gt;：一个数据库中可以包含多个集合，可以在 MongoDB 中创建多个数据库，类似于关系型数据库中的数据库（Database）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;也就是说，MongoDB 将数据记录存储为文档 （更具体来说是&lt;a href=&#34;https://www.mongodb.com/docs/manual/core/document/#std-label-bson-document-format&#34;&gt;BSON 文档open in new window&lt;/a&gt;），这些文档在集合中聚集在一起，数据库中存储一个或多个文档集合。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;与SQL的术语对比&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;SQL&lt;/strong&gt;&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;MongoDB&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Table（表）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Collection（集合）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Row（行）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Document（文档）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Col（列）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Field（字段）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Primary Key（主键）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Object ID （对象ID）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Index（索引）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Index（索引）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Embedded Table（嵌套表）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Embedded Document（嵌入式文档）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Array（数组）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Array（数组）&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;12-mongodb特点&#34;&gt;1.2 MongoDB特点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;数据记录被存储为文档&lt;/strong&gt;：MongoDB 中的记录就是一个 BSON 文档，它是由键值对组成的数据结构，类似于 JSON 对象，是 MongoDB 中的基本数据单元。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;模式自由&lt;/strong&gt;：集合的概念类似 MySQL 里的表，但它不需要定义任何模式，能够用更少的数据对象表现复杂的领域模型对象。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;支持多种查询方式&lt;/strong&gt;：MongoDB 查询 API 支持读写操作 (CRUD)以及数据聚合、文本搜索和地理空间查询。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;支持 ACID 事务&lt;/strong&gt;：NoSQL 数据库通常不支持事务，为了可扩展和高性能进行了权衡。不过，也有例外，MongoDB 就支持事务。与关系型数据库一样，MongoDB 事务同样具有 ACID 特性。MongoDB 单文档原生支持原子性，也具备事务的特性。MongoDB 4.0 加入了对多文档事务的支持，但只支持复制集部署模式下的事务，也就是说事务的作用域限制为一个副本集内。MongoDB 4.2 引入了分布式事务，增加了对分片集群上多文档事务的支持，并合并了对副本集上多文档事务的现有支持。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;高效的二进制存储&lt;/strong&gt;：存储在集合中的文档，是以键值对的形式存在的。键用于唯一标识一个文档，一般是 ObjectId 类型，值是以 BSON 形式存在的。BSON = Binary JSON， 是在 JSON 基础上加了一些类型及元数据描述的格式。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自带数据压缩功能&lt;/strong&gt;：存储同样的数据所需的资源更少。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;支持 mapreduce&lt;/strong&gt;：通过分治的方式完成复杂的聚合任务。不过，从 MongoDB 5.0 开始，map-reduce 已经不被官方推荐使用了，替代方案是 &lt;a href=&#34;https://www.mongodb.com/docs/manual/core/aggregation-pipeline/&#34;&gt;聚合管道open in new window&lt;/a&gt;。聚合管道提供比 map-reduce 更好的性能和可用性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;支持多种类型的索引&lt;/strong&gt;：MongoDB 支持多种类型的索引，包括单字段索引、复合索引、多键索引、哈希索引、文本索引、 地理位置索引等，每种类型的索引有不同的使用场合。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;支持 failover&lt;/strong&gt;：提供自动故障恢复的功能，主节点发生故障时，自动从从节点中选举出一个新的主节点，确保集群的正常使用，这对于客户端来说是无感知的。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;支持分片集群&lt;/strong&gt;：MongoDB 支持集群自动切分数据，让集群存储更多的数据，具备更强的性能。在数据插入和更新时，能够自动路由和存储。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;支持存储大文件&lt;/strong&gt;：MongoDB 的单文档存储空间要求不超过 16MB。对于超过 16MB 的大文件，MongoDB 提供了 GridFS 来进行存储，通过 GridFS，可以将大型数据进行分块处理，然后将这些切分后的小文档保存在数据库中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;13-mongodb应用场景&#34;&gt;1.3 MongoDB应用场景&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;MongoDB 的优势在于其数据模型和存储引擎的灵活性、架构的可扩展性以及对强大的索引支持。&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MySQL</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql/</guid>
+      <description>&lt;h1 id=&#34;mysql&#34;&gt;MySQL&lt;/h1&gt;
+&lt;h1 id=&#34;0-参考资料&#34;&gt;0 参考资料&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1Kr4y1i7ru/?spm_id_from=..search-card.all.click&amp;vd_source=5e81fa8ad2645ace69cd01959323966a&#34;&gt;黑马程序员 MySQL数据库入门到精通&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://xiaolincoding.com/mysql/&#34;&gt;图解MySQL介绍&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://cyc2018.xyz/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL.html&#34;&gt;MySQL | CS-Notes 面试笔记&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://javaxiaobear.gitee.io/interview/database/MySQL.html&#34;&gt;MySQL面试题&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://javaguide.cn/database/mysql/mysql-questions-01.html&#34;&gt;MySQL常见面试题总结&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;sql语句&#34;&gt;SQL语句&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;通用语法&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;分号结尾，可多行书写&lt;/li&gt;
+&lt;li&gt;不区分大小写&lt;/li&gt;
+&lt;li&gt;注释采用&amp;ndash;、#、/**/&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;分类&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DDL(Data Defination Language): 数据定义语言，用来定义数据库对象（数据库，表，字段）。&lt;/li&gt;
+&lt;li&gt;DML(Data Manipulation Language): 数据操作语言，用来对数据库表中数据进行增删改&lt;/li&gt;
+&lt;li&gt;DQL(Data Query Language): 数据查询语言，用来查询数据库中表的记录。&lt;/li&gt;
+&lt;li&gt;DCL(Data Control Language): 数据控制语言，用来创建数据库用户、控制数据库访问权限。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-存储引擎&#34;&gt;1 存储引擎&lt;/h1&gt;
+&lt;h2 id=&#34;11-mysql体系结构&#34;&gt;1.1 MySQL体系结构&lt;/h2&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/8902f52da9b4b274ad3ad679b8511f83/f4822db8f9705fab785634d3ac601991.png&#34; alt=&#34;Image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;连接层：负责连接处理、授权认证，以及相关的安全服务。&lt;/li&gt;
+&lt;li&gt;服务层：提供SQL借口，完成缓存查询，SQL的分析和优化，部分内置函数的执行，跨存储引擎功能的实现（过程、函数等）。&lt;/li&gt;
+&lt;li&gt;引擎层：负责数据的存储和提取，服务层通过API和存储引擎通话，不同存储引擎有不同功能。&lt;/li&gt;
+&lt;li&gt;存储层：将数据存储在文件系统上，完成于存储引擎的交互。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;12-存储引擎特点&#34;&gt;1.2 存储引擎特点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;InnoDB：支持事务、支持行级锁、支持外键。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/8902f52da9b4b274ad3ad679b8511f83/26046ad23edd04f201444848547f2144.png&#34; alt=&#34;Image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MyISAM：不支持事务，支持表级锁，访问速度快。&lt;/li&gt;
+&lt;li&gt;Memory：数据存放在内存，访问速度快，支持Hash索引。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/8902f52da9b4b274ad3ad679b8511f83/be023fe4bda50e39530523b598205618.png&#34; alt=&#34;Image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;h1 id=&#34;2-索引&#34;&gt;2 索引&lt;/h1&gt;
+&lt;p&gt;索引是帮助MySql高效获取数据的数据结构。&lt;/p&gt;
+&lt;h2 id=&#34;21-索引结构&#34;&gt;2.1 索引结构&lt;/h2&gt;
+&lt;p&gt;索引是在存储引擎层实现的，不同存储引擎有不同的结构&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;索引结构&lt;/strong&gt;&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;描述&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;B+Tree索引&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;大部分存储引擎都支持&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Hash索引&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;底层使用Hash表实现，针对精确匹配有效，不支持范围查询&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;R-Tree索引（空间索引）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;MyISAM引擎拥有的特殊索引，用于地理空间数据类型&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Full-Text索引&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;倒排索引，类似于Lucene、ES&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;InnoDB和MyISAM都支持B+Tree索引和全文索引。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MySQL补充</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E8%A1%A5%E5%85%85/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E8%A1%A5%E5%85%85/</guid>
+      <description>&lt;h1 id=&#34;mysql补充&#34;&gt;MySQL补充&lt;/h1&gt;
+&lt;h1 id=&#34;1-innodb中数据如何存放&#34;&gt;1 InnoDB中数据如何存放&lt;/h1&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/6cea475dd0613750dfc0a9cef61c13c4/e8d38bc28e035d84c29ffcd356d46212.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;InnoDB引擎中，一张表的数据是存放在“tableName.idb”表空间文件中的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;表空间由段（segment）、区（extent）、页（page）、行（row）组成。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;行：记录按行存放&lt;/li&gt;
+&lt;li&gt;页：记录的读取写入是以页为单位，页是InnoDB存储引擎磁盘管理的最小单元。页的类型有数据页、undo log页、溢出页等。16KB。&lt;/li&gt;
+&lt;li&gt;区：表中数据量大的时候，为某个索引分配空间不再按照页为单位划分，而是以区为单位进行分配。1M。&lt;/li&gt;
+&lt;li&gt;段：表空间有索引段（B+Tree非叶子节点）、数据段（B+Tree叶子节点）、回滚段（MVCC）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/6cea475dd0613750dfc0a9cef61c13c4/a5851e3ff3e62fcead99e965243d19ed.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;p&gt;Compact行格式中，一条完整的记录分为「记录的额外信息」和「记录的真实数据」两个部分。&lt;/p&gt;
+&lt;p&gt;记录的额外信息：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;变长字段长度列表：存储变长字段的数据占用的大小，&lt;strong&gt;当数据表没有变长字段的时候，表里的行格式就不会有「变长字段长度列表」&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;NULL值列表：表中的某些列可能会存储 NULL 值，如果把这些 NULL 值都放到记录的真实数据中会比较浪费空间，所以 Compact 行格式把这些值为 NULL 的列存储到 NULL值列表中。如果存在允许 NULL 值的列，则每个列对应一个二进制位（bit），二进制位按照列的顺序逆序排列。（1标识该列为NULL，0标识不为NULL）。&lt;strong&gt;当数据表的字段都定义成 NOT NULL 的时，表里的行格式就不会有 NULL 值列表&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;记录头信息：
+&lt;ul&gt;
+&lt;li&gt;delete_mask ：标识此条数据是否被删除。&lt;/li&gt;
+&lt;li&gt;next_record：下一条记录的位置。&lt;/li&gt;
+&lt;li&gt;record_type：表示当前记录的类型，0表示普通记录，1表示B+树非叶子节点记录，2表示最小记录，3表示最大记录。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;记录的真实数据：&lt;/p&gt;
+&lt;p&gt;记录真实数据部分除了我们定义的字段，还有三个隐藏字段，分别为：row_id、trx_id、roll_pointer。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;row_id：如果我们建表的时候指定了主键或者唯一约束列，那么就没有 row_id 隐藏字段了。如果既没有指定主键，又没有唯一约束，那么 InnoDB 就会为记录添加 row_id 隐藏字段。&lt;strong&gt;row_id不是必需的，占用 6 个字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;trx_id：事务id，表示这个数据是由哪个事务生成的。 &lt;strong&gt;trx_id是必需的，占用 6 个字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;roll_pointer：这条记录上一个版本的指针。&lt;strong&gt;roll_pointer 是必需的，占用 7 个字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;2-两阶段提交&#34;&gt;2 两阶段提交&lt;/h1&gt;
+&lt;p&gt;事务提交后，redolog和binlog都要持久化到磁盘，但是这两个日志是独立的逻辑，可能会出现半成功的情况，也就是两个日志逻辑不一致：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;如果在将 redo log 刷入到磁盘之后， MySQL 突然宕机了，而 binlog 还没有来得及写入。&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;导致从库的值是旧值，主库的是新值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;如果在将 binlog 刷入到磁盘之后， MySQL 突然宕机了，而 redo log 还没有来得及写入。&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;导致从库的值是新值，主库的是旧值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;MySQL 为了避免出现两份日志之间的逻辑不一致的问题，使用了「两阶段提交」来解决&lt;/strong&gt;，两阶段提交其实是分布式事务一致性协议，它可以保证多个逻辑操作要不全部成功，要不全部失败，不会出现半成功的状态。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MySQL面试</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E9%9D%A2%E8%AF%95/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E9%9D%A2%E8%AF%95/</guid>
+      <description>&lt;h1 id=&#34;mysql面试&#34;&gt;MySQL面试&lt;/h1&gt;
+&lt;h1 id=&#34;1-基础&#34;&gt;1 基础&lt;/h1&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/aa5916ce97ae110441c4921de4342520/6b4001cc35c64002c05218b187c005d4.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;MySQL执行一条Select语句期间发生了什么？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;通过&lt;strong&gt;连接器&lt;/strong&gt;建立连接，管理链接、校验用户身份。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;查询&lt;strong&gt;缓存&lt;/strong&gt;：命中直接返回。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;解析SQL，解析器对SQL查询语句进行词法语法分析。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;执行SQL：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;预处理：检查表或者字段是否存在；&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;优化：选择查询成本最小的执行计划；&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;执行：根据查询计划执行SQL语句，从存储引擎读取数据，返回给客户端。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;MySQL 的 NULL 值是怎么存放的？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;MySQL 的 Compact 行格式中会用「NULL值列表」来标记值为 NULL 的列，NULL 值并不会存储在行格式中的真实数据部分。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;NULL值列表会占用 1 字节空间，当表中所有字段都定义成 NOT NULL，行格式中就不会有 NULL值列表，这样可节省 1 字节的空间。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;MySQL 怎么知道 varchar(n) 实际占用数据的大小？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;MySQL 的 Compact 行格式中会用「变长字段长度列表」存储变长字段实际占用的数据大小。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;varchar(n) 中 n 最大取值为多少？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一行记录最大能存储 65535 字节的数据，但是这个是包含「变长字段字节数列表所占用的字节数」和「NULL值列表所占用的字节数」。所以， 我们在算 varchar(n) 中 n 最大值时，需要减去这两个列表所占用的字节数。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;行溢出后，MySQL 是怎么处理的？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果一个数据页存不了一条记录，InnoDB 存储引擎会自动将溢出的数据存放到「溢出页」中。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Compact 行格式针对行溢出的处理是这样的：当发生行溢出时，在记录的真实数据处只会保存该列的一部分数据，而把剩余的数据放在「溢出页」中，然后真实数据处用 20 字节存储指向溢出页的地址，从而可以找到剩余数据所在的页。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Compressed 和 Dynamic 这两种格式采用完全的行溢出方式，记录的真实数据处不会存储该列的一部分数据，只存储 20 个字节的指针来指向溢出页。而实际的数据都存储在溢出页中。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;2-索引&#34;&gt;2 索引&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;索引的分类&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;按数据结构分类：B+tree索引、Hash索引、Full-text索引&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>NoSQL</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/nosql/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/nosql/</guid>
+      <description>&lt;h1 id=&#34;nosql&#34;&gt;NoSQL&lt;/h1&gt;
+&lt;p&gt;NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库，主要针对的是键值、文档以及图形类型数据存储。并且，NoSQL 数据库天生支持分布式，数据冗余和数据分片等特性，旨在提供可扩展的高可用高性能数据存储解决方案。
+一个常见的误解是 NoSQL 数据库或非关系型数据库不能很好地存储关系型数据。NoSQL 数据库可以存储关系型数据—它们与关系型数据库的存储方式不同。
+NoSQL 数据库代表：HBase、Cassandra、MongoDB、Redis。&lt;/p&gt;
+&lt;h1 id=&#34;sql与nosql区别&#34;&gt;SQL与NoSQL区别&lt;/h1&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;SQL&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;NoSQL&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;数据存储模型&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;结构化存储，具有固定的行和列的表格&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;非结构化存储。文档（JSON）、键值对、宽列、图&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;代表&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Oracle、MySQL、SQL Sever&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;MongoDB、Redis、Cassandra、HBase、Neo4j&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;ACID&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;支持&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;通常不支持&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;性能&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;取决于磁盘子系统&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;取决于集群大小、网络延迟等&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;扩展&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;垂直扩展（升级机器）、读写分离、分库分表&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;横向（增加服务器，基于分片机制）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;用途&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;普通企业项目数据存储&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;图数据库支持分析和遍历连接数据之间的关系、键值数据库可以处理大量数据扩展和极高的状态变化&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;查询语法&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;结构化查询语言&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;数据访问语法可能因数据库而异&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;nosql数据库优势&#34;&gt;NoSQL数据库优势&lt;/h1&gt;
+&lt;p&gt;NoSQL 数据库非常适合许多现代应用程序，例如移动、Web 和游戏等应用程序，它们需要灵活、可扩展、高性能和功能强大的数据库以提供卓越的用户体验。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;灵活性：&lt;/strong&gt; NoSQL 数据库通常提供灵活的架构，以实现更快速、更多的迭代开发。灵活的数据模型使 NoSQL 数据库成为半结构化和非结构化数据的理想之选。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可扩展性：&lt;/strong&gt; NoSQL 数据库通常被设计为通过使用分布式硬件集群来横向扩展，而不是通过添加昂贵和强大的服务器来纵向扩展。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;高性能：&lt;/strong&gt; NoSQL 数据库针对特定的数据模型和访问模式进行了优化，这与尝试使用关系数据库完成类似功能相比可实现更高的性能。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;强大的功能：&lt;/strong&gt; NoSQL 数据库提供功能强大的 API 和数据类型，专门针对其各自的数据模型而构建。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;nosql数据库类型&#34;&gt;NoSQL数据库类型&lt;/h1&gt;
+&lt;p&gt;NoSQL 数据库主要可以分为下面四种类型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;键值&lt;/strong&gt;：键值数据库是一种较简单的数据库，其中每个项目都包含键和值。这是极为灵活的 NoSQL 数据库类型，因为应用可以完全控制 value 字段中存储的内容，没有任何限制。Redis 和 DynanoDB 是两款非常流行的键值数据库。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文档&lt;/strong&gt;：文档数据库中的数据被存储在类似于 JSON（JavaScript 对象表示法）对象的文档中，非常清晰直观。每个文档包含成对的字段和值。这些值通常可以是各种类型，包括字符串、数字、布尔值、数组或对象等，并且它们的结构通常与开发者在代码中使用的对象保持一致。MongoDB 就是一款非常流行的文档数据库。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;图形&lt;/strong&gt;：图形数据库旨在轻松构建和运行与高度连接的数据集一起使用的应用程序。图形数据库的典型使用案例包括社交网络、推荐引擎、欺诈检测和知识图形。Neo4j 和 Giraph 是两款非常流行的图形数据库。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;宽列&lt;/strong&gt;：宽列存储数据库非常适合需要存储大量的数据。Cassandra 和 HBase 是两款非常流行的宽列存储数据库。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>Redis</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/redis/redis/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/redis/redis/</guid>
+      <description>&lt;h1 id=&#34;redis&#34;&gt;Redis&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1cr4y1671t/?spm_id_from=444.64.search-card.all.click&#34;&gt;黑马程序员Redis入门到实战教程&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;1-基本概念&#34;&gt;1 基本概念&lt;/h1&gt;
+&lt;h2 id=&#34;11-redisremote-dictionary-server&#34;&gt;1.1 Redis（::Re::mote ::Di::ctionary ::S::erver）&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;键值型存储，value支持多种不同数据结构。&lt;/li&gt;
+&lt;li&gt;单线程，每个命令具备原子性。（6.0之后的多线程仅是在网络处理部分，核心命令执行还是单线程）&lt;/li&gt;
+&lt;li&gt;低延迟，速度快（基于内存、IO多路复用、良好的编码）。&lt;/li&gt;
+&lt;li&gt;支持数据持久化。&lt;/li&gt;
+&lt;li&gt;支持主从集群和分片集群。&lt;/li&gt;
+&lt;li&gt;支持多语言客户端。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;12-sql和nosql&#34;&gt;1.2 SQL和NoSQL&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;SQL（Structured Query Language）：结构化的、关联的、SQL查询（语法固定）、事务（ACID）&lt;/li&gt;
+&lt;li&gt;NoSQL（Not only SQL）：非结构的、非关联的、非SQL的（语法不固定，不统一）、不一定满足事务全部要求（BASE）
+&lt;ul&gt;
+&lt;li&gt;键值对：Redis&lt;/li&gt;
+&lt;li&gt;文档：MongoDB&lt;/li&gt;
+&lt;li&gt;图：Neo4j&lt;/li&gt;
+&lt;li&gt;列：HBase&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;13-redis通用命令&#34;&gt;1.3 Redis通用命令&lt;/h2&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-other&#34; data-lang=&#34;other&#34;&gt;// 1. 列出所有符合条件的key : KEYS [pattern]
+KEYS *
+KEYS a*
+// 2. 删除所有指定的key : DEL key [key ...]
+// 3. 判断key是否存在 : EXISTS key [key ...]
+// 4. 给一个key设置有效期，过期自动删除 : EXPIRE key seconds
+// 5. 查看命令具体用法 : help [command]
+// 6. 查看一个key的有效期 : TTL key
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;2-底层数据结构&#34;&gt;2 底层数据结构&lt;/h1&gt;
+&lt;p&gt;Redis是一个key-value数据库，key一般是String类型，不过value的类型有很多：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Redis补充</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/redis/redis%E8%A1%A5%E5%85%85/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/redis/redis%E8%A1%A5%E5%85%85/</guid>
+      <description>&lt;h1 id=&#34;redis补充&#34;&gt;Redis补充&lt;/h1&gt;
+&lt;h1 id=&#34;1-redis网络模型&#34;&gt;1 Redis网络模型&lt;/h1&gt;
+&lt;p&gt;Redis的核心业务部分（命令处理）是单线程，但是整个Redis是多线程的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;v4.0：引入多线程异步处理一些耗时较长的任务，例如异步删除命令unlink。&lt;/li&gt;
+&lt;li&gt;v6.0：在核心网络模型中引入多线程，进一步提高对于多核CPU的利用率，但是核心部分依然是单线程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;为什么选择单线程？&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;性能瓶颈是网络延迟，不是执行速度，多线程并不会带来巨大性能提升。&lt;/li&gt;
+&lt;li&gt;多线程会导致过多的上下文切换，带来不必要的开销。&lt;/li&gt;
+&lt;li&gt;引入多线程可能会面临线程安全问题，必须引入线程锁这样的安全手段，实现复杂度增高，性能也大打折扣。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1cr4y1671t/?p=171&amp;spm_id_from=pageDriver&amp;vd_source=5e81fa8ad2645ace69cd01959323966a&#34;&gt;原理篇-27.Redis网络模型-Redis单线程及多线程网络模型变更_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;2-redis通信协议&#34;&gt;2 Redis通信协议&lt;/h1&gt;
+&lt;p&gt;RESP协议&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1cr4y1671t?p=172&amp;vd_source=5e81fa8ad2645ace69cd01959323966a&#34;&gt;原理篇-28.Redis通信协议-RESP协议_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;3-redis事务&#34;&gt;3 Redis事务&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Redis事务的三个阶段&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;MULTI&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;事务开始&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;命令入队&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;EXEC&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;事务执行&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Redis事务特点&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;redis不支持回滚&lt;/strong&gt;，事务失败，继续执行余下的命令&lt;/li&gt;
+&lt;li&gt;事物内部命令错误，所有命令都不会执行&lt;/li&gt;
+&lt;li&gt;事物内部出现运行错误，正确的命令会被执行&lt;/li&gt;
+&lt;li&gt;Redis事务没有&lt;strong&gt;原子性，持久性&lt;/strong&gt;仅在开启AOF的always模式下支持。&lt;/li&gt;
+&lt;li&gt;Redis事务总是有&lt;strong&gt;隔离性（单线程）&lt;strong&gt;和&lt;/strong&gt;一致性。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Redis事务相关命令&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;WATCH：乐观锁，给事务提供CAS机制，可以监控一个或者多个键，一旦其中有一个被修改，之后的事务就不会执行，监控一直持续到EXEC或者UNWATCH。&lt;/li&gt;
+&lt;li&gt;MULTI：用于开启事务，开启后可以继续送入命令，当EXEC被调用时，才被执行。&lt;/li&gt;
+&lt;li&gt;EXEC：执行事务块内所有命令，返回所有命令的返回值，按照命令先后排序。&lt;/li&gt;
+&lt;li&gt;DISCARD：清空事务队列，放弃执行事务。&lt;/li&gt;
+&lt;li&gt;UNWATCH：取消watch对所有key的监控。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;4-缓存和数据库的一致性&#34;&gt;4 缓存和数据库的一致性&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;设置有效期：给缓存设置有效期，到期自动删除，再次查询时更新
+&lt;ul&gt;
+&lt;li&gt;优势：简单方便&lt;/li&gt;
+&lt;li&gt;缺点：时效性差，缓存过期之前可能不一致&lt;/li&gt;
+&lt;li&gt;场景：更新频率较低，时效性要求较低的业务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;同步双写：在修改数据库的同时，直接修改缓存
+&lt;ul&gt;
+&lt;li&gt;优势：时效性强，缓存与数据库强一致&lt;/li&gt;
+&lt;li&gt;缺点：有代码侵入，耦合度高&lt;/li&gt;
+&lt;li&gt;场景：对一致性，时效性要求较高的缓存数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;异步通知：在修改数据库时发送事件通知，相关服务监听到通知后修改缓存数据
+&lt;ul&gt;
+&lt;li&gt;优势：低耦合，可以同时通知多个缓存服务&lt;/li&gt;
+&lt;li&gt;缺点：时效性一般，可能存在中间不一致状态&lt;/li&gt;
+&lt;li&gt;场景：时效性要求一般，有多个服务需要同步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/b3b47c9dd44a526e40dd810deb15808a/8abb25a2b116eaf0abcdb0ae98618474.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于MQ的异步通知，对业务代码仍然有一定侵入性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/b3b47c9dd44a526e40dd810deb15808a/dc15605693d4169fc32a3e8e780bb3a0.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于Cannal的异步通知，可以做到几乎0侵入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;41-缓存更新策略&#34;&gt;4.1 缓存更新策略&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;删除缓存而不是更新缓存&lt;/li&gt;
+&lt;li&gt;先删数据，后删缓存&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;42-缓存不一致处理&#34;&gt;4.2 缓存不一致处理&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;使用消息队列，把要删除和删除失败的key放入消息队列，利用重试机制，删除对应的key
+&lt;ul&gt;
+&lt;li&gt;对代码有侵入性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据库订阅+消息队列保证key被删除
+&lt;ul&gt;
+&lt;li&gt;利用canal或其他服务监听binlog&lt;/li&gt;
+&lt;li&gt;复杂度提升&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;延时双删防止脏数据
+&lt;ul&gt;
+&lt;li&gt;延迟时间需要具体的考量和测试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;设置过期时间兜底&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;5-热key重建&#34;&gt;5 热key重建&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;使用互斥锁，保证只有一个线程重建，其他线程等待该线程重建完后，获取缓存数据即可。&lt;/li&gt;
+&lt;li&gt;不显示设置过期时间，而是设置逻辑过期字段，发现逻辑过期后，采用单独的线程构建缓存。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;6-大key问题&#34;&gt;6 大key问题&lt;/h1&gt;
+&lt;p&gt;单个简单key存储的value过大，hash、set、zset、list中存储过多元素。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

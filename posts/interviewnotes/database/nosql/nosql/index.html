@@ -1,0 +1,207 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>NoSQL | RLTEA BLOG</title>
+<meta name=keywords content="笔记,数据库,NoSQL"><meta name=description content="NoSQL
+NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库，主要针对的是键值、文档以及图形类型数据存储。并且，NoSQL 数据库天生支持分布式，数据冗余和数据分片等特性，旨在提供可扩展的高可用高性能数据存储解决方案。
+一个常见的误解是 NoSQL 数据库或非关系型数据库不能很好地存储关系型数据。NoSQL 数据库可以存储关系型数据—它们与关系型数据库的存储方式不同。
+NoSQL 数据库代表：HBase、Cassandra、MongoDB、Redis。
+SQL与NoSQL区别
+
+  
+      
+          
+          SQL
+          NoSQL
+      
+  
+  
+      
+          数据存储模型
+          结构化存储，具有固定的行和列的表格
+          非结构化存储。文档（JSON）、键值对、宽列、图
+      
+      
+          代表
+          Oracle、MySQL、SQL Sever
+          MongoDB、Redis、Cassandra、HBase、Neo4j
+      
+      
+          ACID
+          支持
+          通常不支持
+      
+      
+          性能
+          取决于磁盘子系统
+          取决于集群大小、网络延迟等
+      
+      
+          扩展
+          垂直扩展（升级机器）、读写分离、分库分表
+          横向（增加服务器，基于分片机制）
+      
+      
+          用途
+          普通企业项目数据存储
+          图数据库支持分析和遍历连接数据之间的关系、键值数据库可以处理大量数据扩展和极高的状态变化
+      
+      
+          查询语法
+          结构化查询语言
+          数据访问语法可能因数据库而异
+      
+  
+
+NoSQL数据库优势
+NoSQL 数据库非常适合许多现代应用程序，例如移动、Web 和游戏等应用程序，它们需要灵活、可扩展、高性能和功能强大的数据库以提供卓越的用户体验。
+
+灵活性： NoSQL 数据库通常提供灵活的架构，以实现更快速、更多的迭代开发。灵活的数据模型使 NoSQL 数据库成为半结构化和非结构化数据的理想之选。
+可扩展性： NoSQL 数据库通常被设计为通过使用分布式硬件集群来横向扩展，而不是通过添加昂贵和强大的服务器来纵向扩展。
+高性能： NoSQL 数据库针对特定的数据模型和访问模式进行了优化，这与尝试使用关系数据库完成类似功能相比可实现更高的性能。
+强大的功能： NoSQL 数据库提供功能强大的 API 和数据类型，专门针对其各自的数据模型而构建。
+
+NoSQL数据库类型
+NoSQL 数据库主要可以分为下面四种类型：
+
+键值：键值数据库是一种较简单的数据库，其中每个项目都包含键和值。这是极为灵活的 NoSQL 数据库类型，因为应用可以完全控制 value 字段中存储的内容，没有任何限制。Redis 和 DynanoDB 是两款非常流行的键值数据库。
+文档：文档数据库中的数据被存储在类似于 JSON（JavaScript 对象表示法）对象的文档中，非常清晰直观。每个文档包含成对的字段和值。这些值通常可以是各种类型，包括字符串、数字、布尔值、数组或对象等，并且它们的结构通常与开发者在代码中使用的对象保持一致。MongoDB 就是一款非常流行的文档数据库。
+图形：图形数据库旨在轻松构建和运行与高度连接的数据集一起使用的应用程序。图形数据库的典型使用案例包括社交网络、推荐引擎、欺诈检测和知识图形。Neo4j 和 Giraph 是两款非常流行的图形数据库。
+宽列：宽列存储数据库非常适合需要存储大量的数据。Cassandra 和 HBase 是两款非常流行的宽列存储数据库。
+"><meta name=author content="RLTEA"><link rel=canonical href=https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/nosql/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.258803b0f0cc9a4a109c6fe78a9d39f2e0437217d71c5c9848255af9250f2b1b.css integrity="sha256-JYgDsPDMmkoQnG/nip058uBDchfXHFyYSCVa+SUPKxs=" rel="preload stylesheet" as=style><link rel=icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/nosql/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="NoSQL"><meta property="og:description" content="NoSQL
+NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库，主要针对的是键值、文档以及图形类型数据存储。并且，NoSQL 数据库天生支持分布式，数据冗余和数据分片等特性，旨在提供可扩展的高可用高性能数据存储解决方案。
+一个常见的误解是 NoSQL 数据库或非关系型数据库不能很好地存储关系型数据。NoSQL 数据库可以存储关系型数据—它们与关系型数据库的存储方式不同。
+NoSQL 数据库代表：HBase、Cassandra、MongoDB、Redis。
+SQL与NoSQL区别
+
+  
+      
+          
+          SQL
+          NoSQL
+      
+  
+  
+      
+          数据存储模型
+          结构化存储，具有固定的行和列的表格
+          非结构化存储。文档（JSON）、键值对、宽列、图
+      
+      
+          代表
+          Oracle、MySQL、SQL Sever
+          MongoDB、Redis、Cassandra、HBase、Neo4j
+      
+      
+          ACID
+          支持
+          通常不支持
+      
+      
+          性能
+          取决于磁盘子系统
+          取决于集群大小、网络延迟等
+      
+      
+          扩展
+          垂直扩展（升级机器）、读写分离、分库分表
+          横向（增加服务器，基于分片机制）
+      
+      
+          用途
+          普通企业项目数据存储
+          图数据库支持分析和遍历连接数据之间的关系、键值数据库可以处理大量数据扩展和极高的状态变化
+      
+      
+          查询语法
+          结构化查询语言
+          数据访问语法可能因数据库而异
+      
+  
+
+NoSQL数据库优势
+NoSQL 数据库非常适合许多现代应用程序，例如移动、Web 和游戏等应用程序，它们需要灵活、可扩展、高性能和功能强大的数据库以提供卓越的用户体验。
+
+灵活性： NoSQL 数据库通常提供灵活的架构，以实现更快速、更多的迭代开发。灵活的数据模型使 NoSQL 数据库成为半结构化和非结构化数据的理想之选。
+可扩展性： NoSQL 数据库通常被设计为通过使用分布式硬件集群来横向扩展，而不是通过添加昂贵和强大的服务器来纵向扩展。
+高性能： NoSQL 数据库针对特定的数据模型和访问模式进行了优化，这与尝试使用关系数据库完成类似功能相比可实现更高的性能。
+强大的功能： NoSQL 数据库提供功能强大的 API 和数据类型，专门针对其各自的数据模型而构建。
+
+NoSQL数据库类型
+NoSQL 数据库主要可以分为下面四种类型：
+
+键值：键值数据库是一种较简单的数据库，其中每个项目都包含键和值。这是极为灵活的 NoSQL 数据库类型，因为应用可以完全控制 value 字段中存储的内容，没有任何限制。Redis 和 DynanoDB 是两款非常流行的键值数据库。
+文档：文档数据库中的数据被存储在类似于 JSON（JavaScript 对象表示法）对象的文档中，非常清晰直观。每个文档包含成对的字段和值。这些值通常可以是各种类型，包括字符串、数字、布尔值、数组或对象等，并且它们的结构通常与开发者在代码中使用的对象保持一致。MongoDB 就是一款非常流行的文档数据库。
+图形：图形数据库旨在轻松构建和运行与高度连接的数据集一起使用的应用程序。图形数据库的典型使用案例包括社交网络、推荐引擎、欺诈检测和知识图形。Neo4j 和 Giraph 是两款非常流行的图形数据库。
+宽列：宽列存储数据库非常适合需要存储大量的数据。Cassandra 和 HBase 是两款非常流行的宽列存储数据库。
+"><meta property="og:type" content="article"><meta property="og:url" content="https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/nosql/"><meta property="og:image" content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-26T00:00:00+00:00"><meta property="article:modified_time" content="2024-09-26T00:00:00+00:00"><meta property="og:site_name" content="RLTEA BLOG"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="NoSQL"><meta name=twitter:description content="NoSQL
+NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库，主要针对的是键值、文档以及图形类型数据存储。并且，NoSQL 数据库天生支持分布式，数据冗余和数据分片等特性，旨在提供可扩展的高可用高性能数据存储解决方案。
+一个常见的误解是 NoSQL 数据库或非关系型数据库不能很好地存储关系型数据。NoSQL 数据库可以存储关系型数据—它们与关系型数据库的存储方式不同。
+NoSQL 数据库代表：HBase、Cassandra、MongoDB、Redis。
+SQL与NoSQL区别
+
+  
+      
+          
+          SQL
+          NoSQL
+      
+  
+  
+      
+          数据存储模型
+          结构化存储，具有固定的行和列的表格
+          非结构化存储。文档（JSON）、键值对、宽列、图
+      
+      
+          代表
+          Oracle、MySQL、SQL Sever
+          MongoDB、Redis、Cassandra、HBase、Neo4j
+      
+      
+          ACID
+          支持
+          通常不支持
+      
+      
+          性能
+          取决于磁盘子系统
+          取决于集群大小、网络延迟等
+      
+      
+          扩展
+          垂直扩展（升级机器）、读写分离、分库分表
+          横向（增加服务器，基于分片机制）
+      
+      
+          用途
+          普通企业项目数据存储
+          图数据库支持分析和遍历连接数据之间的关系、键值数据库可以处理大量数据扩展和极高的状态变化
+      
+      
+          查询语法
+          结构化查询语言
+          数据访问语法可能因数据库而异
+      
+  
+
+NoSQL数据库优势
+NoSQL 数据库非常适合许多现代应用程序，例如移动、Web 和游戏等应用程序，它们需要灵活、可扩展、高性能和功能强大的数据库以提供卓越的用户体验。
+
+灵活性： NoSQL 数据库通常提供灵活的架构，以实现更快速、更多的迭代开发。灵活的数据模型使 NoSQL 数据库成为半结构化和非结构化数据的理想之选。
+可扩展性： NoSQL 数据库通常被设计为通过使用分布式硬件集群来横向扩展，而不是通过添加昂贵和强大的服务器来纵向扩展。
+高性能： NoSQL 数据库针对特定的数据模型和访问模式进行了优化，这与尝试使用关系数据库完成类似功能相比可实现更高的性能。
+强大的功能： NoSQL 数据库提供功能强大的 API 和数据类型，专门针对其各自的数据模型而构建。
+
+NoSQL数据库类型
+NoSQL 数据库主要可以分为下面四种类型：
+
+键值：键值数据库是一种较简单的数据库，其中每个项目都包含键和值。这是极为灵活的 NoSQL 数据库类型，因为应用可以完全控制 value 字段中存储的内容，没有任何限制。Redis 和 DynanoDB 是两款非常流行的键值数据库。
+文档：文档数据库中的数据被存储在类似于 JSON（JavaScript 对象表示法）对象的文档中，非常清晰直观。每个文档包含成对的字段和值。这些值通常可以是各种类型，包括字符串、数字、布尔值、数组或对象等，并且它们的结构通常与开发者在代码中使用的对象保持一致。MongoDB 就是一款非常流行的文档数据库。
+图形：图形数据库旨在轻松构建和运行与高度连接的数据集一起使用的应用程序。图形数据库的典型使用案例包括社交网络、推荐引擎、欺诈检测和知识图形。Neo4j 和 Giraph 是两款非常流行的图形数据库。
+宽列：宽列存储数据库非常适合需要存储大量的数据。Cassandra 和 HBase 是两款非常流行的宽列存储数据库。
+"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://roaraeonliou.github.io/posts/"},{"@type":"ListItem","position":2,"name":"NoSQL","item":"https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/nosql/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"NoSQL","name":"NoSQL","description":"NoSQL NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库，主要针对的是键值、文档以及图形类型数据存储。并且，NoSQL 数据库天生支持分布式，数据冗余和数据分片等特性，旨在提供可扩展的高可用高性能数据存储解决方案。 一个常见的误解是 NoSQL 数据库或非关系型数据库不能很好地存储关系型数据。NoSQL 数据库可以存储关系型数据—它们与关系型数据库的存储方式不同。 NoSQL 数据库代表：HBase、Cassandra、MongoDB、Redis。\nSQL与NoSQL区别 SQL NoSQL 数据存储模型 结构化存储，具有固定的行和列的表格 非结构化存储。文档（JSON）、键值对、宽列、图 代表 Oracle、MySQL、SQL Sever MongoDB、Redis、Cassandra、HBase、Neo4j ACID 支持 通常不支持 性能 取决于磁盘子系统 取决于集群大小、网络延迟等 扩展 垂直扩展（升级机器）、读写分离、分库分表 横向（增加服务器，基于分片机制） 用途 普通企业项目数据存储 图数据库支持分析和遍历连接数据之间的关系、键值数据库可以处理大量数据扩展和极高的状态变化 查询语法 结构化查询语言 数据访问语法可能因数据库而异 NoSQL数据库优势 NoSQL 数据库非常适合许多现代应用程序，例如移动、Web 和游戏等应用程序，它们需要灵活、可扩展、高性能和功能强大的数据库以提供卓越的用户体验。\n灵活性： NoSQL 数据库通常提供灵活的架构，以实现更快速、更多的迭代开发。灵活的数据模型使 NoSQL 数据库成为半结构化和非结构化数据的理想之选。 可扩展性： NoSQL 数据库通常被设计为通过使用分布式硬件集群来横向扩展，而不是通过添加昂贵和强大的服务器来纵向扩展。 高性能： NoSQL 数据库针对特定的数据模型和访问模式进行了优化，这与尝试使用关系数据库完成类似功能相比可实现更高的性能。 强大的功能： NoSQL 数据库提供功能强大的 API 和数据类型，专门针对其各自的数据模型而构建。 NoSQL数据库类型 NoSQL 数据库主要可以分为下面四种类型：\n键值：键值数据库是一种较简单的数据库，其中每个项目都包含键和值。这是极为灵活的 NoSQL 数据库类型，因为应用可以完全控制 value 字段中存储的内容，没有任何限制。Redis 和 DynanoDB 是两款非常流行的键值数据库。 文档：文档数据库中的数据被存储在类似于 JSON（JavaScript 对象表示法）对象的文档中，非常清晰直观。每个文档包含成对的字段和值。这些值通常可以是各种类型，包括字符串、数字、布尔值、数组或对象等，并且它们的结构通常与开发者在代码中使用的对象保持一致。MongoDB 就是一款非常流行的文档数据库。 图形：图形数据库旨在轻松构建和运行与高度连接的数据集一起使用的应用程序。图形数据库的典型使用案例包括社交网络、推荐引擎、欺诈检测和知识图形。Neo4j 和 Giraph 是两款非常流行的图形数据库。 宽列：宽列存储数据库非常适合需要存储大量的数据。Cassandra 和 HBase 是两款非常流行的宽列存储数据库。 ","keywords":["笔记","数据库","NoSQL"],"articleBody":"NoSQL NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库，主要针对的是键值、文档以及图形类型数据存储。并且，NoSQL 数据库天生支持分布式，数据冗余和数据分片等特性，旨在提供可扩展的高可用高性能数据存储解决方案。 一个常见的误解是 NoSQL 数据库或非关系型数据库不能很好地存储关系型数据。NoSQL 数据库可以存储关系型数据—它们与关系型数据库的存储方式不同。 NoSQL 数据库代表：HBase、Cassandra、MongoDB、Redis。\nSQL与NoSQL区别 SQL NoSQL 数据存储模型 结构化存储，具有固定的行和列的表格 非结构化存储。文档（JSON）、键值对、宽列、图 代表 Oracle、MySQL、SQL Sever MongoDB、Redis、Cassandra、HBase、Neo4j ACID 支持 通常不支持 性能 取决于磁盘子系统 取决于集群大小、网络延迟等 扩展 垂直扩展（升级机器）、读写分离、分库分表 横向（增加服务器，基于分片机制） 用途 普通企业项目数据存储 图数据库支持分析和遍历连接数据之间的关系、键值数据库可以处理大量数据扩展和极高的状态变化 查询语法 结构化查询语言 数据访问语法可能因数据库而异 NoSQL数据库优势 NoSQL 数据库非常适合许多现代应用程序，例如移动、Web 和游戏等应用程序，它们需要灵活、可扩展、高性能和功能强大的数据库以提供卓越的用户体验。\n灵活性： NoSQL 数据库通常提供灵活的架构，以实现更快速、更多的迭代开发。灵活的数据模型使 NoSQL 数据库成为半结构化和非结构化数据的理想之选。 可扩展性： NoSQL 数据库通常被设计为通过使用分布式硬件集群来横向扩展，而不是通过添加昂贵和强大的服务器来纵向扩展。 高性能： NoSQL 数据库针对特定的数据模型和访问模式进行了优化，这与尝试使用关系数据库完成类似功能相比可实现更高的性能。 强大的功能： NoSQL 数据库提供功能强大的 API 和数据类型，专门针对其各自的数据模型而构建。 NoSQL数据库类型 NoSQL 数据库主要可以分为下面四种类型：\n键值：键值数据库是一种较简单的数据库，其中每个项目都包含键和值。这是极为灵活的 NoSQL 数据库类型，因为应用可以完全控制 value 字段中存储的内容，没有任何限制。Redis 和 DynanoDB 是两款非常流行的键值数据库。 文档：文档数据库中的数据被存储在类似于 JSON（JavaScript 对象表示法）对象的文档中，非常清晰直观。每个文档包含成对的字段和值。这些值通常可以是各种类型，包括字符串、数字、布尔值、数组或对象等，并且它们的结构通常与开发者在代码中使用的对象保持一致。MongoDB 就是一款非常流行的文档数据库。 图形：图形数据库旨在轻松构建和运行与高度连接的数据集一起使用的应用程序。图形数据库的典型使用案例包括社交网络、推荐引擎、欺诈检测和知识图形。Neo4j 和 Giraph 是两款非常流行的图形数据库。 宽列：宽列存储数据库非常适合需要存储大量的数据。Cassandra 和 HBase 是两款非常流行的宽列存储数据库。 ","wordCount":"80","inLanguage":"en","image":"https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2024-09-26T00:00:00Z","dateModified":"2024-09-26T00:00:00Z","author":{"@type":"Person","name":"RLTEA"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://roaraeonliou.github.io/posts/interviewnotes/database/nosql/nosql/"},"publisher":{"@type":"Organization","name":"RLTEA BLOG","logo":{"@type":"ImageObject","url":"https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E"}}}</script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["\\[","\\]"],["$$","$$"]],inlineMath:[["\\(","\\)"],["$","$"]]}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://roaraeonliou.github.io/ accesskey=h title="Home (Alt + H)"><img src=https://roaraeonliou.github.io/apple-touch-icon.png alt aria-label=logo height=35>Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://roaraeonliou.github.io/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://roaraeonliou.github.io/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://roaraeonliou.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://roaraeonliou.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://roaraeonliou.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://roaraeonliou.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">NoSQL</h1><div class=post-meta><span title='2024-09-26 00:00:00 +0000 UTC'>September 26, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;80 words&nbsp;·&nbsp;RLTEA&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/InterviewNotes/Database/NoSQL/NoSQL.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><aside id=toc-container class="toc-container wide"><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#nosql aria-label=NoSQL>NoSQL</a></li><li><a href=#sql%e4%b8%8enosql%e5%8c%ba%e5%88%ab aria-label=SQL与NoSQL区别>SQL与NoSQL区别</a></li><li><a href=#nosql%e6%95%b0%e6%8d%ae%e5%ba%93%e4%bc%98%e5%8a%bf aria-label=NoSQL数据库优势>NoSQL数据库优势</a></li><li><a href=#nosql%e6%95%b0%e6%8d%ae%e5%ba%93%e7%b1%bb%e5%9e%8b aria-label=NoSQL数据库类型>NoSQL数据库类型</a></li></ul></div></details></div></aside><script>let activeElement,elements;window.addEventListener("DOMContentLoaded",function(){checkTocPosition(),elements=document.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]"),activeElement=elements[0];const t=encodeURI(activeElement.getAttribute("id")).toLowerCase();document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active")},!1),window.addEventListener("resize",function(){checkTocPosition()},!1),window.addEventListener("scroll",()=>{activeElement=Array.from(elements).find(e=>{if(getOffsetTop(e)-window.pageYOffset>0&&getOffsetTop(e)-window.pageYOffset<window.innerHeight/2)return e})||activeElement,elements.forEach(e=>{const t=encodeURI(e.getAttribute("id")).toLowerCase();e===activeElement?document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active"):document.querySelector(`.inner ul li a[href="#${t}"]`).classList.remove("active")})},!1);const main=parseInt(getComputedStyle(document.body).getPropertyValue("--article-width"),10),toc=parseInt(getComputedStyle(document.body).getPropertyValue("--toc-width"),10),gap=parseInt(getComputedStyle(document.body).getPropertyValue("--gap"),10);function checkTocPosition(){const e=document.body.scrollWidth;e-main-toc*2-gap*4>0?document.getElementById("toc-container").classList.add("wide"):document.getElementById("toc-container").classList.remove("wide")}function getOffsetTop(e){if(!e.getClientRects().length)return 0;let t=e.getBoundingClientRect(),n=e.ownerDocument.defaultView;return t.top+n.pageYOffset}</script><div class=post-content><h1 id=nosql>NoSQL<a hidden class=anchor aria-hidden=true href=#nosql>#</a></h1><p>NoSQL（Not Only SQL 的缩写）泛指非关系型的数据库，主要针对的是键值、文档以及图形类型数据存储。并且，NoSQL 数据库天生支持分布式，数据冗余和数据分片等特性，旨在提供可扩展的高可用高性能数据存储解决方案。
+一个常见的误解是 NoSQL 数据库或非关系型数据库不能很好地存储关系型数据。NoSQL 数据库可以存储关系型数据—它们与关系型数据库的存储方式不同。
+NoSQL 数据库代表：HBase、Cassandra、MongoDB、Redis。</p><h1 id=sql与nosql区别>SQL与NoSQL区别<a hidden class=anchor aria-hidden=true href=#sql与nosql区别>#</a></h1><table><thead><tr><th style=text-align:left></th><th style=text-align:left>SQL</th><th style=text-align:left>NoSQL</th></tr></thead><tbody><tr><td style=text-align:left>数据存储模型</td><td style=text-align:left>结构化存储，具有固定的行和列的表格</td><td style=text-align:left>非结构化存储。文档（JSON）、键值对、宽列、图</td></tr><tr><td style=text-align:left>代表</td><td style=text-align:left>Oracle、MySQL、SQL Sever</td><td style=text-align:left>MongoDB、Redis、Cassandra、HBase、Neo4j</td></tr><tr><td style=text-align:left>ACID</td><td style=text-align:left>支持</td><td style=text-align:left>通常不支持</td></tr><tr><td style=text-align:left>性能</td><td style=text-align:left>取决于磁盘子系统</td><td style=text-align:left>取决于集群大小、网络延迟等</td></tr><tr><td style=text-align:left>扩展</td><td style=text-align:left>垂直扩展（升级机器）、读写分离、分库分表</td><td style=text-align:left>横向（增加服务器，基于分片机制）</td></tr><tr><td style=text-align:left>用途</td><td style=text-align:left>普通企业项目数据存储</td><td style=text-align:left>图数据库支持分析和遍历连接数据之间的关系、键值数据库可以处理大量数据扩展和极高的状态变化</td></tr><tr><td style=text-align:left>查询语法</td><td style=text-align:left>结构化查询语言</td><td style=text-align:left>数据访问语法可能因数据库而异</td></tr></tbody></table><h1 id=nosql数据库优势>NoSQL数据库优势<a hidden class=anchor aria-hidden=true href=#nosql数据库优势>#</a></h1><p>NoSQL 数据库非常适合许多现代应用程序，例如移动、Web 和游戏等应用程序，它们需要灵活、可扩展、高性能和功能强大的数据库以提供卓越的用户体验。</p><ul><li><strong>灵活性：</strong> NoSQL 数据库通常提供灵活的架构，以实现更快速、更多的迭代开发。灵活的数据模型使 NoSQL 数据库成为半结构化和非结构化数据的理想之选。</li><li><strong>可扩展性：</strong> NoSQL 数据库通常被设计为通过使用分布式硬件集群来横向扩展，而不是通过添加昂贵和强大的服务器来纵向扩展。</li><li><strong>高性能：</strong> NoSQL 数据库针对特定的数据模型和访问模式进行了优化，这与尝试使用关系数据库完成类似功能相比可实现更高的性能。</li><li><strong>强大的功能：</strong> NoSQL 数据库提供功能强大的 API 和数据类型，专门针对其各自的数据模型而构建。</li></ul><h1 id=nosql数据库类型>NoSQL数据库类型<a hidden class=anchor aria-hidden=true href=#nosql数据库类型>#</a></h1><p>NoSQL 数据库主要可以分为下面四种类型：</p><ul><li><strong>键值</strong>：键值数据库是一种较简单的数据库，其中每个项目都包含键和值。这是极为灵活的 NoSQL 数据库类型，因为应用可以完全控制 value 字段中存储的内容，没有任何限制。Redis 和 DynanoDB 是两款非常流行的键值数据库。</li><li><strong>文档</strong>：文档数据库中的数据被存储在类似于 JSON（JavaScript 对象表示法）对象的文档中，非常清晰直观。每个文档包含成对的字段和值。这些值通常可以是各种类型，包括字符串、数字、布尔值、数组或对象等，并且它们的结构通常与开发者在代码中使用的对象保持一致。MongoDB 就是一款非常流行的文档数据库。</li><li><strong>图形</strong>：图形数据库旨在轻松构建和运行与高度连接的数据集一起使用的应用程序。图形数据库的典型使用案例包括社交网络、推荐引擎、欺诈检测和知识图形。Neo4j 和 Giraph 是两款非常流行的图形数据库。</li><li><strong>宽列</strong>：宽列存储数据库非常适合需要存储大量的数据。Cassandra 和 HBase 是两款非常流行的宽列存储数据库。</li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://roaraeonliou.github.io/tags/%E7%AC%94%E8%AE%B0/>笔记</a></li><li><a href=https://roaraeonliou.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/>数据库</a></li><li><a href=https://roaraeonliou.github.io/tags/nosql/>NoSQL</a></li></ul><nav class=paginav><a class=prev href=https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E9%9D%A2%E8%AF%95/><span class=title>« Prev</span><br><span>MySQL面试</span>
+</a><a class=next href=https://roaraeonliou.github.io/posts/interviewnotes/redis/redis/><span class=title>Next »</span><br><span>Redis</span></a></nav></footer><div id=comments><script src=https://giscus.app/client.js data-repo=RoaraeonLiou/roaraeonliou.github.io data-repo-id=R_kgDOMIxQ4w data-category=Announcements data-category-id=DIC_kwDOMIxQ484CgZUR data-mapping=title data-strict=1 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=preferred_color_scheme data-lang=zh-CN data-loading=lazy crossorigin=anonymous async></script></div></article></main><footer class=footer><span>&copy; 2024 <a href=https://roaraeonliou.github.io/>RLTEA BLOG</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,127 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>2.Java集合 | RLTEA BLOG</title>
+<meta name=keywords content><meta name=description content="
+2.1 集合（容器）
+主要由两大借口派生而来：一个是Collection、一个是Map，而Collection下还有List、Set、Queue。
+
+List：存储的元素是有序的，可重复的
+Set：存储的元素是不可重复的
+Queue：存储元素有序、可重复，按照特定排队规则确定先后顺序
+Map：使用键值对存储，key无序、不可重复，value无序、可重复。
+
+2.2 集合框架底层数据结构
+
+List
+
+ArrayList：Objects数组
+Vector：Objects数组
+LinkedList：双向链表
+
+
+Set
+
+HashSet：基于HashMap实现
+LinkedHashSet：基于LinkedHashMap实现
+TreeSet：基于红黑树实现
+
+
+Queue
+
+PriorityQueue：Object数组实现的小顶堆
+DelayQueue：基于Priority实现
+ArrayDeque：可扩容双向数组
+
+
+Map
+
+HashMap：JDK1.8之前由数组+链表组成，JDK1.8后，链表长度大于8时，转换为红黑树。
+LinkedHashMap：继承自HashMap，底层与HashMap相同，不同的是增加了双向链表，使得上面的接口可以保持键值对插入的顺序。
+HashTable：数组+链表组成，链表主要为了解决Hash冲突
+TreeMap：红黑树
+
+
+"><meta name=author content="RLTEA"><link rel=canonical href=https://roaraeonliou.github.io/posts/interviewnotes/new/java/2.java%E9%9B%86%E5%90%88/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.258803b0f0cc9a4a109c6fe78a9d39f2e0437217d71c5c9848255af9250f2b1b.css integrity="sha256-JYgDsPDMmkoQnG/nip058uBDchfXHFyYSCVa+SUPKxs=" rel="preload stylesheet" as=style><link rel=icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://roaraeonliou.github.io/posts/interviewnotes/new/java/2.java%E9%9B%86%E5%90%88/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="2.Java集合"><meta property="og:description" content="
+2.1 集合（容器）
+主要由两大借口派生而来：一个是Collection、一个是Map，而Collection下还有List、Set、Queue。
+
+List：存储的元素是有序的，可重复的
+Set：存储的元素是不可重复的
+Queue：存储元素有序、可重复，按照特定排队规则确定先后顺序
+Map：使用键值对存储，key无序、不可重复，value无序、可重复。
+
+2.2 集合框架底层数据结构
+
+List
+
+ArrayList：Objects数组
+Vector：Objects数组
+LinkedList：双向链表
+
+
+Set
+
+HashSet：基于HashMap实现
+LinkedHashSet：基于LinkedHashMap实现
+TreeSet：基于红黑树实现
+
+
+Queue
+
+PriorityQueue：Object数组实现的小顶堆
+DelayQueue：基于Priority实现
+ArrayDeque：可扩容双向数组
+
+
+Map
+
+HashMap：JDK1.8之前由数组+链表组成，JDK1.8后，链表长度大于8时，转换为红黑树。
+LinkedHashMap：继承自HashMap，底层与HashMap相同，不同的是增加了双向链表，使得上面的接口可以保持键值对插入的顺序。
+HashTable：数组+链表组成，链表主要为了解决Hash冲突
+TreeMap：红黑树
+
+
+"><meta property="og:type" content="article"><meta property="og:url" content="https://roaraeonliou.github.io/posts/interviewnotes/new/java/2.java%E9%9B%86%E5%90%88/"><meta property="og:image" content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-26T00:00:00+00:00"><meta property="article:modified_time" content="2024-09-26T00:00:00+00:00"><meta property="og:site_name" content="RLTEA BLOG"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="2.Java集合"><meta name=twitter:description content="
+2.1 集合（容器）
+主要由两大借口派生而来：一个是Collection、一个是Map，而Collection下还有List、Set、Queue。
+
+List：存储的元素是有序的，可重复的
+Set：存储的元素是不可重复的
+Queue：存储元素有序、可重复，按照特定排队规则确定先后顺序
+Map：使用键值对存储，key无序、不可重复，value无序、可重复。
+
+2.2 集合框架底层数据结构
+
+List
+
+ArrayList：Objects数组
+Vector：Objects数组
+LinkedList：双向链表
+
+
+Set
+
+HashSet：基于HashMap实现
+LinkedHashSet：基于LinkedHashMap实现
+TreeSet：基于红黑树实现
+
+
+Queue
+
+PriorityQueue：Object数组实现的小顶堆
+DelayQueue：基于Priority实现
+ArrayDeque：可扩容双向数组
+
+
+Map
+
+HashMap：JDK1.8之前由数组+链表组成，JDK1.8后，链表长度大于8时，转换为红黑树。
+LinkedHashMap：继承自HashMap，底层与HashMap相同，不同的是增加了双向链表，使得上面的接口可以保持键值对插入的顺序。
+HashTable：数组+链表组成，链表主要为了解决Hash冲突
+TreeMap：红黑树
+
+
+"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://roaraeonliou.github.io/posts/"},{"@type":"ListItem","position":2,"name":"2.Java集合","item":"https://roaraeonliou.github.io/posts/interviewnotes/new/java/2.java%E9%9B%86%E5%90%88/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"2.Java集合","name":"2.Java集合","description":" 2.1 集合（容器） 主要由两大借口派生而来：一个是Collection、一个是Map，而Collection下还有List、Set、Queue。\nList：存储的元素是有序的，可重复的 Set：存储的元素是不可重复的 Queue：存储元素有序、可重复，按照特定排队规则确定先后顺序 Map：使用键值对存储，key无序、不可重复，value无序、可重复。 2.2 集合框架底层数据结构 List ArrayList：Objects数组 Vector：Objects数组 LinkedList：双向链表 Set HashSet：基于HashMap实现 LinkedHashSet：基于LinkedHashMap实现 TreeSet：基于红黑树实现 Queue PriorityQueue：Object数组实现的小顶堆 DelayQueue：基于Priority实现 ArrayDeque：可扩容双向数组 Map HashMap：JDK1.8之前由数组+链表组成，JDK1.8后，链表长度大于8时，转换为红黑树。 LinkedHashMap：继承自HashMap，底层与HashMap相同，不同的是增加了双向链表，使得上面的接口可以保持键值对插入的顺序。 HashTable：数组+链表组成，链表主要为了解决Hash冲突 TreeMap：红黑树 ","keywords":[],"articleBody":" 2.1 集合（容器） 主要由两大借口派生而来：一个是Collection、一个是Map，而Collection下还有List、Set、Queue。\nList：存储的元素是有序的，可重复的 Set：存储的元素是不可重复的 Queue：存储元素有序、可重复，按照特定排队规则确定先后顺序 Map：使用键值对存储，key无序、不可重复，value无序、可重复。 2.2 集合框架底层数据结构 List ArrayList：Objects数组 Vector：Objects数组 LinkedList：双向链表 Set HashSet：基于HashMap实现 LinkedHashSet：基于LinkedHashMap实现 TreeSet：基于红黑树实现 Queue PriorityQueue：Object数组实现的小顶堆 DelayQueue：基于Priority实现 ArrayDeque：可扩容双向数组 Map HashMap：JDK1.8之前由数组+链表组成，JDK1.8后，链表长度大于8时，转换为红黑树。 LinkedHashMap：继承自HashMap，底层与HashMap相同，不同的是增加了双向链表，使得上面的接口可以保持键值对插入的顺序。 HashTable：数组+链表组成，链表主要为了解决Hash冲突 TreeMap：红黑树 ","wordCount":"26","inLanguage":"en","image":"https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2024-09-26T00:00:00Z","dateModified":"2024-09-26T00:00:00Z","author":{"@type":"Person","name":"RLTEA"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://roaraeonliou.github.io/posts/interviewnotes/new/java/2.java%E9%9B%86%E5%90%88/"},"publisher":{"@type":"Organization","name":"RLTEA BLOG","logo":{"@type":"ImageObject","url":"https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E"}}}</script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["\\[","\\]"],["$$","$$"]],inlineMath:[["\\(","\\)"],["$","$"]]}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://roaraeonliou.github.io/ accesskey=h title="Home (Alt + H)"><img src=https://roaraeonliou.github.io/apple-touch-icon.png alt aria-label=logo height=35>Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://roaraeonliou.github.io/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://roaraeonliou.github.io/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://roaraeonliou.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://roaraeonliou.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://roaraeonliou.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://roaraeonliou.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">2.Java集合</h1><div class=post-meta><span title='2024-09-26 00:00:00 +0000 UTC'>September 26, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;26 words&nbsp;·&nbsp;RLTEA&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/InterviewNotes/new/Java/2.Java%e9%9b%86%e5%90%88.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><aside id=toc-container class="toc-container wide"><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#21-%e9%9b%86%e5%90%88%e5%ae%b9%e5%99%a8 aria-label="2.1 集合（容器）">2.1 集合（容器）</a></li><li><a href=#22-%e9%9b%86%e5%90%88%e6%a1%86%e6%9e%b6%e5%ba%95%e5%b1%82%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 aria-label="2.2 集合框架底层数据结构">2.2 集合框架底层数据结构</a></li></ul></div></details></div></aside><script>let activeElement,elements;window.addEventListener("DOMContentLoaded",function(){checkTocPosition(),elements=document.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]"),activeElement=elements[0];const t=encodeURI(activeElement.getAttribute("id")).toLowerCase();document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active")},!1),window.addEventListener("resize",function(){checkTocPosition()},!1),window.addEventListener("scroll",()=>{activeElement=Array.from(elements).find(e=>{if(getOffsetTop(e)-window.pageYOffset>0&&getOffsetTop(e)-window.pageYOffset<window.innerHeight/2)return e})||activeElement,elements.forEach(e=>{const t=encodeURI(e.getAttribute("id")).toLowerCase();e===activeElement?document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active"):document.querySelector(`.inner ul li a[href="#${t}"]`).classList.remove("active")})},!1);const main=parseInt(getComputedStyle(document.body).getPropertyValue("--article-width"),10),toc=parseInt(getComputedStyle(document.body).getPropertyValue("--toc-width"),10),gap=parseInt(getComputedStyle(document.body).getPropertyValue("--gap"),10);function checkTocPosition(){const e=document.body.scrollWidth;e-main-toc*2-gap*4>0?document.getElementById("toc-container").classList.add("wide"):document.getElementById("toc-container").classList.remove("wide")}function getOffsetTop(e){if(!e.getClientRects().length)return 0;let t=e.getBoundingClientRect(),n=e.ownerDocument.defaultView;return t.top+n.pageYOffset}</script><div class=post-content><h2 id=21-集合容器>2.1 集合（容器）<a hidden class=anchor aria-hidden=true href=#21-集合容器>#</a></h2><p>主要由两大借口派生而来：一个是Collection、一个是Map，而Collection下还有List、Set、Queue。</p><ul><li>List：存储的元素是有序的，可重复的</li><li>Set：存储的元素是不可重复的</li><li>Queue：存储元素有序、可重复，按照特定排队规则确定先后顺序</li><li>Map：使用键值对存储，key无序、不可重复，value无序、可重复。</li></ul><h2 id=22-集合框架底层数据结构>2.2 集合框架底层数据结构<a hidden class=anchor aria-hidden=true href=#22-集合框架底层数据结构>#</a></h2><ul><li>List<ul><li>ArrayList：Objects数组</li><li>Vector：Objects数组</li><li>LinkedList：双向链表</li></ul></li><li>Set<ul><li>HashSet：基于HashMap实现</li><li>LinkedHashSet：基于LinkedHashMap实现</li><li>TreeSet：基于红黑树实现</li></ul></li><li>Queue<ul><li>PriorityQueue：Object数组实现的小顶堆</li><li>DelayQueue：基于Priority实现</li><li>ArrayDeque：可扩容双向数组</li></ul></li><li>Map<ul><li>HashMap：JDK1.8之前由数组+链表组成，JDK1.8后，链表长度大于8时，转换为红黑树。</li><li>LinkedHashMap：继承自HashMap，底层与HashMap相同，不同的是增加了双向链表，使得上面的接口可以保持键值对插入的顺序。</li><li>HashTable：数组+链表组成，链表主要为了解决Hash冲突</li><li>TreeMap：红黑树</li></ul></li></ul></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/2.index/><span class=title>« Prev</span><br><span>2.Index</span>
+</a><a class=next href=https://roaraeonliou.github.io/posts/interviewnotes/new/java/3.juc/><span class=title>Next »</span><br><span>3.JUC</span></a></nav></footer><div id=comments><script src=https://giscus.app/client.js data-repo=RoaraeonLiou/roaraeonliou.github.io data-repo-id=R_kgDOMIxQ4w data-category=Announcements data-category-id=DIC_kwDOMIxQ484CgZUR data-mapping=title data-strict=1 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=preferred_color_scheme data-lang=zh-CN data-loading=lazy crossorigin=anonymous async></script></div></article></main><footer class=footer><span>&copy; 2024 <a href=https://roaraeonliou.github.io/>RLTEA BLOG</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

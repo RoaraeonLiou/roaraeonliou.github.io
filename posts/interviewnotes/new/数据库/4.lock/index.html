@@ -1,0 +1,148 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>4.Lock | RLTEA BLOG</title>
+<meta name=keywords content><meta name=description content="【！MyISAM不支持行级锁】
+4.1 锁的分类
+
+全局锁
+表级锁
+
+表锁
+元数据锁
+意向锁
+AUTO-INC锁
+
+
+行级锁
+
+Record Lock
+Gap Lock
+Next-Key Lock
+插入意向锁
+
+
+
+4.2 MySQL是怎么加锁的？
+4.2.1 什么SQL语句会加行级锁
+普通的select语句是不会对记录加锁的（除了串行化隔离级别），因为都属于快照读，是通过MVCC实现的。
+如果要在查询记录时加行级锁，可以使用：
+# S型锁
+SELECT ... LOCK IN SHARE MODE;
+# X型锁
+SELECT ... FOR UPDATE;
+上面这两句必须在一个事务中，因为当事务提交了，锁就会释放，所以使用这两条语句时，要加上begin或者start transaction。
+除上面这两句锁定读语句会加行级锁之外，update和delete操作都会加行级锁，并且所得类型都是独占锁（X型）。
+UPDATE TABLE ... WHERE ...;
+DELETE FROM TABLE WHERE ...
+共享锁之间读读共享，读写互斥。独占锁满足写写互斥，读写互斥。
+4.2.2 行级锁有哪些种类
+在读已提交隔离级别下，行级锁的种类只有记录锁。
+在可重复读隔离级别下，行级锁除了有记录锁，还有间隙锁（避免幻读）、临键锁。
+
+Record Lock，记录锁，仅对一条记录上锁；
+Gap Lock，间隙锁，锁定一个范围，但是不包括记录本身；
+Next-Key Lock，Record Lock + Gap Lock，锁定一恶搞范围，并且锁定记录本身。
+
+4.2.2.1 Record Lock
+记录锁有X锁和S锁之分。
+4.2.2.2 Gap Lock
+只存在于可重复度隔离级别，目的是为了解决可重复度隔离级别下幻读的现象。"><meta name=author content="RLTEA"><link rel=canonical href=https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/4.lock/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.258803b0f0cc9a4a109c6fe78a9d39f2e0437217d71c5c9848255af9250f2b1b.css integrity="sha256-JYgDsPDMmkoQnG/nip058uBDchfXHFyYSCVa+SUPKxs=" rel="preload stylesheet" as=style><link rel=icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/4.lock/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="4.Lock"><meta property="og:description" content="【！MyISAM不支持行级锁】
+4.1 锁的分类
+
+全局锁
+表级锁
+
+表锁
+元数据锁
+意向锁
+AUTO-INC锁
+
+
+行级锁
+
+Record Lock
+Gap Lock
+Next-Key Lock
+插入意向锁
+
+
+
+4.2 MySQL是怎么加锁的？
+4.2.1 什么SQL语句会加行级锁
+普通的select语句是不会对记录加锁的（除了串行化隔离级别），因为都属于快照读，是通过MVCC实现的。
+如果要在查询记录时加行级锁，可以使用：
+# S型锁
+SELECT ... LOCK IN SHARE MODE;
+# X型锁
+SELECT ... FOR UPDATE;
+上面这两句必须在一个事务中，因为当事务提交了，锁就会释放，所以使用这两条语句时，要加上begin或者start transaction。
+除上面这两句锁定读语句会加行级锁之外，update和delete操作都会加行级锁，并且所得类型都是独占锁（X型）。
+UPDATE TABLE ... WHERE ...;
+DELETE FROM TABLE WHERE ...
+共享锁之间读读共享，读写互斥。独占锁满足写写互斥，读写互斥。
+4.2.2 行级锁有哪些种类
+在读已提交隔离级别下，行级锁的种类只有记录锁。
+在可重复读隔离级别下，行级锁除了有记录锁，还有间隙锁（避免幻读）、临键锁。
+
+Record Lock，记录锁，仅对一条记录上锁；
+Gap Lock，间隙锁，锁定一个范围，但是不包括记录本身；
+Next-Key Lock，Record Lock + Gap Lock，锁定一恶搞范围，并且锁定记录本身。
+
+4.2.2.1 Record Lock
+记录锁有X锁和S锁之分。
+4.2.2.2 Gap Lock
+只存在于可重复度隔离级别，目的是为了解决可重复度隔离级别下幻读的现象。"><meta property="og:type" content="article"><meta property="og:url" content="https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/4.lock/"><meta property="og:image" content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-26T00:00:00+00:00"><meta property="article:modified_time" content="2024-09-26T00:00:00+00:00"><meta property="og:site_name" content="RLTEA BLOG"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="4.Lock"><meta name=twitter:description content="【！MyISAM不支持行级锁】
+4.1 锁的分类
+
+全局锁
+表级锁
+
+表锁
+元数据锁
+意向锁
+AUTO-INC锁
+
+
+行级锁
+
+Record Lock
+Gap Lock
+Next-Key Lock
+插入意向锁
+
+
+
+4.2 MySQL是怎么加锁的？
+4.2.1 什么SQL语句会加行级锁
+普通的select语句是不会对记录加锁的（除了串行化隔离级别），因为都属于快照读，是通过MVCC实现的。
+如果要在查询记录时加行级锁，可以使用：
+# S型锁
+SELECT ... LOCK IN SHARE MODE;
+# X型锁
+SELECT ... FOR UPDATE;
+上面这两句必须在一个事务中，因为当事务提交了，锁就会释放，所以使用这两条语句时，要加上begin或者start transaction。
+除上面这两句锁定读语句会加行级锁之外，update和delete操作都会加行级锁，并且所得类型都是独占锁（X型）。
+UPDATE TABLE ... WHERE ...;
+DELETE FROM TABLE WHERE ...
+共享锁之间读读共享，读写互斥。独占锁满足写写互斥，读写互斥。
+4.2.2 行级锁有哪些种类
+在读已提交隔离级别下，行级锁的种类只有记录锁。
+在可重复读隔离级别下，行级锁除了有记录锁，还有间隙锁（避免幻读）、临键锁。
+
+Record Lock，记录锁，仅对一条记录上锁；
+Gap Lock，间隙锁，锁定一个范围，但是不包括记录本身；
+Next-Key Lock，Record Lock + Gap Lock，锁定一恶搞范围，并且锁定记录本身。
+
+4.2.2.1 Record Lock
+记录锁有X锁和S锁之分。
+4.2.2.2 Gap Lock
+只存在于可重复度隔离级别，目的是为了解决可重复度隔离级别下幻读的现象。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://roaraeonliou.github.io/posts/"},{"@type":"ListItem","position":2,"name":"4.Lock","item":"https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/4.lock/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"4.Lock","name":"4.Lock","description":"【！MyISAM不支持行级锁】\n4.1 锁的分类 全局锁 表级锁 表锁 元数据锁 意向锁 AUTO-INC锁 行级锁 Record Lock Gap Lock Next-Key Lock 插入意向锁 4.2 MySQL是怎么加锁的？ 4.2.1 什么SQL语句会加行级锁 普通的select语句是不会对记录加锁的（除了串行化隔离级别），因为都属于快照读，是通过MVCC实现的。\n如果要在查询记录时加行级锁，可以使用：\n# S型锁 SELECT ... LOCK IN SHARE MODE; # X型锁 SELECT ... FOR UPDATE; 上面这两句必须在一个事务中，因为当事务提交了，锁就会释放，所以使用这两条语句时，要加上begin或者start transaction。\n除上面这两句锁定读语句会加行级锁之外，update和delete操作都会加行级锁，并且所得类型都是独占锁（X型）。\nUPDATE TABLE ... WHERE ...; DELETE FROM TABLE WHERE ... 共享锁之间读读共享，读写互斥。独占锁满足写写互斥，读写互斥。\n4.2.2 行级锁有哪些种类 在读已提交隔离级别下，行级锁的种类只有记录锁。\n在可重复读隔离级别下，行级锁除了有记录锁，还有间隙锁（避免幻读）、临键锁。\nRecord Lock，记录锁，仅对一条记录上锁； Gap Lock，间隙锁，锁定一个范围，但是不包括记录本身； Next-Key Lock，Record Lock + Gap Lock，锁定一恶搞范围，并且锁定记录本身。 4.2.2.1 Record Lock 记录锁有X锁和S锁之分。\n4.2.2.2 Gap Lock 只存在于可重复度隔离级别，目的是为了解决可重复度隔离级别下幻读的现象。\n","keywords":[],"articleBody":"【！MyISAM不支持行级锁】\n4.1 锁的分类 全局锁 表级锁 表锁 元数据锁 意向锁 AUTO-INC锁 行级锁 Record Lock Gap Lock Next-Key Lock 插入意向锁 4.2 MySQL是怎么加锁的？ 4.2.1 什么SQL语句会加行级锁 普通的select语句是不会对记录加锁的（除了串行化隔离级别），因为都属于快照读，是通过MVCC实现的。\n如果要在查询记录时加行级锁，可以使用：\n# S型锁 SELECT ... LOCK IN SHARE MODE; # X型锁 SELECT ... FOR UPDATE; 上面这两句必须在一个事务中，因为当事务提交了，锁就会释放，所以使用这两条语句时，要加上begin或者start transaction。\n除上面这两句锁定读语句会加行级锁之外，update和delete操作都会加行级锁，并且所得类型都是独占锁（X型）。\nUPDATE TABLE ... WHERE ...; DELETE FROM TABLE WHERE ... 共享锁之间读读共享，读写互斥。独占锁满足写写互斥，读写互斥。\n4.2.2 行级锁有哪些种类 在读已提交隔离级别下，行级锁的种类只有记录锁。\n在可重复读隔离级别下，行级锁除了有记录锁，还有间隙锁（避免幻读）、临键锁。\nRecord Lock，记录锁，仅对一条记录上锁； Gap Lock，间隙锁，锁定一个范围，但是不包括记录本身； Next-Key Lock，Record Lock + Gap Lock，锁定一恶搞范围，并且锁定记录本身。 4.2.2.1 Record Lock 记录锁有X锁和S锁之分。\n4.2.2.2 Gap Lock 只存在于可重复度隔离级别，目的是为了解决可重复度隔离级别下幻读的现象。\n间隙锁存在X锁和S锁之分，但是没有什么区别，间隙锁之间是兼容的，即两个事务可以同时包含共同间隙范围的间隙锁，并不存在互斥关系，因为间隙锁的目的是防止插入幻影记录而提出的。\n4.2.2.3 Next-Key Lock 临键锁，锁定一个范围，并且锁定记录本身。\n临键锁也有X锁和S锁之分，由于记录锁之间的X和S锁互不兼容，所以当一个事务获取了X型的临键锁时，另一个事务在获取相同范围的X型临键锁时就会被阻塞。\n4.2.3 MySQL时怎么加行级锁的 加锁的对象是索引，加锁的基本单位是next-key lock，是一个前开后闭的开区间。\n但是临键锁在一定场景下会退化为记录锁或者间隙锁。（在仅使用记录锁或者间隙锁就可以避免幻读的场景下，就会退化）。\n使用唯一索引进行等值查询时，「存在」退化为记录锁，「不存在」找到第一条大于该记录的记录后，退化为间隙锁。\n使用唯一索引进行范围查询时，会对每一个扫描到的索引加next-key锁，\n当「大于等于」范围查询时，如果等值查询的记录存在表中，那么该记录的索引中的next-key锁会退化为记录锁。 当「小于或小于等于」时，如果条件值的记录不存在表中，扫描到终止范围查询的记录时，该记录的临键锁退化为间隙锁，其他记录都是加临键锁。如果条件值的记录在表中，针对「小于」终止范围的记录的临键锁会退化为间隙锁，而「小于等于」不会退化。 使用非唯一索引等值查询\n因为存在两个索引，一个是主键索引，一个是非唯一索引（二级索引），所以在加锁时，同时会对这两个索引都加锁，但是对主键索引加锁的时候，只有满足查询条件的记录才会对它们的主键索引加锁。\n当查询记录「存在」时，由于不是唯一索引，所以肯定存在索引值相同的记录，于是非唯一索引等值查询的过程是一个扫描的过程，直到扫描到第一个不符合二级索引记录就停止扫描，然后在扫描过程中，对扫描到的二级索引加的是临键锁，对于第一个不符合条件的二级索引记录，会退化为间隙锁，同时在符合查询条件的记录的主键索引上加上记录锁。 当查询记录「不存在」时，扫描到第一条不符合条件的二级索引记录时，该二级索引的临键锁会退化为间隙锁，引文i不存在满足查询条件的记录，所以不会对主键索引加锁。 MySQL 是怎么加锁的？ | 小林coding (xiaolincoding.com)\n使用非唯一索引范围查询：非唯一索引范围查询，索引的 next-key lock 不会有退化为间隙锁和记录锁的情况。\n没有加索引的查询：\n如果锁定读查询语句，没有使用索引列作为查询条件，或者查询语句没有走索引查询，导致扫描是全表扫描。那么，每一条记录的索引上都会加 next-key 锁，这样就相当于锁住的全表，这时如果其他事务对该表进行增、删、改操作的时候，都会被阻塞。 在线上在执行 update、delete、select … for update 等具有加锁性质的语句，一定要检查语句是否走了索引，如果是全表扫描的话，会对每一个索引加 next-key 锁，相当于把整个表锁住了，这是挺严重的问题。 4.3 update没加索引会锁全表吗？ 在 update 语句的 where 条件没有使用索引，就会全表扫描，于是就会对所有记录加上 next-key 锁（记录锁 + 间隙锁），相当于把整个表锁住了。\n我们可以将 MySQL 里的 sql_safe_updates 参数设置为 1，开启安全更新模式。\nupdate 语句必须满足如下条件之一才能执行成功：\n使用 where，并且 where 条件中必须有索引列； 使用 limit； 同时使用 where 和 limit，此时 where 条件中可以没有索引列； delete 语句必须满足以下条件能执行成功：\n同时使用 where 和 limit，此时 where 条件中可以没有索引列； 如果 where 条件带上了索引列，但是优化器最终扫描选择的是全表，而不是索引的话，我们可以使用 force index([index_name]) 可以告诉优化器使用哪个索引，以此避免有几率锁全表带来的隐患。\n4.4 MySQL 记录锁+间隙锁可以防止删除操作而导致的幻读吗？ 可以\n4.5 MySQL死锁了怎么办 ","wordCount":"164","inLanguage":"en","image":"https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2024-09-26T00:00:00Z","dateModified":"2024-09-26T00:00:00Z","author":{"@type":"Person","name":"RLTEA"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/4.lock/"},"publisher":{"@type":"Organization","name":"RLTEA BLOG","logo":{"@type":"ImageObject","url":"https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E"}}}</script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["\\[","\\]"],["$$","$$"]],inlineMath:[["\\(","\\)"],["$","$"]]}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://roaraeonliou.github.io/ accesskey=h title="Home (Alt + H)"><img src=https://roaraeonliou.github.io/apple-touch-icon.png alt aria-label=logo height=35>Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://roaraeonliou.github.io/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://roaraeonliou.github.io/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://roaraeonliou.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://roaraeonliou.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://roaraeonliou.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://roaraeonliou.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">4.Lock</h1><div class=post-meta><span title='2024-09-26 00:00:00 +0000 UTC'>September 26, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;164 words&nbsp;·&nbsp;RLTEA&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/InterviewNotes/new/%e6%95%b0%e6%8d%ae%e5%ba%93/4.Lock.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><aside id=toc-container class="toc-container wide"><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#41-%e9%94%81%e7%9a%84%e5%88%86%e7%b1%bb aria-label="4.1 锁的分类">4.1 锁的分类</a></li><li><a href=#42-mysql%e6%98%af%e6%80%8e%e4%b9%88%e5%8a%a0%e9%94%81%e7%9a%84 aria-label="4.2 MySQL是怎么加锁的？">4.2 MySQL是怎么加锁的？</a><ul><ul><li><a href=#421-%e4%bb%80%e4%b9%88sql%e8%af%ad%e5%8f%a5%e4%bc%9a%e5%8a%a0%e8%a1%8c%e7%ba%a7%e9%94%81 aria-label="4.2.1 什么SQL语句会加行级锁">4.2.1 什么SQL语句会加行级锁</a></li><li><a href=#422-%e8%a1%8c%e7%ba%a7%e9%94%81%e6%9c%89%e5%93%aa%e4%ba%9b%e7%a7%8d%e7%b1%bb aria-label="4.2.2 行级锁有哪些种类">4.2.2 行级锁有哪些种类</a><ul><li><a href=#4221-record-lock aria-label="4.2.2.1 Record Lock">4.2.2.1 Record Lock</a></li><li><a href=#4222-gap-lock aria-label="4.2.2.2 Gap Lock">4.2.2.2 Gap Lock</a></li><li><a href=#4223-next-key-lock aria-label="4.2.2.3 Next-Key Lock">4.2.2.3 Next-Key Lock</a></li></ul></li><li><a href=#423-mysql%e6%97%b6%e6%80%8e%e4%b9%88%e5%8a%a0%e8%a1%8c%e7%ba%a7%e9%94%81%e7%9a%84 aria-label="4.2.3 MySQL时怎么加行级锁的">4.2.3 MySQL时怎么加行级锁的</a></li></ul></ul></li><li><a href=#43-update%e6%b2%a1%e5%8a%a0%e7%b4%a2%e5%bc%95%e4%bc%9a%e9%94%81%e5%85%a8%e8%a1%a8%e5%90%97 aria-label="4.3 update没加索引会锁全表吗？">4.3 update没加索引会锁全表吗？</a></li><li><a href=#44-mysql-%e8%ae%b0%e5%bd%95%e9%94%81%e9%97%b4%e9%9a%99%e9%94%81%e5%8f%af%e4%bb%a5%e9%98%b2%e6%ad%a2%e5%88%a0%e9%99%a4%e6%93%8d%e4%bd%9c%e8%80%8c%e5%af%bc%e8%87%b4%e7%9a%84%e5%b9%bb%e8%af%bb%e5%90%97 aria-label="4.4 MySQL 记录锁+间隙锁可以防止删除操作而导致的幻读吗？">4.4 MySQL 记录锁+间隙锁可以防止删除操作而导致的幻读吗？</a></li><li><a href=#45-mysql%e6%ad%bb%e9%94%81%e4%ba%86%e6%80%8e%e4%b9%88%e5%8a%9e aria-label="4.5 MySQL死锁了怎么办">4.5 MySQL死锁了怎么办</a></li></ul></div></details></div></aside><script>let activeElement,elements;window.addEventListener("DOMContentLoaded",function(){checkTocPosition(),elements=document.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]"),activeElement=elements[0];const t=encodeURI(activeElement.getAttribute("id")).toLowerCase();document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active")},!1),window.addEventListener("resize",function(){checkTocPosition()},!1),window.addEventListener("scroll",()=>{activeElement=Array.from(elements).find(e=>{if(getOffsetTop(e)-window.pageYOffset>0&&getOffsetTop(e)-window.pageYOffset<window.innerHeight/2)return e})||activeElement,elements.forEach(e=>{const t=encodeURI(e.getAttribute("id")).toLowerCase();e===activeElement?document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active"):document.querySelector(`.inner ul li a[href="#${t}"]`).classList.remove("active")})},!1);const main=parseInt(getComputedStyle(document.body).getPropertyValue("--article-width"),10),toc=parseInt(getComputedStyle(document.body).getPropertyValue("--toc-width"),10),gap=parseInt(getComputedStyle(document.body).getPropertyValue("--gap"),10);function checkTocPosition(){const e=document.body.scrollWidth;e-main-toc*2-gap*4>0?document.getElementById("toc-container").classList.add("wide"):document.getElementById("toc-container").classList.remove("wide")}function getOffsetTop(e){if(!e.getClientRects().length)return 0;let t=e.getBoundingClientRect(),n=e.ownerDocument.defaultView;return t.top+n.pageYOffset}</script><div class=post-content><p>【！MyISAM不支持行级锁】</p><h2 id=41-锁的分类>4.1 锁的分类<a hidden class=anchor aria-hidden=true href=#41-锁的分类>#</a></h2><ul><li>全局锁</li><li>表级锁<ul><li>表锁</li><li>元数据锁</li><li>意向锁</li><li>AUTO-INC锁</li></ul></li><li>行级锁<ul><li>Record Lock</li><li>Gap Lock</li><li>Next-Key Lock</li><li>插入意向锁</li></ul></li></ul><h2 id=42-mysql是怎么加锁的>4.2 MySQL是怎么加锁的？<a hidden class=anchor aria-hidden=true href=#42-mysql是怎么加锁的>#</a></h2><h4 id=421-什么sql语句会加行级锁>4.2.1 什么SQL语句会加行级锁<a hidden class=anchor aria-hidden=true href=#421-什么sql语句会加行级锁>#</a></h4><p>普通的select语句是不会对记录加锁的（除了串行化隔离级别），因为都属于快照读，是通过MVCC实现的。</p><p>如果要在查询记录时加行级锁，可以使用：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-SQL data-lang=SQL><span class=line><span class=cl><span class=o>#</span><span class=w> </span><span class=n>S型锁</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>SELECT</span><span class=w> </span><span class=p>...</span><span class=w> </span><span class=k>LOCK</span><span class=w> </span><span class=k>IN</span><span class=w> </span><span class=k>SHARE</span><span class=w> </span><span class=k>MODE</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>#</span><span class=w> </span><span class=n>X型锁</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>SELECT</span><span class=w> </span><span class=p>...</span><span class=w> </span><span class=k>FOR</span><span class=w> </span><span class=k>UPDATE</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></div><p>上面这两句必须在一个事务中，<strong>因为当事务提交了，锁就会释放</strong>，所以使用这两条语句时，要加上begin或者start transaction。</p><p>除上面这两句锁定读语句会加行级锁之外，update和delete操作都会加行级锁，并且所得类型都是独占锁（X型）。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-SQL data-lang=SQL><span class=line><span class=cl><span class=k>UPDATE</span><span class=w> </span><span class=k>TABLE</span><span class=w> </span><span class=p>...</span><span class=w> </span><span class=k>WHERE</span><span class=w> </span><span class=p>...;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>DELETE</span><span class=w> </span><span class=k>FROM</span><span class=w> </span><span class=k>TABLE</span><span class=w> </span><span class=k>WHERE</span><span class=w> </span><span class=p>...</span><span class=w>
+</span></span></span></code></pre></div><p>共享锁之间读读共享，读写互斥。独占锁满足写写互斥，读写互斥。</p><h4 id=422-行级锁有哪些种类>4.2.2 行级锁有哪些种类<a hidden class=anchor aria-hidden=true href=#422-行级锁有哪些种类>#</a></h4><p>在读已提交隔离级别下，行级锁的种类只有记录锁。</p><p>在可重复读隔离级别下，行级锁除了有记录锁，还有间隙锁（避免幻读）、临键锁。</p><ul><li>Record Lock，记录锁，仅对一条记录上锁；</li><li>Gap Lock，间隙锁，锁定一个范围，但是不包括记录本身；</li><li>Next-Key Lock，Record Lock + Gap Lock，锁定一恶搞范围，并且锁定记录本身。</li></ul><h5 id=4221-record-lock>4.2.2.1 Record Lock<a hidden class=anchor aria-hidden=true href=#4221-record-lock>#</a></h5><p>记录锁有X锁和S锁之分。</p><h5 id=4222-gap-lock>4.2.2.2 Gap Lock<a hidden class=anchor aria-hidden=true href=#4222-gap-lock>#</a></h5><p>只存在于可重复度隔离级别，目的是为了解决可重复度隔离级别下幻读的现象。</p><p>间隙锁存在X锁和S锁之分，但是没有什么区别，间隙锁之间是兼容的，即两个事务可以同时包含共同间隙范围的间隙锁，并不存在互斥关系，因为间隙锁的目的是防止插入幻影记录而提出的。</p><h5 id=4223-next-key-lock>4.2.2.3 Next-Key Lock<a hidden class=anchor aria-hidden=true href=#4223-next-key-lock>#</a></h5><p>临键锁，锁定一个范围，并且锁定记录本身。</p><p>临键锁也有X锁和S锁之分，由于记录锁之间的X和S锁互不兼容，所以当一个事务获取了X型的临键锁时，另一个事务在获取相同范围的X型临键锁时就会被阻塞。</p><h4 id=423-mysql时怎么加行级锁的>4.2.3 MySQL时怎么加行级锁的<a hidden class=anchor aria-hidden=true href=#423-mysql时怎么加行级锁的>#</a></h4><p><strong>加锁的对象是索引</strong>，加锁的基本单位是next-key lock，是一个前开后闭的开区间。</p><p>但是临键锁在一定场景下会退化为记录锁或者间隙锁。（在仅使用记录锁或者间隙锁就可以避免幻读的场景下，就会退化）。</p><ul><li><p>使用唯一索引进行等值查询时，「存在」退化为记录锁，「不存在」找到第一条大于该记录的记录后，退化为间隙锁。</p></li><li><p>使用唯一索引进行范围查询时，会对每一个扫描到的索引加next-key锁，</p><ul><li>当「大于等于」范围查询时，如果等值查询的记录存在表中，那么该记录的索引中的next-key锁会退化为记录锁。</li><li>当「小于或小于等于」时，如果条件值的记录不存在表中，扫描到终止范围查询的记录时，该记录的临键锁退化为间隙锁，其他记录都是加临键锁。如果条件值的记录在表中，针对「小于」终止范围的记录的临键锁会退化为间隙锁，而「小于等于」不会退化。</li></ul></li><li><p>使用非唯一索引等值查询</p><p><strong>因为存在两个索引，一个是主键索引，一个是非唯一索引（二级索引），所以在加锁时，同时会对这两个索引都加锁，但是对主键索引加锁的时候，只有满足查询条件的记录才会对它们的主键索引加锁</strong>。</p><ul><li>当查询记录「存在」时，由于不是唯一索引，所以肯定存在索引值相同的记录，于是非唯一索引等值查询的过程是一个扫描的过程，直到扫描到第一个不符合二级索引记录就停止扫描，然后在扫描过程中，对扫描到的二级索引加的是临键锁，对于第一个不符合条件的二级索引记录，会退化为间隙锁，同时在符合查询条件的记录的主键索引上加上记录锁。</li><li>当查询记录「不存在」时，扫描到第一条不符合条件的二级索引记录时，该二级索引的临键锁会退化为间隙锁，引文i不存在满足查询条件的记录，所以不会对主键索引加锁。</li></ul><p><a href=https://xiaolincoding.com/mysql/lock/how_to_lock.html#%E9%9D%9E%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E7%AD%89%E5%80%BC%E6%9F%A5%E8%AF%A2>MySQL 是怎么加锁的？ | 小林coding (xiaolincoding.com)</a></p></li><li><p>使用非唯一索引范围查询：<strong>非唯一索引范围查询，索引的 next-key lock 不会有退化为间隙锁和记录锁的情况</strong>。</p></li><li><p>没有加索引的查询：</p><ul><li><strong>如果锁定读查询语句，没有使用索引列作为查询条件，或者查询语句没有走索引查询，导致扫描是全表扫描。那么，每一条记录的索引上都会加 next-key 锁，这样就相当于锁住的全表，这时如果其他事务对该表进行增、删、改操作的时候，都会被阻塞</strong>。</li><li><strong>在线上在执行 update、delete、select &mldr; for update 等具有加锁性质的语句，一定要检查语句是否走了索引，如果是全表扫描的话，会对每一个索引加 next-key 锁，相当于把整个表锁住了</strong>，这是挺严重的问题。</li></ul></li></ul><h2 id=43-update没加索引会锁全表吗>4.3 update没加索引会锁全表吗？<a hidden class=anchor aria-hidden=true href=#43-update没加索引会锁全表吗>#</a></h2><p><strong>在 update 语句的 where 条件没有使用索引，就会全表扫描，于是就会对所有记录加上 next-key 锁（记录锁 + 间隙锁），相当于把整个表锁住了</strong>。</p><p>我们可以将 MySQL 里的 <code>sql_safe_updates</code> 参数设置为 1，开启安全更新模式。</p><p>update 语句必须满足如下条件之一才能执行成功：</p><ul><li>使用 where，并且 where 条件中必须有索引列；</li><li>使用 limit；</li><li>同时使用 where 和 limit，此时 where 条件中可以没有索引列；</li></ul><p>delete 语句必须满足以下条件能执行成功：</p><ul><li>同时使用 where 和 limit，此时 where 条件中可以没有索引列；</li></ul><p>如果 where 条件带上了索引列，但是优化器最终扫描选择的是全表，而不是索引的话，我们可以使用 <code>force index([index_name])</code> 可以告诉优化器使用哪个索引，以此避免有几率锁全表带来的隐患。</p><h2 id=44-mysql-记录锁间隙锁可以防止删除操作而导致的幻读吗>4.4 MySQL 记录锁+间隙锁可以防止删除操作而导致的幻读吗？<a hidden class=anchor aria-hidden=true href=#44-mysql-记录锁间隙锁可以防止删除操作而导致的幻读吗>#</a></h2><p>可以</p><h2 id=45-mysql死锁了怎么办>4.5 MySQL死锁了怎么办<a hidden class=anchor aria-hidden=true href=#45-mysql死锁了怎么办>#</a></h2></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://roaraeonliou.github.io/posts/interviewnotes/new/java/4.jvm/><span class=title>« Prev</span><br><span>4.JVM</span>
+</a><a class=next href=https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/5.log/><span class=title>Next »</span><br><span>5.Log</span></a></nav></footer><div id=comments><script src=https://giscus.app/client.js data-repo=RoaraeonLiou/roaraeonliou.github.io data-repo-id=R_kgDOMIxQ4w data-category=Announcements data-category-id=DIC_kwDOMIxQ484CgZUR data-mapping=title data-strict=1 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=preferred_color_scheme data-lang=zh-CN data-loading=lazy crossorigin=anonymous async></script></div></article></main><footer class=footer><span>&copy; 2024 <a href=https://roaraeonliou.github.io/>RLTEA BLOG</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

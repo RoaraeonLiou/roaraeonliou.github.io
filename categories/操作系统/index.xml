@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>操作系统 on RLTEA BLOG</title>
+    <link>https://roaraeonliou.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+    <description>Recent content in 操作系统 on RLTEA BLOG</description>
+    <image>
+      <title>RLTEA BLOG</title>
+      <url>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.134.3</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 26 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://roaraeonliou.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>操作系统</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/operatingsystem/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/operatingsystem/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
+      <description>&lt;h1 id=&#34;操作系统&#34;&gt;操作系统&lt;/h1&gt;
+&lt;h1 id=&#34;1-基础概念&#34;&gt;1 基础概念&lt;/h1&gt;
+&lt;h2 id=&#34;11-操作系统功能&#34;&gt;1.1 操作系统功能&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;**进程和线程管理：**进程的创建、撤销、阻塞、唤醒，进程间的通信。&lt;/li&gt;
+&lt;li&gt;**存储管理：**内存的分配和管理、外存（磁盘）的分配和管理。&lt;/li&gt;
+&lt;li&gt;**文件管理：**文件的读写、创建及删除。&lt;/li&gt;
+&lt;li&gt;**设备管理：**完成设备的请求或释放，以及设备的启动等功能。&lt;/li&gt;
+&lt;li&gt;**网络管理：**操作系统负责管理计算机网络的使用，管理网络的配置、连接、通信、安全等。&lt;/li&gt;
+&lt;li&gt;**安全管理：**用户身份认证，访问控制、文件加密等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;12-用户态和内核态&#34;&gt;1.2 用户态和内核态&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;用户态(User Mode)&lt;/strong&gt; : 用户态运行的进程可以直接读取用户程序的数据，拥有较低的权限。当应用程序需要执行某些需要特殊权限的操作，例如读写磁盘、网络通信等，就需要向操作系统发起系统调用请求，进入内核态。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;内核态(Kernel Mode)&lt;/strong&gt;：内核态运行的进程几乎可以访问计算机的任何资源包括系统的内存空间、设备、驱动程序等，不受限制，拥有非常高的权限。当操作系统接收到进程的系统调用请求时，就会从用户态切换到内核态，执行相应的系统调用，并将结果返回给进程，最后再从内核态切换回用户态。&lt;/p&gt;
+&lt;p&gt;内核态相比用户态拥有更高的特权级别，因此能够执行更底层、更敏感的操作。不过，由于进入内核态需要付出较高的开销（需要进行一系列的上下文切换和权限检查），应该尽量减少进入内核态的次数，以提高系统的性能和稳定性。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;用户态和内核态的切换：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;系统调用：用户态进程主动切换&lt;/li&gt;
+&lt;li&gt;中断：当外围设备完成用户请求的操作后，会向 CPU 发出相应的中断信号，这时 CPU 会暂停执行下一条即将要执行的指令转而去执行与中断信号对应的处理程序，如果先前执行的指令是用户态下的程序，那么这个转换的过程自然也就发生了由用户态到内核态的切换。比如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后续操作等。&lt;/li&gt;
+&lt;li&gt;异常：当 CPU 在执行运行在用户态下的程序时，发生了某些事先不可知的异常，这时会触发由当前运行进程切换到处理此异常的内核相关程序中，也就转到了内核态，比如缺页异常。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在系统的处理上，中断和异常类似，都是通过中断向量表来找到相应的处理程序进行处理。区别在于，中断来自处理器外部，不是由任何一条专门的指令造成，而异常是执行当前指令的结果。&lt;/p&gt;
+&lt;h2 id=&#34;13-系统调用&#34;&gt;1.3 系统调用&lt;/h2&gt;
+&lt;p&gt;我们运行的用户程序中，凡是与系统态级别的资源有关的操作（如文件管理、进程控制、内存管理等)，都必须通过系统调用方式向操作系统提出服务请求，并由操作系统代为完成。&lt;/p&gt;
+&lt;p&gt;系统调用和普通库函数调用非常相似，只是系统调用由操作系统内核提供，运行于内核态，而普通的库函数调用由函数库或用户自己提供，运行于用户态。&lt;/p&gt;
+&lt;h4 id=&#34;系统调用过程&#34;&gt;系统调用过程：&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;用户态发起系统调用，用户态权限不足，中断执行（Trap）&lt;/li&gt;
+&lt;li&gt;CPU执行的程序终端，跳转到终端处理程序，内核程序开始执行。&lt;/li&gt;
+&lt;li&gt;内核处理后，主动出发Trap，再次发生中断，切换回用户态工作。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;2-进程和线程&#34;&gt;2 进程和线程&lt;/h1&gt;
+&lt;h2 id=&#34;21-进程&#34;&gt;2.1 进程&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;进程（Process）&lt;/strong&gt; 是指计算机中正在运行的一个程序实例。资源分配的基本单位。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;PCB是什么？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;PCB（Process Control Block）&lt;/strong&gt; 即进程控制块，是操作系统中用来管理和跟踪进程的数据结构，每个进程都对应着一个独立的 PCB。你可以将 PCB 视为进程的大脑。&lt;/p&gt;
+&lt;p&gt;当操作系统创建一个新进程时，会为该进程分配一个唯一的进程 ID，并且为该进程创建一个对应的进程控制块。当进程执行时，PCB 中的信息会不断变化，操作系统会根据这些信息来管理和调度进程。&lt;/p&gt;
+&lt;p&gt;PCB 主要包含下面几部分的内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;进程的描述信息，包括进程的名称、标识符等等；&lt;/li&gt;
+&lt;li&gt;进程的调度信息，包括进程阻塞原因、进程状态（就绪、运行、阻塞等）、进程优先级（标识进程的重要程度）等等；&lt;/li&gt;
+&lt;li&gt;进程对资源的需求情况，包括 CPU 时间、内存空间、I/O 设备等等。&lt;/li&gt;
+&lt;li&gt;进程打开的文件信息，包括文件描述符、文件类型、打开模式等等。&lt;/li&gt;
+&lt;li&gt;处理机的状态信息（由处理机的各种寄存器中的内容组成的），包括通用寄存器、指令计数器、程序状态字 PSW、用户栈指针。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;进程有哪些状态？（生命周期）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/e147111c697de62856441ac85445b9a5/66fd0c5bd362da4e1f0561ec486ab4a0.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>操作系统-面试重点问题</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/operatingsystem/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E9%9D%A2%E8%AF%95%E9%87%8D%E7%82%B9%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/operatingsystem/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E9%9D%A2%E8%AF%95%E9%87%8D%E7%82%B9%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;h1 id=&#34;操作系统-面试重点问题&#34;&gt;操作系统-面试重点问题&lt;/h1&gt;</description>
+    </item>
+  </channel>
+</rss>

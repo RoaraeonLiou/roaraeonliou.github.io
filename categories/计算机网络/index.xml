@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>计算机网络 on RLTEA BLOG</title>
+    <link>https://roaraeonliou.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 计算机网络 on RLTEA BLOG</description>
+    <image>
+      <title>RLTEA BLOG</title>
+      <url>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.134.3</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 26 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://roaraeonliou.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>计算机网络</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/networks/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/networks/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</guid>
+      <description>&lt;h1 id=&#34;计算机网络&#34;&gt;计算机网络&lt;/h1&gt;
+&lt;h1 id=&#34;1-分层模型&#34;&gt;1 分层模型&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;OSI七层模型：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/76dc9725b7bfb139393871234d619c6c/4678df4aa40bd122affa3ea51dd59b09.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;口诀：&lt;strong&gt;物联网书会使用&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;优点：概念结构清楚，理论完整&lt;/li&gt;
+&lt;li&gt;缺点：复杂不实用、某些功能在多个层中重复出现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;TCP/IP四层模型：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/76dc9725b7bfb139393871234d619c6c/6899e058ede579c02b961b0321f67565.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为什么要分层？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使得各层之间独立。&lt;/li&gt;
+&lt;li&gt;提高灵活性和可替换性（高内聚低耦合）。&lt;/li&gt;
+&lt;li&gt;大问题化小，复杂问题分解。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;2-常见网络协议&#34;&gt;2 常见网络协议&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;应用层：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HTTP&lt;/li&gt;
+&lt;li&gt;SMTP&lt;/li&gt;
+&lt;li&gt;POP3/IMAP&lt;/li&gt;
+&lt;li&gt;FTP&lt;/li&gt;
+&lt;li&gt;Telnet&lt;/li&gt;
+&lt;li&gt;SSH&lt;/li&gt;
+&lt;li&gt;RTP&lt;/li&gt;
+&lt;li&gt;DNS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;传输层：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TCP&lt;/li&gt;
+&lt;li&gt;UDP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;网络层：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IP&lt;/li&gt;
+&lt;li&gt;ARP&lt;/li&gt;
+&lt;li&gt;ICMP&lt;/li&gt;
+&lt;li&gt;NAT&lt;/li&gt;
+&lt;li&gt;OSFP&lt;/li&gt;
+&lt;li&gt;RIP&lt;/li&gt;
+&lt;li&gt;BGP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;3-http&#34;&gt;3 HTTP&lt;/h1&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/76dc9725b7bfb139393871234d619c6c/d32d5c681e7549dee4d3dbb4173d3c65.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;31-从输入url到页面展示发生了什么&#34;&gt;3.1 从输入URL到页面展示发生了什么？&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;过程：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;用户输入URL。&lt;/li&gt;
+&lt;li&gt;浏览器查找域名IP地址（通过DNS：浏览器缓存、路由器缓存、DNS缓存）。&lt;/li&gt;
+&lt;li&gt;浏览器根据IP地址和端口号，向目标服务器发起TCP连接请求。&lt;/li&gt;
+&lt;li&gt;浏览器与服务器建立TCP连接，并发送HTTP请求报文。&lt;/li&gt;
+&lt;li&gt;服务器收到报文进行处理请求，并返回HTTP响应报文给浏览器。&lt;/li&gt;
+&lt;li&gt;浏览器收到HTTP响应报文后，解析响应体中的内容，并进行网页渲染，同时根据HTML中其他资源URL再次发起HTTP请求，直到网页完全加载显示。&lt;/li&gt;
+&lt;li&gt;浏览器在不需要和服务器通信时，可主动关闭TCP连接，或者等待服务器关闭请求。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;使用到的协议：DNS、TCP、IP、OPSF、ARP、HTTP&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;32-http和https的区别&#34;&gt;3.2 HTTP和HTTPS的区别&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;URL前缀不同（http和https）&lt;/li&gt;
+&lt;li&gt;端口号不同（80和443）&lt;/li&gt;
+&lt;li&gt;安全性，HTTPS大于HTTP&lt;/li&gt;
+&lt;li&gt;资源消耗：HTTP优于HTTPS&lt;/li&gt;
+&lt;li&gt;SEO搜索引擎优化：优先显示HTTPS网页&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;::HTTPS中的S如何实现？::&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;33-http10和http11区别&#34;&gt;3.3 HTTP/1.0和HTTP/1.1区别&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;1.1实现了长连接&lt;/li&gt;
+&lt;li&gt;1.1加入了大量状态码&lt;/li&gt;
+&lt;li&gt;1.1有更多的缓存控制机制&lt;/li&gt;
+&lt;li&gt;1.1支持断点续传&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;34-http11和http20区别&#34;&gt;3.4 HTTP/1.1和HTTP/2.0区别&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;2.0实现了多路复用&lt;/li&gt;
+&lt;li&gt;2.0使用二进制帧传输（1.1使用文本格式报文）&lt;/li&gt;
+&lt;li&gt;2.0支持对头部压缩（1.1仅 支持对body压缩）&lt;/li&gt;
+&lt;li&gt;2.0支持服务器推送，可以减少客户端请求次数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;35-http20和http30区别&#34;&gt;3.5 HTTP/2.0和HTTP/3.0区别&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;传输协议&lt;/strong&gt;：3.0基于QUIC（UDP升级版），提供与TLS/SSL相当的安全性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;连接建立&lt;/strong&gt;：2.0需要经过TCP三次握手外加一个TLS安全握手，需约3个RTT；而3.0由于QUIC的特性，仅需要0个或1个RTT。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;队头阻塞&lt;/strong&gt;：2.0复用一个TCP连接，一旦包丢失，会阻塞所有HTTP请求。3.0一个连接有多个不同的数据流，互不影响。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;错误恢复&lt;/strong&gt;：3.0具有更快的恢复和重传机制，2.0需要依赖于TCP的错误恢复机制。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全加密&lt;/strong&gt;：2.0使用TLS协议进行加密，3.0基于QUIC协议，内置加密和身份验证机制，可以提供更强的安全性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;36-http是不保存状态的协议那么如何保存用户状态&#34;&gt;3.6 HTTP是不保存状态的协议，那么如何保存用户状态？&lt;/h2&gt;
+&lt;p&gt;Session机制：通过服务端记录用户状态，时间限制到后销毁Session&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>计算机网络基础</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/new/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/new/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</guid>
+      <description>&lt;h2 id=&#34;1-tcpip网络模型&#34;&gt;1 TCP/IP网络模型&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;应用层：工作在用户态，有HTTP、FTP、Telnet、DNS、SMTP协议。&lt;/li&gt;
+&lt;li&gt;传输层：为应用层提供网络支持作用，有TCP和UDP协议。&lt;/li&gt;
+&lt;li&gt;网络层：负责实际的传输工作，将数据从一个设备传输到另一个设备，有IP协议等。&lt;/li&gt;
+&lt;li&gt;网络接口层：为网络层提供**“链路级别”**的传输服务，负责在以太网、Wifi这样的底层网络上发送原始数据包，工作在网卡这个层次，使用MAC地址标识网络上的设备。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;网络接口层的传输单位是帧（frame），IP 层的传输单位是包（packet），TCP 层的传输单位是段（segment），HTTP 的传输单位则是消息或报文（message）。但这些名词并没有什么本质的区分，可以统称为数据包。&lt;/p&gt;
+&lt;h2 id=&#34;2-从键入网址到网页显示期间发生了什么&#34;&gt;2 从键入网址到网页显示，期间发生了什么？&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器解析URL，生成HTTP请求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过DNS查询真实地址：浏览器先查看自身缓存，然后询问操作系统，操作系统查看自身缓存，然后查看hosts文件，最后询问本地DNS服务器。DNS有轮询和递归两种访问策略，DNS客户端和本地服务器之间是递归策略，而本地服务器和其他DNS服务器之间是迭代轮询。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将HTTP数据报文的传输工作交给操作协调的协议栈。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;应用程序调用socket库，委托协议栈工作。&lt;/li&gt;
+&lt;li&gt;协议栈的上半部分有两块，分别是负责收发数据的 TCP 和 UDP 协议，这两个传输协议会接受应用层的委托执行收发数据的操作。&lt;/li&gt;
+&lt;li&gt;协议栈的下面一半是用 IP 协议控制网络包收发操作，在互联网上传数据时，数据会被切分成一块块的网络包，而将网络包发送给对方的操作就是由 IP 负责的。
+&lt;ul&gt;
+&lt;li&gt;此外 IP 中还包括 &lt;code&gt;ICMP&lt;/code&gt; 协议和 &lt;code&gt;ARP&lt;/code&gt; 协议。
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ICMP&lt;/code&gt; 用于告知网络包传送过程中产生的错误以及各种控制信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ARP&lt;/code&gt; 用于根据 IP 地址查询相应的以太网 MAC 地址。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;IP 下面的网卡驱动程序负责控制网卡硬件，而最下面的网卡则负责完成实际的收发操作，也就是对网线中的信号执行发送和接收操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过网卡传输二进制数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;交换机和路由器转发数据包&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;服务端层层拆包&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;返回响应走相同流程，浏览器收到响应后渲染页面&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

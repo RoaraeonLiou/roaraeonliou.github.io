@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>MySQL on RLTEA BLOG</title>
+    <link>https://roaraeonliou.github.io/tags/mysql/</link>
+    <description>Recent content in MySQL on RLTEA BLOG</description>
+    <image>
+      <title>RLTEA BLOG</title>
+      <url>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.134.3</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 26 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://roaraeonliou.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql/</guid>
+      <description>&lt;h1 id=&#34;mysql&#34;&gt;MySQL&lt;/h1&gt;
+&lt;h1 id=&#34;0-参考资料&#34;&gt;0 参考资料&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1Kr4y1i7ru/?spm_id_from=..search-card.all.click&amp;vd_source=5e81fa8ad2645ace69cd01959323966a&#34;&gt;黑马程序员 MySQL数据库入门到精通&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://xiaolincoding.com/mysql/&#34;&gt;图解MySQL介绍&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://cyc2018.xyz/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL.html&#34;&gt;MySQL | CS-Notes 面试笔记&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://javaxiaobear.gitee.io/interview/database/MySQL.html&#34;&gt;MySQL面试题&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://javaguide.cn/database/mysql/mysql-questions-01.html&#34;&gt;MySQL常见面试题总结&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;sql语句&#34;&gt;SQL语句&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;通用语法&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;分号结尾，可多行书写&lt;/li&gt;
+&lt;li&gt;不区分大小写&lt;/li&gt;
+&lt;li&gt;注释采用&amp;ndash;、#、/**/&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;分类&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DDL(Data Defination Language): 数据定义语言，用来定义数据库对象（数据库，表，字段）。&lt;/li&gt;
+&lt;li&gt;DML(Data Manipulation Language): 数据操作语言，用来对数据库表中数据进行增删改&lt;/li&gt;
+&lt;li&gt;DQL(Data Query Language): 数据查询语言，用来查询数据库中表的记录。&lt;/li&gt;
+&lt;li&gt;DCL(Data Control Language): 数据控制语言，用来创建数据库用户、控制数据库访问权限。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-存储引擎&#34;&gt;1 存储引擎&lt;/h1&gt;
+&lt;h2 id=&#34;11-mysql体系结构&#34;&gt;1.1 MySQL体系结构&lt;/h2&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/8902f52da9b4b274ad3ad679b8511f83/f4822db8f9705fab785634d3ac601991.png&#34; alt=&#34;Image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;连接层：负责连接处理、授权认证，以及相关的安全服务。&lt;/li&gt;
+&lt;li&gt;服务层：提供SQL借口，完成缓存查询，SQL的分析和优化，部分内置函数的执行，跨存储引擎功能的实现（过程、函数等）。&lt;/li&gt;
+&lt;li&gt;引擎层：负责数据的存储和提取，服务层通过API和存储引擎通话，不同存储引擎有不同功能。&lt;/li&gt;
+&lt;li&gt;存储层：将数据存储在文件系统上，完成于存储引擎的交互。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;12-存储引擎特点&#34;&gt;1.2 存储引擎特点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;InnoDB：支持事务、支持行级锁、支持外键。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/8902f52da9b4b274ad3ad679b8511f83/26046ad23edd04f201444848547f2144.png&#34; alt=&#34;Image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MyISAM：不支持事务，支持表级锁，访问速度快。&lt;/li&gt;
+&lt;li&gt;Memory：数据存放在内存，访问速度快，支持Hash索引。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/8902f52da9b4b274ad3ad679b8511f83/be023fe4bda50e39530523b598205618.png&#34; alt=&#34;Image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;h1 id=&#34;2-索引&#34;&gt;2 索引&lt;/h1&gt;
+&lt;p&gt;索引是帮助MySql高效获取数据的数据结构。&lt;/p&gt;
+&lt;h2 id=&#34;21-索引结构&#34;&gt;2.1 索引结构&lt;/h2&gt;
+&lt;p&gt;索引是在存储引擎层实现的，不同存储引擎有不同的结构&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;索引结构&lt;/strong&gt;&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;描述&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;B+Tree索引&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;大部分存储引擎都支持&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Hash索引&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;底层使用Hash表实现，针对精确匹配有效，不支持范围查询&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;R-Tree索引（空间索引）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;MyISAM引擎拥有的特殊索引，用于地理空间数据类型&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Full-Text索引&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;倒排索引，类似于Lucene、ES&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;InnoDB和MyISAM都支持B+Tree索引和全文索引。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MySQL补充</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E8%A1%A5%E5%85%85/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E8%A1%A5%E5%85%85/</guid>
+      <description>&lt;h1 id=&#34;mysql补充&#34;&gt;MySQL补充&lt;/h1&gt;
+&lt;h1 id=&#34;1-innodb中数据如何存放&#34;&gt;1 InnoDB中数据如何存放&lt;/h1&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/6cea475dd0613750dfc0a9cef61c13c4/e8d38bc28e035d84c29ffcd356d46212.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;InnoDB引擎中，一张表的数据是存放在“tableName.idb”表空间文件中的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;表空间由段（segment）、区（extent）、页（page）、行（row）组成。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;行：记录按行存放&lt;/li&gt;
+&lt;li&gt;页：记录的读取写入是以页为单位，页是InnoDB存储引擎磁盘管理的最小单元。页的类型有数据页、undo log页、溢出页等。16KB。&lt;/li&gt;
+&lt;li&gt;区：表中数据量大的时候，为某个索引分配空间不再按照页为单位划分，而是以区为单位进行分配。1M。&lt;/li&gt;
+&lt;li&gt;段：表空间有索引段（B+Tree非叶子节点）、数据段（B+Tree叶子节点）、回滚段（MVCC）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/6cea475dd0613750dfc0a9cef61c13c4/a5851e3ff3e62fcead99e965243d19ed.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;p&gt;Compact行格式中，一条完整的记录分为「记录的额外信息」和「记录的真实数据」两个部分。&lt;/p&gt;
+&lt;p&gt;记录的额外信息：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;变长字段长度列表：存储变长字段的数据占用的大小，&lt;strong&gt;当数据表没有变长字段的时候，表里的行格式就不会有「变长字段长度列表」&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;NULL值列表：表中的某些列可能会存储 NULL 值，如果把这些 NULL 值都放到记录的真实数据中会比较浪费空间，所以 Compact 行格式把这些值为 NULL 的列存储到 NULL值列表中。如果存在允许 NULL 值的列，则每个列对应一个二进制位（bit），二进制位按照列的顺序逆序排列。（1标识该列为NULL，0标识不为NULL）。&lt;strong&gt;当数据表的字段都定义成 NOT NULL 的时，表里的行格式就不会有 NULL 值列表&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;记录头信息：
+&lt;ul&gt;
+&lt;li&gt;delete_mask ：标识此条数据是否被删除。&lt;/li&gt;
+&lt;li&gt;next_record：下一条记录的位置。&lt;/li&gt;
+&lt;li&gt;record_type：表示当前记录的类型，0表示普通记录，1表示B+树非叶子节点记录，2表示最小记录，3表示最大记录。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;记录的真实数据：&lt;/p&gt;
+&lt;p&gt;记录真实数据部分除了我们定义的字段，还有三个隐藏字段，分别为：row_id、trx_id、roll_pointer。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;row_id：如果我们建表的时候指定了主键或者唯一约束列，那么就没有 row_id 隐藏字段了。如果既没有指定主键，又没有唯一约束，那么 InnoDB 就会为记录添加 row_id 隐藏字段。&lt;strong&gt;row_id不是必需的，占用 6 个字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;trx_id：事务id，表示这个数据是由哪个事务生成的。 &lt;strong&gt;trx_id是必需的，占用 6 个字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;roll_pointer：这条记录上一个版本的指针。&lt;strong&gt;roll_pointer 是必需的，占用 7 个字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;2-两阶段提交&#34;&gt;2 两阶段提交&lt;/h1&gt;
+&lt;p&gt;事务提交后，redolog和binlog都要持久化到磁盘，但是这两个日志是独立的逻辑，可能会出现半成功的情况，也就是两个日志逻辑不一致：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;如果在将 redo log 刷入到磁盘之后， MySQL 突然宕机了，而 binlog 还没有来得及写入。&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;导致从库的值是旧值，主库的是新值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;如果在将 binlog 刷入到磁盘之后， MySQL 突然宕机了，而 redo log 还没有来得及写入。&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;导致从库的值是新值，主库的是旧值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;MySQL 为了避免出现两份日志之间的逻辑不一致的问题，使用了「两阶段提交」来解决&lt;/strong&gt;，两阶段提交其实是分布式事务一致性协议，它可以保证多个逻辑操作要不全部成功，要不全部失败，不会出现半成功的状态。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MySQL面试</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E9%9D%A2%E8%AF%95/</link>
+      <pubDate>Thu, 26 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/database/mysql/mysql%E9%9D%A2%E8%AF%95/</guid>
+      <description>&lt;h1 id=&#34;mysql面试&#34;&gt;MySQL面试&lt;/h1&gt;
+&lt;h1 id=&#34;1-基础&#34;&gt;1 基础&lt;/h1&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/aa5916ce97ae110441c4921de4342520/6b4001cc35c64002c05218b187c005d4.png&#34; alt=&#34;image.png&#34;  /&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;MySQL执行一条Select语句期间发生了什么？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;通过&lt;strong&gt;连接器&lt;/strong&gt;建立连接，管理链接、校验用户身份。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;查询&lt;strong&gt;缓存&lt;/strong&gt;：命中直接返回。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;解析SQL，解析器对SQL查询语句进行词法语法分析。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;执行SQL：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;预处理：检查表或者字段是否存在；&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;优化：选择查询成本最小的执行计划；&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;执行：根据查询计划执行SQL语句，从存储引擎读取数据，返回给客户端。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;MySQL 的 NULL 值是怎么存放的？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;MySQL 的 Compact 行格式中会用「NULL值列表」来标记值为 NULL 的列，NULL 值并不会存储在行格式中的真实数据部分。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;NULL值列表会占用 1 字节空间，当表中所有字段都定义成 NOT NULL，行格式中就不会有 NULL值列表，这样可节省 1 字节的空间。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;MySQL 怎么知道 varchar(n) 实际占用数据的大小？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;MySQL 的 Compact 行格式中会用「变长字段长度列表」存储变长字段实际占用的数据大小。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;varchar(n) 中 n 最大取值为多少？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一行记录最大能存储 65535 字节的数据，但是这个是包含「变长字段字节数列表所占用的字节数」和「NULL值列表所占用的字节数」。所以， 我们在算 varchar(n) 中 n 最大值时，需要减去这两个列表所占用的字节数。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;行溢出后，MySQL 是怎么处理的？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果一个数据页存不了一条记录，InnoDB 存储引擎会自动将溢出的数据存放到「溢出页」中。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Compact 行格式针对行溢出的处理是这样的：当发生行溢出时，在记录的真实数据处只会保存该列的一部分数据，而把剩余的数据放在「溢出页」中，然后真实数据处用 20 字节存储指向溢出页的地址，从而可以找到剩余数据所在的页。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Compressed 和 Dynamic 这两种格式采用完全的行溢出方式，记录的真实数据处不会存储该列的一部分数据，只存储 20 个字节的指针来指向溢出页。而实际的数据都存储在溢出页中。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;2-索引&#34;&gt;2 索引&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;索引的分类&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;按数据结构分类：B+tree索引、Hash索引、Full-text索引&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

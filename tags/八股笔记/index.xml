@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>八股笔记 on RLTEA BLOG</title>
+    <link>https://roaraeonliou.github.io/tags/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/</link>
+    <description>Recent content in 八股笔记 on RLTEA BLOG</description>
+    <image>
+      <title>RLTEA BLOG</title>
+      <url>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.134.3</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 26 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://roaraeonliou.github.io/tags/%E5%85%AB%E8%82%A1%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>计算机网络基础</title>
+      <link>https://roaraeonliou.github.io/posts/interviewnotes/new/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://roaraeonliou.github.io/posts/interviewnotes/new/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</guid>
+      <description>&lt;h2 id=&#34;1-tcpip网络模型&#34;&gt;1 TCP/IP网络模型&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;应用层：工作在用户态，有HTTP、FTP、Telnet、DNS、SMTP协议。&lt;/li&gt;
+&lt;li&gt;传输层：为应用层提供网络支持作用，有TCP和UDP协议。&lt;/li&gt;
+&lt;li&gt;网络层：负责实际的传输工作，将数据从一个设备传输到另一个设备，有IP协议等。&lt;/li&gt;
+&lt;li&gt;网络接口层：为网络层提供**“链路级别”**的传输服务，负责在以太网、Wifi这样的底层网络上发送原始数据包，工作在网卡这个层次，使用MAC地址标识网络上的设备。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;网络接口层的传输单位是帧（frame），IP 层的传输单位是包（packet），TCP 层的传输单位是段（segment），HTTP 的传输单位则是消息或报文（message）。但这些名词并没有什么本质的区分，可以统称为数据包。&lt;/p&gt;
+&lt;h2 id=&#34;2-从键入网址到网页显示期间发生了什么&#34;&gt;2 从键入网址到网页显示，期间发生了什么？&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;浏览器解析URL，生成HTTP请求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过DNS查询真实地址：浏览器先查看自身缓存，然后询问操作系统，操作系统查看自身缓存，然后查看hosts文件，最后询问本地DNS服务器。DNS有轮询和递归两种访问策略，DNS客户端和本地服务器之间是递归策略，而本地服务器和其他DNS服务器之间是迭代轮询。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将HTTP数据报文的传输工作交给操作协调的协议栈。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;应用程序调用socket库，委托协议栈工作。&lt;/li&gt;
+&lt;li&gt;协议栈的上半部分有两块，分别是负责收发数据的 TCP 和 UDP 协议，这两个传输协议会接受应用层的委托执行收发数据的操作。&lt;/li&gt;
+&lt;li&gt;协议栈的下面一半是用 IP 协议控制网络包收发操作，在互联网上传数据时，数据会被切分成一块块的网络包，而将网络包发送给对方的操作就是由 IP 负责的。
+&lt;ul&gt;
+&lt;li&gt;此外 IP 中还包括 &lt;code&gt;ICMP&lt;/code&gt; 协议和 &lt;code&gt;ARP&lt;/code&gt; 协议。
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ICMP&lt;/code&gt; 用于告知网络包传送过程中产生的错误以及各种控制信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ARP&lt;/code&gt; 用于根据 IP 地址查询相应的以太网 MAC 地址。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;IP 下面的网卡驱动程序负责控制网卡硬件，而最下面的网卡则负责完成实际的收发操作，也就是对网线中的信号执行发送和接收操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过网卡传输二进制数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;交换机和路由器转发数据包&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;服务端层层拆包&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;返回响应走相同流程，浏览器收到响应后渲染页面&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

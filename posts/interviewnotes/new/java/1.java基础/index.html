@@ -1,0 +1,157 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>1.Java基础 | RLTEA BLOG</title>
+<meta name=keywords content><meta name=description content="1.1 Java程序从源代码到运行的过程
+
+
+JVM可以理解的代码就是字节码（.class），面向Java虚拟机，Java语言通过字节码的方式，在一定程度上解决传统解释性语言执行效率低的问题，同时又保留了解释性语言可移植的特性。
+.class文件到机器码这一步，JVM加载器会首先加载字节码文件，然后通过解释器逐行执行，这种执行速度比较慢，并且有些代码和方法会被经常调用，所以引进了JIT（Just in Time Compilation），属于运行时便意，当JIT完成第一次遍以后，会将对应的机器码保存下来，下次直接使用。所以说Java是编译与解释共存的语言。
+
+
+1.2 AOT v.s. JIT
+AOT（Ahead of Time Compilation），在程序执行前就进行编译，属于静态便意，可以提高Java程序启动速度，避免预热时间过长，减少内存占用，增加程序安全性（AOT遍以后的代码不容易被反编译和修改），适合云原生场景。
+但是AOT不支持反射、动态代理、动态加载和JNI（Java Native Interface），所以很多框架和库都无法使用。
+1.3 Java v.s. C++
+
+Java不提供指针直接访问内存
+Java类是单继承，C++可以多继承，但是Java的接口可以多继承
+Java有自动内存管理垃圾回收机制，不需要程序员手动释放无用内存。
+C++同时支持方法重载和操作符重载，但是Java只支持方法重载。
+
+1.4 基本数据类型
+
+byte（8位）、short（16位）、int（32位）、long（64位）：默认值0
+float（32位）、double（64位）：默认值0.0
+char（16位）：默认值u0000
+boolean（1位）：默认值false
+
+**包装类型：**包装类型变量不赋值则为null，对于包装类型，==比较的是内存地址，而不是值，所以需要用equals方法比较。占用空间包装类型更大一些，除了定义一些常量和局部变量之外，我们在其他地方比如方法参数、对象属性中很少会使用基本类型来定义变量。并且，包装类型可用于泛型，而基本类型不可以。
+包装类型的缓存： 非浮点数缓存范围是[-128, 127]，Character缓存范围位[0, 127]，Boolean则是true和false。
+包装类型的自动拆箱与装箱：
+
+装箱：将基本类型用对应的引用类型包装起来，本质调用包装类的ValutOf方法；
+拆箱：将包装类型转换为基本数据类型，本质调用xxxValue方法；
+
+
+为什么说是几乎所有对象实例都存在于堆中呢？ 这是因为 HotSpot 虚拟机引入了 JIT 优化之后，会对对象进行逃逸分析，如果发现某一个对象并没有逃逸到方法外部，那么就可能通过标量替换来实现栈上分配，而避免堆上分配内存。
+
+**浮点数运算精度丢失：**使用BigDecimal进行浮点运算。
+**超过Long整数类型的数据如何表示：**使用BigInteger进行表示，内部使用int[]数组进行存储任意大小的整形数据。
+1.5 深拷贝和浅拷贝
+
+浅拷贝：在堆上创建一个新的对象，但是原对象内部属性如果是引用类型，则浅拷贝会直接复制原对象内部的引用地址。
+深拷贝：完全复制整个对象。
+引用拷贝：复制一个引用，指向原对象。
+
+
+1.5 Objects
+1.5.1 ==和equals方法
+
+==：如果是对象，则比较地址是否相同，基本类型则比较值。
+object.equals()：没有重写的情况下，效果与==相同，String类型中的equals方法被重写过，会比较内部值是否相同。
+
+1.5.2 hashCode()有什么用
+获取int类型哈希码，hashCode相同时，两个对象不一定相等（哈希冲突），如果两个对象hashCode相等，并且equals返回true，才认为两个对象相等，如果两个对象hashCode不相等，则直接认为两个对象不相等。"><meta name=author content="RLTEA"><link rel=canonical href=https://roaraeonliou.github.io/posts/interviewnotes/new/java/1.java%E5%9F%BA%E7%A1%80/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.258803b0f0cc9a4a109c6fe78a9d39f2e0437217d71c5c9848255af9250f2b1b.css integrity="sha256-JYgDsPDMmkoQnG/nip058uBDchfXHFyYSCVa+SUPKxs=" rel="preload stylesheet" as=style><link rel=icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://roaraeonliou.github.io/posts/interviewnotes/new/java/1.java%E5%9F%BA%E7%A1%80/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="1.Java基础"><meta property="og:description" content="1.1 Java程序从源代码到运行的过程
+
+
+JVM可以理解的代码就是字节码（.class），面向Java虚拟机，Java语言通过字节码的方式，在一定程度上解决传统解释性语言执行效率低的问题，同时又保留了解释性语言可移植的特性。
+.class文件到机器码这一步，JVM加载器会首先加载字节码文件，然后通过解释器逐行执行，这种执行速度比较慢，并且有些代码和方法会被经常调用，所以引进了JIT（Just in Time Compilation），属于运行时便意，当JIT完成第一次遍以后，会将对应的机器码保存下来，下次直接使用。所以说Java是编译与解释共存的语言。
+
+
+1.2 AOT v.s. JIT
+AOT（Ahead of Time Compilation），在程序执行前就进行编译，属于静态便意，可以提高Java程序启动速度，避免预热时间过长，减少内存占用，增加程序安全性（AOT遍以后的代码不容易被反编译和修改），适合云原生场景。
+但是AOT不支持反射、动态代理、动态加载和JNI（Java Native Interface），所以很多框架和库都无法使用。
+1.3 Java v.s. C++
+
+Java不提供指针直接访问内存
+Java类是单继承，C++可以多继承，但是Java的接口可以多继承
+Java有自动内存管理垃圾回收机制，不需要程序员手动释放无用内存。
+C++同时支持方法重载和操作符重载，但是Java只支持方法重载。
+
+1.4 基本数据类型
+
+byte（8位）、short（16位）、int（32位）、long（64位）：默认值0
+float（32位）、double（64位）：默认值0.0
+char（16位）：默认值u0000
+boolean（1位）：默认值false
+
+**包装类型：**包装类型变量不赋值则为null，对于包装类型，==比较的是内存地址，而不是值，所以需要用equals方法比较。占用空间包装类型更大一些，除了定义一些常量和局部变量之外，我们在其他地方比如方法参数、对象属性中很少会使用基本类型来定义变量。并且，包装类型可用于泛型，而基本类型不可以。
+包装类型的缓存： 非浮点数缓存范围是[-128, 127]，Character缓存范围位[0, 127]，Boolean则是true和false。
+包装类型的自动拆箱与装箱：
+
+装箱：将基本类型用对应的引用类型包装起来，本质调用包装类的ValutOf方法；
+拆箱：将包装类型转换为基本数据类型，本质调用xxxValue方法；
+
+
+为什么说是几乎所有对象实例都存在于堆中呢？ 这是因为 HotSpot 虚拟机引入了 JIT 优化之后，会对对象进行逃逸分析，如果发现某一个对象并没有逃逸到方法外部，那么就可能通过标量替换来实现栈上分配，而避免堆上分配内存。
+
+**浮点数运算精度丢失：**使用BigDecimal进行浮点运算。
+**超过Long整数类型的数据如何表示：**使用BigInteger进行表示，内部使用int[]数组进行存储任意大小的整形数据。
+1.5 深拷贝和浅拷贝
+
+浅拷贝：在堆上创建一个新的对象，但是原对象内部属性如果是引用类型，则浅拷贝会直接复制原对象内部的引用地址。
+深拷贝：完全复制整个对象。
+引用拷贝：复制一个引用，指向原对象。
+
+
+1.5 Objects
+1.5.1 ==和equals方法
+
+==：如果是对象，则比较地址是否相同，基本类型则比较值。
+object.equals()：没有重写的情况下，效果与==相同，String类型中的equals方法被重写过，会比较内部值是否相同。
+
+1.5.2 hashCode()有什么用
+获取int类型哈希码，hashCode相同时，两个对象不一定相等（哈希冲突），如果两个对象hashCode相等，并且equals返回true，才认为两个对象相等，如果两个对象hashCode不相等，则直接认为两个对象不相等。"><meta property="og:type" content="article"><meta property="og:url" content="https://roaraeonliou.github.io/posts/interviewnotes/new/java/1.java%E5%9F%BA%E7%A1%80/"><meta property="og:image" content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-26T00:00:00+00:00"><meta property="article:modified_time" content="2024-09-26T00:00:00+00:00"><meta property="og:site_name" content="RLTEA BLOG"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="1.Java基础"><meta name=twitter:description content="1.1 Java程序从源代码到运行的过程
+
+
+JVM可以理解的代码就是字节码（.class），面向Java虚拟机，Java语言通过字节码的方式，在一定程度上解决传统解释性语言执行效率低的问题，同时又保留了解释性语言可移植的特性。
+.class文件到机器码这一步，JVM加载器会首先加载字节码文件，然后通过解释器逐行执行，这种执行速度比较慢，并且有些代码和方法会被经常调用，所以引进了JIT（Just in Time Compilation），属于运行时便意，当JIT完成第一次遍以后，会将对应的机器码保存下来，下次直接使用。所以说Java是编译与解释共存的语言。
+
+
+1.2 AOT v.s. JIT
+AOT（Ahead of Time Compilation），在程序执行前就进行编译，属于静态便意，可以提高Java程序启动速度，避免预热时间过长，减少内存占用，增加程序安全性（AOT遍以后的代码不容易被反编译和修改），适合云原生场景。
+但是AOT不支持反射、动态代理、动态加载和JNI（Java Native Interface），所以很多框架和库都无法使用。
+1.3 Java v.s. C++
+
+Java不提供指针直接访问内存
+Java类是单继承，C++可以多继承，但是Java的接口可以多继承
+Java有自动内存管理垃圾回收机制，不需要程序员手动释放无用内存。
+C++同时支持方法重载和操作符重载，但是Java只支持方法重载。
+
+1.4 基本数据类型
+
+byte（8位）、short（16位）、int（32位）、long（64位）：默认值0
+float（32位）、double（64位）：默认值0.0
+char（16位）：默认值u0000
+boolean（1位）：默认值false
+
+**包装类型：**包装类型变量不赋值则为null，对于包装类型，==比较的是内存地址，而不是值，所以需要用equals方法比较。占用空间包装类型更大一些，除了定义一些常量和局部变量之外，我们在其他地方比如方法参数、对象属性中很少会使用基本类型来定义变量。并且，包装类型可用于泛型，而基本类型不可以。
+包装类型的缓存： 非浮点数缓存范围是[-128, 127]，Character缓存范围位[0, 127]，Boolean则是true和false。
+包装类型的自动拆箱与装箱：
+
+装箱：将基本类型用对应的引用类型包装起来，本质调用包装类的ValutOf方法；
+拆箱：将包装类型转换为基本数据类型，本质调用xxxValue方法；
+
+
+为什么说是几乎所有对象实例都存在于堆中呢？ 这是因为 HotSpot 虚拟机引入了 JIT 优化之后，会对对象进行逃逸分析，如果发现某一个对象并没有逃逸到方法外部，那么就可能通过标量替换来实现栈上分配，而避免堆上分配内存。
+
+**浮点数运算精度丢失：**使用BigDecimal进行浮点运算。
+**超过Long整数类型的数据如何表示：**使用BigInteger进行表示，内部使用int[]数组进行存储任意大小的整形数据。
+1.5 深拷贝和浅拷贝
+
+浅拷贝：在堆上创建一个新的对象，但是原对象内部属性如果是引用类型，则浅拷贝会直接复制原对象内部的引用地址。
+深拷贝：完全复制整个对象。
+引用拷贝：复制一个引用，指向原对象。
+
+
+1.5 Objects
+1.5.1 ==和equals方法
+
+==：如果是对象，则比较地址是否相同，基本类型则比较值。
+object.equals()：没有重写的情况下，效果与==相同，String类型中的equals方法被重写过，会比较内部值是否相同。
+
+1.5.2 hashCode()有什么用
+获取int类型哈希码，hashCode相同时，两个对象不一定相等（哈希冲突），如果两个对象hashCode相等，并且equals返回true，才认为两个对象相等，如果两个对象hashCode不相等，则直接认为两个对象不相等。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://roaraeonliou.github.io/posts/"},{"@type":"ListItem","position":2,"name":"1.Java基础","item":"https://roaraeonliou.github.io/posts/interviewnotes/new/java/1.java%E5%9F%BA%E7%A1%80/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"1.Java基础","name":"1.Java基础","description":"1.1 Java程序从源代码到运行的过程 JVM可以理解的代码就是字节码（.class），面向Java虚拟机，Java语言通过字节码的方式，在一定程度上解决传统解释性语言执行效率低的问题，同时又保留了解释性语言可移植的特性。 .class文件到机器码这一步，JVM加载器会首先加载字节码文件，然后通过解释器逐行执行，这种执行速度比较慢，并且有些代码和方法会被经常调用，所以引进了JIT（Just in Time Compilation），属于运行时便意，当JIT完成第一次遍以后，会将对应的机器码保存下来，下次直接使用。所以说Java是编译与解释共存的语言。 1.2 AOT v.s. JIT AOT（Ahead of Time Compilation），在程序执行前就进行编译，属于静态便意，可以提高Java程序启动速度，避免预热时间过长，减少内存占用，增加程序安全性（AOT遍以后的代码不容易被反编译和修改），适合云原生场景。\n但是AOT不支持反射、动态代理、动态加载和JNI（Java Native Interface），所以很多框架和库都无法使用。\n1.3 Java v.s. C++ Java不提供指针直接访问内存 Java类是单继承，C++可以多继承，但是Java的接口可以多继承 Java有自动内存管理垃圾回收机制，不需要程序员手动释放无用内存。 C++同时支持方法重载和操作符重载，但是Java只支持方法重载。 1.4 基本数据类型 byte（8位）、short（16位）、int（32位）、long（64位）：默认值0 float（32位）、double（64位）：默认值0.0 char（16位）：默认值u0000 boolean（1位）：默认值false **包装类型：**包装类型变量不赋值则为null，对于包装类型，==比较的是内存地址，而不是值，所以需要用equals方法比较。占用空间包装类型更大一些，除了定义一些常量和局部变量之外，我们在其他地方比如方法参数、对象属性中很少会使用基本类型来定义变量。并且，包装类型可用于泛型，而基本类型不可以。\n包装类型的缓存： 非浮点数缓存范围是[-128, 127]，Character缓存范围位[0, 127]，Boolean则是true和false。\n包装类型的自动拆箱与装箱：\n装箱：将基本类型用对应的引用类型包装起来，本质调用包装类的ValutOf方法； 拆箱：将包装类型转换为基本数据类型，本质调用xxxValue方法； 为什么说是几乎所有对象实例都存在于堆中呢？ 这是因为 HotSpot 虚拟机引入了 JIT 优化之后，会对对象进行逃逸分析，如果发现某一个对象并没有逃逸到方法外部，那么就可能通过标量替换来实现栈上分配，而避免堆上分配内存。\n**浮点数运算精度丢失：**使用BigDecimal进行浮点运算。\n**超过Long整数类型的数据如何表示：**使用BigInteger进行表示，内部使用int[]数组进行存储任意大小的整形数据。\n1.5 深拷贝和浅拷贝 浅拷贝：在堆上创建一个新的对象，但是原对象内部属性如果是引用类型，则浅拷贝会直接复制原对象内部的引用地址。 深拷贝：完全复制整个对象。 引用拷贝：复制一个引用，指向原对象。 1.5 Objects 1.5.1 ==和equals方法 ==：如果是对象，则比较地址是否相同，基本类型则比较值。 object.equals()：没有重写的情况下，效果与==相同，String类型中的equals方法被重写过，会比较内部值是否相同。 1.5.2 hashCode()有什么用 获取int类型哈希码，hashCode相同时，两个对象不一定相等（哈希冲突），如果两个对象hashCode相等，并且equals返回true，才认为两个对象相等，如果两个对象hashCode不相等，则直接认为两个对象不相等。\n","keywords":[],"articleBody":"1.1 Java程序从源代码到运行的过程 JVM可以理解的代码就是字节码（.class），面向Java虚拟机，Java语言通过字节码的方式，在一定程度上解决传统解释性语言执行效率低的问题，同时又保留了解释性语言可移植的特性。 .class文件到机器码这一步，JVM加载器会首先加载字节码文件，然后通过解释器逐行执行，这种执行速度比较慢，并且有些代码和方法会被经常调用，所以引进了JIT（Just in Time Compilation），属于运行时便意，当JIT完成第一次遍以后，会将对应的机器码保存下来，下次直接使用。所以说Java是编译与解释共存的语言。 1.2 AOT v.s. JIT AOT（Ahead of Time Compilation），在程序执行前就进行编译，属于静态便意，可以提高Java程序启动速度，避免预热时间过长，减少内存占用，增加程序安全性（AOT遍以后的代码不容易被反编译和修改），适合云原生场景。\n但是AOT不支持反射、动态代理、动态加载和JNI（Java Native Interface），所以很多框架和库都无法使用。\n1.3 Java v.s. C++ Java不提供指针直接访问内存 Java类是单继承，C++可以多继承，但是Java的接口可以多继承 Java有自动内存管理垃圾回收机制，不需要程序员手动释放无用内存。 C++同时支持方法重载和操作符重载，但是Java只支持方法重载。 1.4 基本数据类型 byte（8位）、short（16位）、int（32位）、long（64位）：默认值0 float（32位）、double（64位）：默认值0.0 char（16位）：默认值u0000 boolean（1位）：默认值false **包装类型：**包装类型变量不赋值则为null，对于包装类型，==比较的是内存地址，而不是值，所以需要用equals方法比较。占用空间包装类型更大一些，除了定义一些常量和局部变量之外，我们在其他地方比如方法参数、对象属性中很少会使用基本类型来定义变量。并且，包装类型可用于泛型，而基本类型不可以。\n包装类型的缓存： 非浮点数缓存范围是[-128, 127]，Character缓存范围位[0, 127]，Boolean则是true和false。\n包装类型的自动拆箱与装箱：\n装箱：将基本类型用对应的引用类型包装起来，本质调用包装类的ValutOf方法； 拆箱：将包装类型转换为基本数据类型，本质调用xxxValue方法； 为什么说是几乎所有对象实例都存在于堆中呢？ 这是因为 HotSpot 虚拟机引入了 JIT 优化之后，会对对象进行逃逸分析，如果发现某一个对象并没有逃逸到方法外部，那么就可能通过标量替换来实现栈上分配，而避免堆上分配内存。\n**浮点数运算精度丢失：**使用BigDecimal进行浮点运算。\n**超过Long整数类型的数据如何表示：**使用BigInteger进行表示，内部使用int[]数组进行存储任意大小的整形数据。\n1.5 深拷贝和浅拷贝 浅拷贝：在堆上创建一个新的对象，但是原对象内部属性如果是引用类型，则浅拷贝会直接复制原对象内部的引用地址。 深拷贝：完全复制整个对象。 引用拷贝：复制一个引用，指向原对象。 1.5 Objects 1.5.1 ==和equals方法 ==：如果是对象，则比较地址是否相同，基本类型则比较值。 object.equals()：没有重写的情况下，效果与==相同，String类型中的equals方法被重写过，会比较内部值是否相同。 1.5.2 hashCode()有什么用 获取int类型哈希码，hashCode相同时，两个对象不一定相等（哈希冲突），如果两个对象hashCode相等，并且equals返回true，才认为两个对象相等，如果两个对象hashCode不相等，则直接认为两个对象不相等。\n**为什么重写equals()时必须重写hashCode()？**因为两个相等的对象的 hashCode 值必须是相等。也就是说如果 equals 方法判断两个对象是相等的，那这两个对象的 hashCode 值也要相等。\n1.6 String 1.6.1 String、StringBuffer、StringBuilder区别 String是不可变的，线程安全，但是效率低。 StringBuffer是线程安全的，内部加了同步锁。 StringBuilder不是线程安全的，内部没有使用同步锁。 String内部使用final关键字修饰数组保存字符串，所以是不可变的，String使用+运算符连接字符串，底层会生成一个StringBuilder进行连接，但是不会进行复用，会导致创建过多的StringBuilder。\n1.6.2 字符串常量池 String s1 = new String(“abc”); 会创建几个字符串对象？\n2个：字符串常量池不存在这个字符串对象“abc”的引用，那么会在堆上创建两个字符串对象，其中一个字符串对象的引用会被保存在字符串常量池中。 1个：如果字符串常量池存在这个字符串对象的引用，那么只在堆中创建一个字符串对象，并引用到常量池中的字符串对象。 1.6.3 String#intern方法有什么用 String.intern()是一个native方法，用于将指定的字符串对象保存在字符串常量池中：\n如果字符串常量池已经保存了对应的字符串对象的引用，就直接返回该引用； 否则，创建一个指向该字符串对象的引用，并返回。 1.7 异常 Java中所有的异常都来自一个共同的祖先java.lang包中的Throwable类。\n不要在 finally 语句块中使用 return! 当 try 语句和 finally 语句中都有 return 语句时，try 语句块中的 return 语句会被忽略。这是因为 try 语句中的 return 返回值会先被暂存在一个本地变量中，当执行到 finally 语句中的 return 之后，这个本地变量的值就变为了 finally 语句中的 return 返回值。\n1.7.1 Exception和Error有什么区别？ Excpetion：程序本身可以处理的异常，可以通过catch捕获，又分为Checked Excpetion和Unchecked Exception。 Error：程序无法处理的异常。包括JVM运行错误，OOM，类定义错误等。 1.7.2 Checked Excpetion和Unchecked Exception有什么区别？ Checked Exception，受检异常，Java代码在编译过程中，如果发现该异常没有被catch或者throw，则无法通过编译。\n除了RuntimeException及其子类外，其他Exception都属于受检异常：如IO相关异常，ClassNotFoundException，SQLException等\nUnchecked Exception，不受检异常，Java代码在编译过程中，即使不处理也可以正常通过编译的异常：如NPE，IllegalArgumentException、NumberFormatException、ArrayIndexOutOfBoundsException等。均为RuntimeException的子类。\n1.7.3 finally中的代码一定会被执行吗？ 不一定，线程死亡，JVM终止，电脑宕机都不会执行。\n1.7.4 使用try-with-resources代替try-catch-finally来使用需要关闭的资源类。 ","wordCount":"141","inLanguage":"en","image":"https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2024-09-26T00:00:00Z","dateModified":"2024-09-26T00:00:00Z","author":{"@type":"Person","name":"RLTEA"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://roaraeonliou.github.io/posts/interviewnotes/new/java/1.java%E5%9F%BA%E7%A1%80/"},"publisher":{"@type":"Organization","name":"RLTEA BLOG","logo":{"@type":"ImageObject","url":"https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E"}}}</script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["\\[","\\]"],["$$","$$"]],inlineMath:[["\\(","\\)"],["$","$"]]}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://roaraeonliou.github.io/ accesskey=h title="Home (Alt + H)"><img src=https://roaraeonliou.github.io/apple-touch-icon.png alt aria-label=logo height=35>Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://roaraeonliou.github.io/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://roaraeonliou.github.io/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://roaraeonliou.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://roaraeonliou.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://roaraeonliou.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://roaraeonliou.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">1.Java基础</h1><div class=post-meta><span title='2024-09-26 00:00:00 +0000 UTC'>September 26, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;141 words&nbsp;·&nbsp;RLTEA&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/InterviewNotes/new/Java/1.Java%e5%9f%ba%e7%a1%80.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><aside id=toc-container class="toc-container wide"><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#11-java%e7%a8%8b%e5%ba%8f%e4%bb%8e%e6%ba%90%e4%bb%a3%e7%a0%81%e5%88%b0%e8%bf%90%e8%a1%8c%e7%9a%84%e8%bf%87%e7%a8%8b aria-label="1.1 Java程序从源代码到运行的过程">1.1 Java程序从源代码到运行的过程</a></li><li><a href=#12-aot-vs-jit aria-label="1.2 AOT v.s. JIT">1.2 AOT v.s. JIT</a></li><li><a href=#13-java-vs-c aria-label="1.3 Java v.s. C++">1.3 Java v.s. C++</a></li><li><a href=#14-%e5%9f%ba%e6%9c%ac%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b aria-label="1.4 基本数据类型">1.4 基本数据类型</a></li><li><a href=#15-%e6%b7%b1%e6%8b%b7%e8%b4%9d%e5%92%8c%e6%b5%85%e6%8b%b7%e8%b4%9d aria-label="1.5 深拷贝和浅拷贝">1.5 深拷贝和浅拷贝</a></li><li><a href=#15-objects aria-label="1.5 Objects">1.5 Objects</a><ul><ul><li><a href=#151-%e5%92%8cequals%e6%96%b9%e6%b3%95 aria-label="1.5.1 ==和equals方法">1.5.1 ==和equals方法</a></li><li><a href=#152-hashcode%e6%9c%89%e4%bb%80%e4%b9%88%e7%94%a8 aria-label="1.5.2 hashCode()有什么用">1.5.2 hashCode()有什么用</a></li></ul></ul></li><li><a href=#16-string aria-label="1.6 String">1.6 String</a><ul><ul><li><a href=#161-stringstringbufferstringbuilder%e5%8c%ba%e5%88%ab aria-label="1.6.1 String、StringBuffer、StringBuilder区别">1.6.1 String、StringBuffer、StringBuilder区别</a></li><li><a href=#162-%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%b8%b8%e9%87%8f%e6%b1%a0 aria-label="1.6.2 字符串常量池">1.6.2 字符串常量池</a></li><li><a href=#163-stringintern%e6%96%b9%e6%b3%95%e6%9c%89%e4%bb%80%e4%b9%88%e7%94%a8 aria-label="1.6.3 String#intern方法有什么用">1.6.3 String#intern方法有什么用</a></li></ul></ul></li><li><a href=#17-%e5%bc%82%e5%b8%b8 aria-label="1.7 异常">1.7 异常</a><ul><ul><li><a href=#171-exception%e5%92%8cerror%e6%9c%89%e4%bb%80%e4%b9%88%e5%8c%ba%e5%88%ab aria-label="1.7.1 Exception和Error有什么区别？">1.7.1 Exception和Error有什么区别？</a></li><li><a href=#172-checked-excpetion%e5%92%8cunchecked-exception%e6%9c%89%e4%bb%80%e4%b9%88%e5%8c%ba%e5%88%ab aria-label="1.7.2 Checked Excpetion和Unchecked Exception有什么区别？">1.7.2 Checked Excpetion和Unchecked Exception有什么区别？</a></li><li><a href=#173-finally%e4%b8%ad%e7%9a%84%e4%bb%a3%e7%a0%81%e4%b8%80%e5%ae%9a%e4%bc%9a%e8%a2%ab%e6%89%a7%e8%a1%8c%e5%90%97 aria-label="1.7.3 finally中的代码一定会被执行吗？">1.7.3 finally中的代码一定会被执行吗？</a></li><li><a href=#174-%e4%bd%bf%e7%94%a8try-with-resources%e4%bb%a3%e6%9b%bftry-catch-finally%e6%9d%a5%e4%bd%bf%e7%94%a8%e9%9c%80%e8%a6%81%e5%85%b3%e9%97%ad%e7%9a%84%e8%b5%84%e6%ba%90%e7%b1%bb aria-label="1.7.4 使用try-with-resources代替try-catch-finally来使用需要关闭的资源类。">1.7.4 使用try-with-resources代替try-catch-finally来使用需要关闭的资源类。</a></li></ul></ul></li></ul></div></details></div></aside><script>let activeElement,elements;window.addEventListener("DOMContentLoaded",function(){checkTocPosition(),elements=document.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]"),activeElement=elements[0];const t=encodeURI(activeElement.getAttribute("id")).toLowerCase();document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active")},!1),window.addEventListener("resize",function(){checkTocPosition()},!1),window.addEventListener("scroll",()=>{activeElement=Array.from(elements).find(e=>{if(getOffsetTop(e)-window.pageYOffset>0&&getOffsetTop(e)-window.pageYOffset<window.innerHeight/2)return e})||activeElement,elements.forEach(e=>{const t=encodeURI(e.getAttribute("id")).toLowerCase();e===activeElement?document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active"):document.querySelector(`.inner ul li a[href="#${t}"]`).classList.remove("active")})},!1);const main=parseInt(getComputedStyle(document.body).getPropertyValue("--article-width"),10),toc=parseInt(getComputedStyle(document.body).getPropertyValue("--toc-width"),10),gap=parseInt(getComputedStyle(document.body).getPropertyValue("--gap"),10);function checkTocPosition(){const e=document.body.scrollWidth;e-main-toc*2-gap*4>0?document.getElementById("toc-container").classList.add("wide"):document.getElementById("toc-container").classList.remove("wide")}function getOffsetTop(e){if(!e.getClientRects().length)return 0;let t=e.getBoundingClientRect(),n=e.ownerDocument.defaultView;return t.top+n.pageYOffset}</script><div class=post-content><h2 id=11-java程序从源代码到运行的过程>1.1 Java程序从源代码到运行的过程<a hidden class=anchor aria-hidden=true href=#11-java程序从源代码到运行的过程>#</a></h2><ul><li>JVM可以理解的代码就是字节码（.class），面向Java虚拟机，Java语言通过字节码的方式，在一定程度上解决传统解释性语言执行效率低的问题，同时又保留了解释性语言可移植的特性。</li><li>.class文件到机器码这一步，JVM加载器会首先加载字节码文件，然后通过解释器逐行执行，这种执行速度比较慢，并且有些代码和方法会被经常调用，所以引进了JIT（Just in Time Compilation），属于运行时便意，当JIT完成第一次遍以后，会将对应的机器码保存下来，下次直接使用。所以说Java是编译与解释共存的语言。</li></ul><h2 id=12-aot-vs-jit>1.2 AOT v.s. JIT<a hidden class=anchor aria-hidden=true href=#12-aot-vs-jit>#</a></h2><p>AOT（Ahead of Time Compilation），在程序执行前就进行编译，属于静态便意，可以提高Java程序启动速度，避免预热时间过长，减少内存占用，增加程序安全性（AOT遍以后的代码不容易被反编译和修改），适合云原生场景。</p><p>但是AOT不支持反射、动态代理、动态加载和JNI（Java Native Interface），所以很多框架和库都无法使用。</p><h2 id=13-java-vs-c>1.3 Java v.s. C++<a hidden class=anchor aria-hidden=true href=#13-java-vs-c>#</a></h2><ul><li>Java不提供指针直接访问内存</li><li>Java类是单继承，C++可以多继承，但是Java的接口可以多继承</li><li>Java有自动内存管理垃圾回收机制，不需要程序员手动释放无用内存。</li><li>C++同时支持方法重载和操作符重载，但是Java只支持方法重载。</li></ul><h2 id=14-基本数据类型>1.4 基本数据类型<a hidden class=anchor aria-hidden=true href=#14-基本数据类型>#</a></h2><ul><li>byte（8位）、short（16位）、int（32位）、long（64位）：默认值0</li><li>float（32位）、double（64位）：默认值0.0</li><li>char（16位）：默认值u0000</li><li>boolean（1位）：默认值false</li></ul><p>**包装类型：**包装类型变量不赋值则为null，对于包装类型，==比较的是内存地址，而不是值，所以需要用equals方法比较。占用空间包装类型更大一些，除了定义一些常量和局部变量之外，我们在其他地方比如方法参数、对象属性中很少会使用基本类型来定义变量。并且，包装类型可用于泛型，而基本类型不可以。</p><p><strong>包装类型的缓存：</strong> 非浮点数缓存范围是[-128, 127]，Character缓存范围位[0, 127]，Boolean则是true和false。</p><p><strong>包装类型的自动拆箱与装箱：</strong></p><ul><li>装箱：将基本类型用对应的引用类型包装起来，本质调用包装类的ValutOf方法；</li><li>拆箱：将包装类型转换为基本数据类型，本质调用xxxValue方法；</li></ul><blockquote><p><strong>为什么说是几乎所有对象实例都存在于堆中呢？</strong> 这是因为 HotSpot 虚拟机引入了 JIT 优化之后，会对对象进行逃逸分析，如果发现某一个对象并没有逃逸到方法外部，那么就可能通过标量替换来实现栈上分配，而避免堆上分配内存。</p></blockquote><p>**浮点数运算精度丢失：**使用BigDecimal进行浮点运算。</p><p>**超过Long整数类型的数据如何表示：**使用BigInteger进行表示，内部使用int[]数组进行存储任意大小的整形数据。</p><h2 id=15-深拷贝和浅拷贝>1.5 深拷贝和浅拷贝<a hidden class=anchor aria-hidden=true href=#15-深拷贝和浅拷贝>#</a></h2><ul><li>浅拷贝：在堆上创建一个新的对象，但是原对象内部属性如果是引用类型，则浅拷贝会直接复制原对象内部的引用地址。</li><li>深拷贝：完全复制整个对象。</li><li>引用拷贝：复制一个引用，指向原对象。</li></ul><h2 id=15-objects>1.5 Objects<a hidden class=anchor aria-hidden=true href=#15-objects>#</a></h2><h4 id=151-和equals方法>1.5.1 ==和equals方法<a hidden class=anchor aria-hidden=true href=#151-和equals方法>#</a></h4><ul><li>==：如果是对象，则比较地址是否相同，基本类型则比较值。</li><li>object.equals()：没有重写的情况下，效果与==相同，String类型中的equals方法被重写过，会比较内部值是否相同。</li></ul><h4 id=152-hashcode有什么用>1.5.2 hashCode()有什么用<a hidden class=anchor aria-hidden=true href=#152-hashcode有什么用>#</a></h4><p>获取int类型哈希码，hashCode相同时，两个对象不一定相等（哈希冲突），如果两个对象hashCode相等，并且equals返回true，才认为两个对象相等，如果两个对象hashCode不相等，则直接认为两个对象不相等。</p><p>**为什么重写equals()时必须重写hashCode()？**因为两个相等的对象的 <code>hashCode</code> 值必须是相等。也就是说如果 <code>equals</code> 方法判断两个对象是相等的，那这两个对象的 <code>hashCode</code> 值也要相等。</p><h2 id=16-string>1.6 String<a hidden class=anchor aria-hidden=true href=#16-string>#</a></h2><h4 id=161-stringstringbufferstringbuilder区别>1.6.1 String、StringBuffer、StringBuilder区别<a hidden class=anchor aria-hidden=true href=#161-stringstringbufferstringbuilder区别>#</a></h4><ul><li>String是不可变的，线程安全，但是效率低。</li><li>StringBuffer是线程安全的，内部加了同步锁。</li><li>StringBuilder不是线程安全的，内部没有使用同步锁。</li></ul><p>String内部使用final关键字修饰数组保存字符串，所以是不可变的，String使用+运算符连接字符串，底层会生成一个StringBuilder进行连接，但是不会进行复用，会导致创建过多的StringBuilder。</p><h4 id=162-字符串常量池>1.6.2 字符串常量池<a hidden class=anchor aria-hidden=true href=#162-字符串常量池>#</a></h4><p>String s1 = new String(&ldquo;abc&rdquo;); 会创建几个字符串对象？</p><ul><li>2个：字符串常量池不存在这个字符串对象“abc”的引用，那么会在堆上创建两个字符串对象，其中一个字符串对象的引用会被保存在字符串常量池中。</li><li>1个：如果字符串常量池存在这个字符串对象的引用，那么只在堆中创建一个字符串对象，并引用到常量池中的字符串对象。</li></ul><h4 id=163-stringintern方法有什么用>1.6.3 String#intern方法有什么用<a hidden class=anchor aria-hidden=true href=#163-stringintern方法有什么用>#</a></h4><p>String.intern()是一个native方法，用于将指定的字符串对象保存在字符串常量池中：</p><ul><li>如果字符串常量池已经保存了对应的字符串对象的引用，就直接返回该引用；</li><li>否则，创建一个指向该字符串对象的引用，并返回。</li></ul><h2 id=17-异常>1.7 异常<a hidden class=anchor aria-hidden=true href=#17-异常>#</a></h2><p>Java中所有的异常都来自一个共同的祖先java.lang包中的Throwable类。</p><p><strong>不要在 finally 语句块中使用 return!</strong> 当 try 语句和 finally 语句中都有 return 语句时，try 语句块中的 return 语句会被忽略。这是因为 try 语句中的 return 返回值会先被暂存在一个本地变量中，当执行到 finally 语句中的 return 之后，这个本地变量的值就变为了 finally 语句中的 return 返回值。</p><h4 id=171-exception和error有什么区别>1.7.1 Exception和Error有什么区别？<a hidden class=anchor aria-hidden=true href=#171-exception和error有什么区别>#</a></h4><ul><li>Excpetion：程序本身可以处理的异常，可以通过catch捕获，又分为Checked Excpetion和Unchecked Exception。</li><li>Error：程序无法处理的异常。包括JVM运行错误，OOM，类定义错误等。</li></ul><h4 id=172-checked-excpetion和unchecked-exception有什么区别>1.7.2 Checked Excpetion和Unchecked Exception有什么区别？<a hidden class=anchor aria-hidden=true href=#172-checked-excpetion和unchecked-exception有什么区别>#</a></h4><p>Checked Exception，受检异常，Java代码在编译过程中，如果发现该异常没有被catch或者throw，则无法通过编译。</p><p>除了RuntimeException及其子类外，其他Exception都属于受检异常：如IO相关异常，ClassNotFoundException，SQLException等</p><p>Unchecked Exception，不受检异常，Java代码在编译过程中，即使不处理也可以正常通过编译的异常：如NPE，IllegalArgumentException、NumberFormatException、ArrayIndexOutOfBoundsException等。均为RuntimeException的子类。</p><h4 id=173-finally中的代码一定会被执行吗>1.7.3 finally中的代码一定会被执行吗？<a hidden class=anchor aria-hidden=true href=#173-finally中的代码一定会被执行吗>#</a></h4><p>不一定，线程死亡，JVM终止，电脑宕机都不会执行。</p><h4 id=174-使用try-with-resources代替try-catch-finally来使用需要关闭的资源类>1.7.4 使用try-with-resources代替try-catch-finally来使用需要关闭的资源类。<a hidden class=anchor aria-hidden=true href=#174-使用try-with-resources代替try-catch-finally来使用需要关闭的资源类>#</a></h4></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/1.basic/><span class=title>« Prev</span><br><span>1.Basic</span>
+</a><a class=next href=https://roaraeonliou.github.io/posts/interviewnotes/new/%E6%95%B0%E6%8D%AE%E5%BA%93/2.index/><span class=title>Next »</span><br><span>2.Index</span></a></nav></footer><div id=comments><script src=https://giscus.app/client.js data-repo=RoaraeonLiou/roaraeonliou.github.io data-repo-id=R_kgDOMIxQ4w data-category=Announcements data-category-id=DIC_kwDOMIxQ484CgZUR data-mapping=title data-strict=1 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=preferred_color_scheme data-lang=zh-CN data-loading=lazy crossorigin=anonymous async></script></div></article></main><footer class=footer><span>&copy; 2024 <a href=https://roaraeonliou.github.io/>RLTEA BLOG</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

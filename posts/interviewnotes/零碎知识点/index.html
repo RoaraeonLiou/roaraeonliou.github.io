@@ -1,0 +1,316 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>零碎知识点 | RLTEA BLOG</title>
+<meta name=keywords content="笔记"><meta name=description content="零碎知识点
+1 Java 原子类中，CAS是如何保证原子性的？
+
+原子类中，用volatile修饰value，并使用unsafe类获取到value的地址偏移量，在执行更新操作时，使用unsafe类执行compareAndSwap操作，而该方法是一个Native方法，底层是通过汇编指令CMPXCHG加上Lock前缀，保证内存区域只允许一个线程访问。
+
+2 运行时多态和编译时多态
+
+运行时多态：通过基类或者抽象类、虚函数等调用具体实例的方法，在运行时才可以确定具体方法，这种情况时运行时多态。
+
+
+编译时多态：函数的重载、模板类等，在编译时即可确定具体的方法，这种情况是编译时多态。
+
+3 B树的具体应用
+
+降低磁盘IO？
+
+4 C++和Java的堆栈有什么区别
+
+栈内存更快，但是堆内存更加灵活。
+
+
+编译期间没有办法确定堆空间上的内存分配情况，堆上分配的内存需要回收（C++需要程序员手动回收，而Java有自动垃圾回收机制）；而栈内存的内存回收由系统管理。
+
+
+C++的对象既可以创建在堆上，也可以创建在栈上，Java绝大多数对象都创建在堆上。Java中的栈一般情况只存储引用和基本变量。
+
+
+C++用alloca申请栈内存，new申请堆内存，malloc申请自由存储区，此外还有全局（静态）存储区用于存储全局变量和静态变量，常量存储区存储常量。
+
+
+注意：栈中申请的内存都需要使用指针指向，Java也是如此，只不过对程序员屏蔽掉了指针。
+
+5 C++的内存分布
+
+由上至下分别是：栈、堆、全局区、常量区、代码区。
+
+
+堆区内存向上增长，栈区内存向下增长。
+
+
+https://blog.csdn.net/qq_72982923/article/details/132197354
+
+6 Java中的对象内存分配
+
+
+
+栈上内存分配：当对象的生命周期与入栈的方法一致时，JVM的对象逃逸分析会让该对象直接在栈上进行空间分配，从而减少GC压力
+
+
+
+
+堆上内存分配：对象优先在eden区分配，大对象直接进入老年代，eden区对象经过GC后，如果存活，则存入survivor区并增加年龄，当年龄达到阈值，会进入老年代（注意：当survivor区内存不足时，会动态调整年龄阈值，将对象送入老年代）。老年代空间分配担保机制：指的是minorGC前会计算老年代剩余空间和年轻代中的对象大小，如果空间不足，则触发一次FullGC，如果垃圾回收后空间不足则会触发OOM。
+
+
+
+7 进程的内存分配
+
+
+
+内核区（用户不可读写）高地址段
+
+
+
+
+栈（向下增长）
+
+
+
+
+堆（向上增长）
+
+
+
+
+数据段
+
+
+
+
+代码段
+
+
+
+
+https://blog.csdn.net/xyxzlsld666/article/details/132393872
+
+8 Redis中的ListPack是什么
+
+listpack：…
+
+
+
+
+：4字节，表示listpack占用字节数
+
+
+
+
+：2字节，元素个数
+
+
+
+
+：entry"><meta name=author content="RLTEA"><link rel=canonical href=https://roaraeonliou.github.io/posts/interviewnotes/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.258803b0f0cc9a4a109c6fe78a9d39f2e0437217d71c5c9848255af9250f2b1b.css integrity="sha256-JYgDsPDMmkoQnG/nip058uBDchfXHFyYSCVa+SUPKxs=" rel="preload stylesheet" as=style><link rel=icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://roaraeonliou.github.io/posts/interviewnotes/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="零碎知识点"><meta property="og:description" content="零碎知识点
+1 Java 原子类中，CAS是如何保证原子性的？
+
+原子类中，用volatile修饰value，并使用unsafe类获取到value的地址偏移量，在执行更新操作时，使用unsafe类执行compareAndSwap操作，而该方法是一个Native方法，底层是通过汇编指令CMPXCHG加上Lock前缀，保证内存区域只允许一个线程访问。
+
+2 运行时多态和编译时多态
+
+运行时多态：通过基类或者抽象类、虚函数等调用具体实例的方法，在运行时才可以确定具体方法，这种情况时运行时多态。
+
+
+编译时多态：函数的重载、模板类等，在编译时即可确定具体的方法，这种情况是编译时多态。
+
+3 B树的具体应用
+
+降低磁盘IO？
+
+4 C++和Java的堆栈有什么区别
+
+栈内存更快，但是堆内存更加灵活。
+
+
+编译期间没有办法确定堆空间上的内存分配情况，堆上分配的内存需要回收（C++需要程序员手动回收，而Java有自动垃圾回收机制）；而栈内存的内存回收由系统管理。
+
+
+C++的对象既可以创建在堆上，也可以创建在栈上，Java绝大多数对象都创建在堆上。Java中的栈一般情况只存储引用和基本变量。
+
+
+C++用alloca申请栈内存，new申请堆内存，malloc申请自由存储区，此外还有全局（静态）存储区用于存储全局变量和静态变量，常量存储区存储常量。
+
+
+注意：栈中申请的内存都需要使用指针指向，Java也是如此，只不过对程序员屏蔽掉了指针。
+
+5 C++的内存分布
+
+由上至下分别是：栈、堆、全局区、常量区、代码区。
+
+
+堆区内存向上增长，栈区内存向下增长。
+
+
+https://blog.csdn.net/qq_72982923/article/details/132197354
+
+6 Java中的对象内存分配
+
+
+
+栈上内存分配：当对象的生命周期与入栈的方法一致时，JVM的对象逃逸分析会让该对象直接在栈上进行空间分配，从而减少GC压力
+
+
+
+
+堆上内存分配：对象优先在eden区分配，大对象直接进入老年代，eden区对象经过GC后，如果存活，则存入survivor区并增加年龄，当年龄达到阈值，会进入老年代（注意：当survivor区内存不足时，会动态调整年龄阈值，将对象送入老年代）。老年代空间分配担保机制：指的是minorGC前会计算老年代剩余空间和年轻代中的对象大小，如果空间不足，则触发一次FullGC，如果垃圾回收后空间不足则会触发OOM。
+
+
+
+7 进程的内存分配
+
+
+
+内核区（用户不可读写）高地址段
+
+
+
+
+栈（向下增长）
+
+
+
+
+堆（向上增长）
+
+
+
+
+数据段
+
+
+
+
+代码段
+
+
+
+
+https://blog.csdn.net/xyxzlsld666/article/details/132393872
+
+8 Redis中的ListPack是什么
+
+listpack：…
+
+
+
+
+：4字节，表示listpack占用字节数
+
+
+
+
+：2字节，元素个数
+
+
+
+
+：entry"><meta property="og:type" content="article"><meta property="og:url" content="https://roaraeonliou.github.io/posts/interviewnotes/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/"><meta property="og:image" content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-26T00:00:00+00:00"><meta property="article:modified_time" content="2024-09-26T00:00:00+00:00"><meta property="og:site_name" content="RLTEA BLOG"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="零碎知识点"><meta name=twitter:description content="零碎知识点
+1 Java 原子类中，CAS是如何保证原子性的？
+
+原子类中，用volatile修饰value，并使用unsafe类获取到value的地址偏移量，在执行更新操作时，使用unsafe类执行compareAndSwap操作，而该方法是一个Native方法，底层是通过汇编指令CMPXCHG加上Lock前缀，保证内存区域只允许一个线程访问。
+
+2 运行时多态和编译时多态
+
+运行时多态：通过基类或者抽象类、虚函数等调用具体实例的方法，在运行时才可以确定具体方法，这种情况时运行时多态。
+
+
+编译时多态：函数的重载、模板类等，在编译时即可确定具体的方法，这种情况是编译时多态。
+
+3 B树的具体应用
+
+降低磁盘IO？
+
+4 C++和Java的堆栈有什么区别
+
+栈内存更快，但是堆内存更加灵活。
+
+
+编译期间没有办法确定堆空间上的内存分配情况，堆上分配的内存需要回收（C++需要程序员手动回收，而Java有自动垃圾回收机制）；而栈内存的内存回收由系统管理。
+
+
+C++的对象既可以创建在堆上，也可以创建在栈上，Java绝大多数对象都创建在堆上。Java中的栈一般情况只存储引用和基本变量。
+
+
+C++用alloca申请栈内存，new申请堆内存，malloc申请自由存储区，此外还有全局（静态）存储区用于存储全局变量和静态变量，常量存储区存储常量。
+
+
+注意：栈中申请的内存都需要使用指针指向，Java也是如此，只不过对程序员屏蔽掉了指针。
+
+5 C++的内存分布
+
+由上至下分别是：栈、堆、全局区、常量区、代码区。
+
+
+堆区内存向上增长，栈区内存向下增长。
+
+
+https://blog.csdn.net/qq_72982923/article/details/132197354
+
+6 Java中的对象内存分配
+
+
+
+栈上内存分配：当对象的生命周期与入栈的方法一致时，JVM的对象逃逸分析会让该对象直接在栈上进行空间分配，从而减少GC压力
+
+
+
+
+堆上内存分配：对象优先在eden区分配，大对象直接进入老年代，eden区对象经过GC后，如果存活，则存入survivor区并增加年龄，当年龄达到阈值，会进入老年代（注意：当survivor区内存不足时，会动态调整年龄阈值，将对象送入老年代）。老年代空间分配担保机制：指的是minorGC前会计算老年代剩余空间和年轻代中的对象大小，如果空间不足，则触发一次FullGC，如果垃圾回收后空间不足则会触发OOM。
+
+
+
+7 进程的内存分配
+
+
+
+内核区（用户不可读写）高地址段
+
+
+
+
+栈（向下增长）
+
+
+
+
+堆（向上增长）
+
+
+
+
+数据段
+
+
+
+
+代码段
+
+
+
+
+https://blog.csdn.net/xyxzlsld666/article/details/132393872
+
+8 Redis中的ListPack是什么
+
+listpack：…
+
+
+
+
+：4字节，表示listpack占用字节数
+
+
+
+
+：2字节，元素个数
+
+
+
+
+：entry"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://roaraeonliou.github.io/posts/"},{"@type":"ListItem","position":2,"name":"零碎知识点","item":"https://roaraeonliou.github.io/posts/interviewnotes/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"零碎知识点","name":"零碎知识点","description":"零碎知识点 1 Java 原子类中，CAS是如何保证原子性的？ 原子类中，用volatile修饰value，并使用unsafe类获取到value的地址偏移量，在执行更新操作时，使用unsafe类执行compareAndSwap操作，而该方法是一个Native方法，底层是通过汇编指令CMPXCHG加上Lock前缀，保证内存区域只允许一个线程访问。\n2 运行时多态和编译时多态 运行时多态：通过基类或者抽象类、虚函数等调用具体实例的方法，在运行时才可以确定具体方法，这种情况时运行时多态。\n编译时多态：函数的重载、模板类等，在编译时即可确定具体的方法，这种情况是编译时多态。\n3 B树的具体应用 降低磁盘IO？\n4 C++和Java的堆栈有什么区别 栈内存更快，但是堆内存更加灵活。\n编译期间没有办法确定堆空间上的内存分配情况，堆上分配的内存需要回收（C++需要程序员手动回收，而Java有自动垃圾回收机制）；而栈内存的内存回收由系统管理。\nC++的对象既可以创建在堆上，也可以创建在栈上，Java绝大多数对象都创建在堆上。Java中的栈一般情况只存储引用和基本变量。\nC++用alloca申请栈内存，new申请堆内存，malloc申请自由存储区，此外还有全局（静态）存储区用于存储全局变量和静态变量，常量存储区存储常量。\n注意：栈中申请的内存都需要使用指针指向，Java也是如此，只不过对程序员屏蔽掉了指针。\n5 C++的内存分布 由上至下分别是：栈、堆、全局区、常量区、代码区。\n堆区内存向上增长，栈区内存向下增长。\nhttps://blog.csdn.net/qq_72982923/article/details/132197354\n6 Java中的对象内存分配 栈上内存分配：当对象的生命周期与入栈的方法一致时，JVM的对象逃逸分析会让该对象直接在栈上进行空间分配，从而减少GC压力\n堆上内存分配：对象优先在eden区分配，大对象直接进入老年代，eden区对象经过GC后，如果存活，则存入survivor区并增加年龄，当年龄达到阈值，会进入老年代（注意：当survivor区内存不足时，会动态调整年龄阈值，将对象送入老年代）。老年代空间分配担保机制：指的是minorGC前会计算老年代剩余空间和年轻代中的对象大小，如果空间不足，则触发一次FullGC，如果垃圾回收后空间不足则会触发OOM。\n7 进程的内存分配 内核区（用户不可读写）高地址段\n栈（向下增长）\n堆（向上增长）\n数据段\n代码段\nhttps://blog.csdn.net/xyxzlsld666/article/details/132393872\n8 Redis中的ListPack是什么 listpack：…\n：4字节，表示listpack占用字节数\n：2字节，元素个数\n：entry\n","keywords":["笔记"],"articleBody":"零碎知识点 1 Java 原子类中，CAS是如何保证原子性的？ 原子类中，用volatile修饰value，并使用unsafe类获取到value的地址偏移量，在执行更新操作时，使用unsafe类执行compareAndSwap操作，而该方法是一个Native方法，底层是通过汇编指令CMPXCHG加上Lock前缀，保证内存区域只允许一个线程访问。\n2 运行时多态和编译时多态 运行时多态：通过基类或者抽象类、虚函数等调用具体实例的方法，在运行时才可以确定具体方法，这种情况时运行时多态。\n编译时多态：函数的重载、模板类等，在编译时即可确定具体的方法，这种情况是编译时多态。\n3 B树的具体应用 降低磁盘IO？\n4 C++和Java的堆栈有什么区别 栈内存更快，但是堆内存更加灵活。\n编译期间没有办法确定堆空间上的内存分配情况，堆上分配的内存需要回收（C++需要程序员手动回收，而Java有自动垃圾回收机制）；而栈内存的内存回收由系统管理。\nC++的对象既可以创建在堆上，也可以创建在栈上，Java绝大多数对象都创建在堆上。Java中的栈一般情况只存储引用和基本变量。\nC++用alloca申请栈内存，new申请堆内存，malloc申请自由存储区，此外还有全局（静态）存储区用于存储全局变量和静态变量，常量存储区存储常量。\n注意：栈中申请的内存都需要使用指针指向，Java也是如此，只不过对程序员屏蔽掉了指针。\n5 C++的内存分布 由上至下分别是：栈、堆、全局区、常量区、代码区。\n堆区内存向上增长，栈区内存向下增长。\nhttps://blog.csdn.net/qq_72982923/article/details/132197354\n6 Java中的对象内存分配 栈上内存分配：当对象的生命周期与入栈的方法一致时，JVM的对象逃逸分析会让该对象直接在栈上进行空间分配，从而减少GC压力\n堆上内存分配：对象优先在eden区分配，大对象直接进入老年代，eden区对象经过GC后，如果存活，则存入survivor区并增加年龄，当年龄达到阈值，会进入老年代（注意：当survivor区内存不足时，会动态调整年龄阈值，将对象送入老年代）。老年代空间分配担保机制：指的是minorGC前会计算老年代剩余空间和年轻代中的对象大小，如果空间不足，则触发一次FullGC，如果垃圾回收后空间不足则会触发OOM。\n7 进程的内存分配 内核区（用户不可读写）高地址段\n栈（向下增长）\n堆（向上增长）\n数据段\n代码段\nhttps://blog.csdn.net/xyxzlsld666/article/details/132393872\n8 Redis中的ListPack是什么 listpack：…\n：4字节，表示listpack占用字节数\n：2字节，元素个数\n：entry\n：1字节，结束标志，0xFF\nentry：\n：编码类型\n：元素数据\n：entry长度，最高位作为标记位，表示是否为element的最后一个字节，并采用大端存储方式。\n=\nListPack中Entry改为记录自身长度，从而避免了ziplist的连锁更新问题。\n反向查询：通过读取前一个元素的字节，逐步向前读取至element-tot-len最后一个字节，得到偏移值，从而访问上一个元素。\nhttps://blog.csdn.net/ldw201510803006/article/details/122420585\nhttps://blog.csdn.net/Orange_pa/article/details/127847964\n9 进程之间的通信方式 10 进程之间如何通过管道通信 进程间的通信方式——pipe（管道）-CSDN博客\n11 RPC 12 发送数据后TCP层面发生的事情 ","wordCount":"61","inLanguage":"en","image":"https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2024-09-26T00:00:00Z","dateModified":"2024-09-26T00:00:00Z","author":{"@type":"Person","name":"RLTEA"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://roaraeonliou.github.io/posts/interviewnotes/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/"},"publisher":{"@type":"Organization","name":"RLTEA BLOG","logo":{"@type":"ImageObject","url":"https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E"}}}</script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["\\[","\\]"],["$$","$$"]],inlineMath:[["\\(","\\)"],["$","$"]]}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://roaraeonliou.github.io/ accesskey=h title="Home (Alt + H)"><img src=https://roaraeonliou.github.io/apple-touch-icon.png alt aria-label=logo height=35>Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://roaraeonliou.github.io/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://roaraeonliou.github.io/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://roaraeonliou.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://roaraeonliou.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://roaraeonliou.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://roaraeonliou.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">零碎知识点</h1><div class=post-meta><span title='2024-09-26 00:00:00 +0000 UTC'>September 26, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;61 words&nbsp;·&nbsp;RLTEA&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/InterviewNotes/%e9%9b%b6%e7%a2%8e%e7%9f%a5%e8%af%86%e7%82%b9.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><aside id=toc-container class="toc-container wide"><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#%e9%9b%b6%e7%a2%8e%e7%9f%a5%e8%af%86%e7%82%b9 aria-label=零碎知识点>零碎知识点</a></li><li><a href=#1-java-%e5%8e%9f%e5%ad%90%e7%b1%bb%e4%b8%adcas%e6%98%af%e5%a6%82%e4%bd%95%e4%bf%9d%e8%af%81%e5%8e%9f%e5%ad%90%e6%80%a7%e7%9a%84 aria-label="1 Java 原子类中，CAS是如何保证原子性的？">1 Java 原子类中，CAS是如何保证原子性的？</a></li><li><a href=#2-%e8%bf%90%e8%a1%8c%e6%97%b6%e5%a4%9a%e6%80%81%e5%92%8c%e7%bc%96%e8%af%91%e6%97%b6%e5%a4%9a%e6%80%81 aria-label="2 运行时多态和编译时多态">2 运行时多态和编译时多态</a></li><li><a href=#3-b%e6%a0%91%e7%9a%84%e5%85%b7%e4%bd%93%e5%ba%94%e7%94%a8 aria-label="3 B树的具体应用">3 B树的具体应用</a></li><li><a href=#4-c%e5%92%8cjava%e7%9a%84%e5%a0%86%e6%a0%88%e6%9c%89%e4%bb%80%e4%b9%88%e5%8c%ba%e5%88%ab aria-label="4 C++和Java的堆栈有什么区别">4 C++和Java的堆栈有什么区别</a></li><li><a href=#5-c%e7%9a%84%e5%86%85%e5%ad%98%e5%88%86%e5%b8%83 aria-label="5 C++的内存分布">5 C++的内存分布</a></li><li><a href=#6-java%e4%b8%ad%e7%9a%84%e5%af%b9%e8%b1%a1%e5%86%85%e5%ad%98%e5%88%86%e9%85%8d aria-label="6 Java中的对象内存分配">6 Java中的对象内存分配</a></li><li><a href=#7-%e8%bf%9b%e7%a8%8b%e7%9a%84%e5%86%85%e5%ad%98%e5%88%86%e9%85%8d aria-label="7 进程的内存分配">7 进程的内存分配</a></li><li><a href=#8-redis%e4%b8%ad%e7%9a%84listpack%e6%98%af%e4%bb%80%e4%b9%88 aria-label="8 Redis中的ListPack是什么">8 Redis中的ListPack是什么</a></li><li><a href=#9-%e8%bf%9b%e7%a8%8b%e4%b9%8b%e9%97%b4%e7%9a%84%e9%80%9a%e4%bf%a1%e6%96%b9%e5%bc%8f aria-label="9 进程之间的通信方式">9 进程之间的通信方式</a></li><li><a href=#10-%e8%bf%9b%e7%a8%8b%e4%b9%8b%e9%97%b4%e5%a6%82%e4%bd%95%e9%80%9a%e8%bf%87%e7%ae%a1%e9%81%93%e9%80%9a%e4%bf%a1 aria-label="10 进程之间如何通过管道通信">10 进程之间如何通过管道通信</a></li><li><a href=#11-rpc aria-label="11 RPC">11 RPC</a></li><li><a href=#12-%e5%8f%91%e9%80%81%e6%95%b0%e6%8d%ae%e5%90%8etcp%e5%b1%82%e9%9d%a2%e5%8f%91%e7%94%9f%e7%9a%84%e4%ba%8b%e6%83%85 aria-label="12 发送数据后TCP层面发生的事情">12 发送数据后TCP层面发生的事情</a></li></ul></div></details></div></aside><script>let activeElement,elements;window.addEventListener("DOMContentLoaded",function(){checkTocPosition(),elements=document.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]"),activeElement=elements[0];const t=encodeURI(activeElement.getAttribute("id")).toLowerCase();document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active")},!1),window.addEventListener("resize",function(){checkTocPosition()},!1),window.addEventListener("scroll",()=>{activeElement=Array.from(elements).find(e=>{if(getOffsetTop(e)-window.pageYOffset>0&&getOffsetTop(e)-window.pageYOffset<window.innerHeight/2)return e})||activeElement,elements.forEach(e=>{const t=encodeURI(e.getAttribute("id")).toLowerCase();e===activeElement?document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active"):document.querySelector(`.inner ul li a[href="#${t}"]`).classList.remove("active")})},!1);const main=parseInt(getComputedStyle(document.body).getPropertyValue("--article-width"),10),toc=parseInt(getComputedStyle(document.body).getPropertyValue("--toc-width"),10),gap=parseInt(getComputedStyle(document.body).getPropertyValue("--gap"),10);function checkTocPosition(){const e=document.body.scrollWidth;e-main-toc*2-gap*4>0?document.getElementById("toc-container").classList.add("wide"):document.getElementById("toc-container").classList.remove("wide")}function getOffsetTop(e){if(!e.getClientRects().length)return 0;let t=e.getBoundingClientRect(),n=e.ownerDocument.defaultView;return t.top+n.pageYOffset}</script><div class=post-content><h1 id=零碎知识点>零碎知识点<a hidden class=anchor aria-hidden=true href=#零碎知识点>#</a></h1><h1 id=1-java-原子类中cas是如何保证原子性的>1 Java 原子类中，CAS是如何保证原子性的？<a hidden class=anchor aria-hidden=true href=#1-java-原子类中cas是如何保证原子性的>#</a></h1><blockquote><p>原子类中，用volatile修饰value，并使用unsafe类获取到value的地址偏移量，在执行更新操作时，使用unsafe类执行compareAndSwap操作，而该方法是一个Native方法，底层是通过汇编指令CMPXCHG加上Lock前缀，保证内存区域只允许一个线程访问。</p></blockquote><h1 id=2-运行时多态和编译时多态>2 运行时多态和编译时多态<a hidden class=anchor aria-hidden=true href=#2-运行时多态和编译时多态>#</a></h1><blockquote><p>运行时多态：通过基类或者抽象类、虚函数等调用具体实例的方法，在运行时才可以确定具体方法，这种情况时运行时多态。</p></blockquote><blockquote><p>编译时多态：函数的重载、模板类等，在编译时即可确定具体的方法，这种情况是编译时多态。</p></blockquote><h1 id=3-b树的具体应用>3 B树的具体应用<a hidden class=anchor aria-hidden=true href=#3-b树的具体应用>#</a></h1><blockquote><p>降低磁盘IO？</p></blockquote><h1 id=4-c和java的堆栈有什么区别>4 C++和Java的堆栈有什么区别<a hidden class=anchor aria-hidden=true href=#4-c和java的堆栈有什么区别>#</a></h1><blockquote><p>栈内存更快，但是堆内存更加灵活。</p></blockquote><blockquote><p>编译期间没有办法确定堆空间上的内存分配情况，堆上分配的内存需要回收（C++需要程序员手动回收，而Java有自动垃圾回收机制）；而栈内存的内存回收由系统管理。</p></blockquote><blockquote><p>C++的对象既可以创建在堆上，也可以创建在栈上，Java绝大多数对象都创建在堆上。Java中的栈一般情况只存储引用和基本变量。</p></blockquote><blockquote><p>C++用alloca申请栈内存，new申请堆内存，malloc申请自由存储区，此外还有全局（静态）存储区用于存储全局变量和静态变量，常量存储区存储常量。</p></blockquote><blockquote><p>注意：栈中申请的内存都需要使用指针指向，Java也是如此，只不过对程序员屏蔽掉了指针。</p></blockquote><h1 id=5-c的内存分布>5 C++的内存分布<a hidden class=anchor aria-hidden=true href=#5-c的内存分布>#</a></h1><blockquote><p>由上至下分别是：栈、堆、全局区、常量区、代码区。</p></blockquote><blockquote><p>堆区内存向上增长，栈区内存向下增长。</p></blockquote><blockquote><p><a href=https://blog.csdn.net/qq_72982923/article/details/132197354>https://blog.csdn.net/qq_72982923/article/details/132197354</a></p></blockquote><h1 id=6-java中的对象内存分配>6 Java中的对象内存分配<a hidden class=anchor aria-hidden=true href=#6-java中的对象内存分配>#</a></h1><ul><li><blockquote><p>栈上内存分配：当对象的生命周期与入栈的方法一致时，JVM的对象逃逸分析会让该对象直接在栈上进行空间分配，从而减少GC压力</p></blockquote></li><li><blockquote><p>堆上内存分配：对象优先在eden区分配，大对象直接进入老年代，eden区对象经过GC后，如果存活，则存入survivor区并增加年龄，当年龄达到阈值，会进入老年代（注意：当survivor区内存不足时，会动态调整年龄阈值，将对象送入老年代）。老年代空间分配担保机制：指的是minorGC前会计算老年代剩余空间和年轻代中的对象大小，如果空间不足，则触发一次FullGC，如果垃圾回收后空间不足则会触发OOM。</p></blockquote></li></ul><h1 id=7-进程的内存分配>7 进程的内存分配<a hidden class=anchor aria-hidden=true href=#7-进程的内存分配>#</a></h1><ul><li><blockquote><p>内核区（用户不可读写）高地址段</p></blockquote></li><li><blockquote><p>栈（向下增长）</p></blockquote></li><li><blockquote><p>堆（向上增长）</p></blockquote></li><li><blockquote><p>数据段</p></blockquote></li><li><blockquote><p>代码段</p></blockquote></li></ul><blockquote><p><a href=https://blog.csdn.net/xyxzlsld666/article/details/132393872>https://blog.csdn.net/xyxzlsld666/article/details/132393872</a></p></blockquote><h1 id=8-redis中的listpack是什么>8 Redis中的ListPack是什么<a hidden class=anchor aria-hidden=true href=#8-redis中的listpack是什么>#</a></h1><blockquote><p>listpack：…</p></blockquote><ul><li><blockquote><p>：4字节，表示listpack占用字节数</p></blockquote></li><li><blockquote><p>：2字节，元素个数</p></blockquote></li><li><blockquote><p>：entry</p></blockquote></li><li><blockquote><p>：1字节，结束标志，0xFF</p></blockquote></li></ul><blockquote><p>entry：</p></blockquote><ul><li><blockquote><p>：编码类型</p></blockquote></li><li><blockquote><p>：元素数据</p></blockquote></li><li><blockquote><p>：entry长度，最高位作为标记位，表示是否为element的最后一个字节，并采用大端存储方式。</p></blockquote></li></ul><blockquote><p>=</p></blockquote><blockquote><p>ListPack中Entry改为记录自身长度，从而避免了ziplist的连锁更新问题。</p></blockquote><blockquote><p>反向查询：通过读取前一个元素的字节，逐步向前读取至element-tot-len最后一个字节，得到偏移值，从而访问上一个元素。</p></blockquote><blockquote><p><a href=https://blog.csdn.net/ldw201510803006/article/details/122420585>https://blog.csdn.net/ldw201510803006/article/details/122420585</a></p></blockquote><blockquote><p><a href=https://blog.csdn.net/Orange_pa/article/details/127847964>https://blog.csdn.net/Orange_pa/article/details/127847964</a></p></blockquote><h1 id=9-进程之间的通信方式>9 进程之间的通信方式<a hidden class=anchor aria-hidden=true href=#9-进程之间的通信方式>#</a></h1><h1 id=10-进程之间如何通过管道通信>10 进程之间如何通过管道通信<a hidden class=anchor aria-hidden=true href=#10-进程之间如何通过管道通信>#</a></h1><blockquote><p><a href=https://blog.csdn.net/skyroben/article/details/71513385>进程间的通信方式——pipe（管道）-CSDN博客</a></p></blockquote><h1 id=11-rpc>11 RPC<a hidden class=anchor aria-hidden=true href=#11-rpc>#</a></h1><h1 id=12-发送数据后tcp层面发生的事情>12 发送数据后TCP层面发生的事情<a hidden class=anchor aria-hidden=true href=#12-发送数据后tcp层面发生的事情>#</a></h1></div><footer class=post-footer><ul class=post-tags><li><a href=https://roaraeonliou.github.io/tags/%E7%AC%94%E8%AE%B0/>笔记</a></li></ul><nav class=paginav><a class=prev href=https://roaraeonliou.github.io/posts/interviewnotes/designmode/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E4%B8%8Euml%E7%B1%BB%E5%9B%BE/><span class=title>« Prev</span><br><span>软件设计原则与UML类图</span>
+</a><a class=next href=https://roaraeonliou.github.io/posts/interviewnotes/new/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/><span class=title>Next »</span><br><span>计算机网络基础</span></a></nav></footer><div id=comments><script src=https://giscus.app/client.js data-repo=RoaraeonLiou/roaraeonliou.github.io data-repo-id=R_kgDOMIxQ4w data-category=Announcements data-category-id=DIC_kwDOMIxQ484CgZUR data-mapping=title data-strict=1 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=preferred_color_scheme data-lang=zh-CN data-loading=lazy crossorigin=anonymous async></script></div></article></main><footer class=footer><span>&copy; 2024 <a href=https://roaraeonliou.github.io/>RLTEA BLOG</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

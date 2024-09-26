@@ -1,0 +1,319 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Redis补充 | RLTEA BLOG</title>
+<meta name=keywords content="笔记,Redis,NoSQL,数据库"><meta name=description content="Redis补充
+1 Redis网络模型
+Redis的核心业务部分（命令处理）是单线程，但是整个Redis是多线程的。
+
+v4.0：引入多线程异步处理一些耗时较长的任务，例如异步删除命令unlink。
+v6.0：在核心网络模型中引入多线程，进一步提高对于多核CPU的利用率，但是核心部分依然是单线程。
+
+为什么选择单线程？
+
+性能瓶颈是网络延迟，不是执行速度，多线程并不会带来巨大性能提升。
+多线程会导致过多的上下文切换，带来不必要的开销。
+引入多线程可能会面临线程安全问题，必须引入线程锁这样的安全手段，实现复杂度增高，性能也大打折扣。
+
+原理篇-27.Redis网络模型-Redis单线程及多线程网络模型变更_哔哩哔哩_bilibili
+2 Redis通信协议
+RESP协议
+原理篇-28.Redis通信协议-RESP协议_哔哩哔哩_bilibili
+3 Redis事务
+Redis事务的三个阶段
+MULTI %事务开始
+  ... %命令入队
+EXEC %事务执行
+Redis事务特点
+
+redis不支持回滚，事务失败，继续执行余下的命令
+事物内部命令错误，所有命令都不会执行
+事物内部出现运行错误，正确的命令会被执行
+Redis事务没有原子性，持久性仅在开启AOF的always模式下支持。
+Redis事务总是有隔离性（单线程）和一致性。
+
+Redis事务相关命令
+
+WATCH：乐观锁，给事务提供CAS机制，可以监控一个或者多个键，一旦其中有一个被修改，之后的事务就不会执行，监控一直持续到EXEC或者UNWATCH。
+MULTI：用于开启事务，开启后可以继续送入命令，当EXEC被调用时，才被执行。
+EXEC：执行事务块内所有命令，返回所有命令的返回值，按照命令先后排序。
+DISCARD：清空事务队列，放弃执行事务。
+UNWATCH：取消watch对所有key的监控。
+
+4 缓存和数据库的一致性
+
+设置有效期：给缓存设置有效期，到期自动删除，再次查询时更新
+
+优势：简单方便
+缺点：时效性差，缓存过期之前可能不一致
+场景：更新频率较低，时效性要求较低的业务
+
+
+同步双写：在修改数据库的同时，直接修改缓存
+
+优势：时效性强，缓存与数据库强一致
+缺点：有代码侵入，耦合度高
+场景：对一致性，时效性要求较高的缓存数据
+
+
+异步通知：在修改数据库时发送事件通知，相关服务监听到通知后修改缓存数据
+
+优势：低耦合，可以同时通知多个缓存服务
+缺点：时效性一般，可能存在中间不一致状态
+场景：时效性要求一般，有多个服务需要同步
+
+
+
+
+
+
+基于MQ的异步通知，对业务代码仍然有一定侵入性
+
+
+
+
+基于Cannal的异步通知，可以做到几乎0侵入
+
+4.1 缓存更新策略
+
+删除缓存而不是更新缓存
+先删数据，后删缓存
+
+4.2 缓存不一致处理
+
+使用消息队列，把要删除和删除失败的key放入消息队列，利用重试机制，删除对应的key
+
+对代码有侵入性
+
+
+数据库订阅+消息队列保证key被删除
+
+利用canal或其他服务监听binlog
+复杂度提升
+
+
+延时双删防止脏数据
+
+延迟时间需要具体的考量和测试
+
+
+设置过期时间兜底
+
+5 热key重建
+
+使用互斥锁，保证只有一个线程重建，其他线程等待该线程重建完后，获取缓存数据即可。
+不显示设置过期时间，而是设置逻辑过期字段，发现逻辑过期后，采用单独的线程构建缓存。
+
+6 大key问题
+单个简单key存储的value过大，hash、set、zset、list中存储过多元素。"><meta name=author content="RLTEA"><link rel=canonical href=https://roaraeonliou.github.io/posts/interviewnotes/redis/redis%E8%A1%A5%E5%85%85/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.258803b0f0cc9a4a109c6fe78a9d39f2e0437217d71c5c9848255af9250f2b1b.css integrity="sha256-JYgDsPDMmkoQnG/nip058uBDchfXHFyYSCVa+SUPKxs=" rel="preload stylesheet" as=style><link rel=icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://roaraeonliou.github.io/posts/interviewnotes/redis/redis%E8%A1%A5%E5%85%85/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="Redis补充"><meta property="og:description" content="Redis补充
+1 Redis网络模型
+Redis的核心业务部分（命令处理）是单线程，但是整个Redis是多线程的。
+
+v4.0：引入多线程异步处理一些耗时较长的任务，例如异步删除命令unlink。
+v6.0：在核心网络模型中引入多线程，进一步提高对于多核CPU的利用率，但是核心部分依然是单线程。
+
+为什么选择单线程？
+
+性能瓶颈是网络延迟，不是执行速度，多线程并不会带来巨大性能提升。
+多线程会导致过多的上下文切换，带来不必要的开销。
+引入多线程可能会面临线程安全问题，必须引入线程锁这样的安全手段，实现复杂度增高，性能也大打折扣。
+
+原理篇-27.Redis网络模型-Redis单线程及多线程网络模型变更_哔哩哔哩_bilibili
+2 Redis通信协议
+RESP协议
+原理篇-28.Redis通信协议-RESP协议_哔哩哔哩_bilibili
+3 Redis事务
+Redis事务的三个阶段
+MULTI %事务开始
+  ... %命令入队
+EXEC %事务执行
+Redis事务特点
+
+redis不支持回滚，事务失败，继续执行余下的命令
+事物内部命令错误，所有命令都不会执行
+事物内部出现运行错误，正确的命令会被执行
+Redis事务没有原子性，持久性仅在开启AOF的always模式下支持。
+Redis事务总是有隔离性（单线程）和一致性。
+
+Redis事务相关命令
+
+WATCH：乐观锁，给事务提供CAS机制，可以监控一个或者多个键，一旦其中有一个被修改，之后的事务就不会执行，监控一直持续到EXEC或者UNWATCH。
+MULTI：用于开启事务，开启后可以继续送入命令，当EXEC被调用时，才被执行。
+EXEC：执行事务块内所有命令，返回所有命令的返回值，按照命令先后排序。
+DISCARD：清空事务队列，放弃执行事务。
+UNWATCH：取消watch对所有key的监控。
+
+4 缓存和数据库的一致性
+
+设置有效期：给缓存设置有效期，到期自动删除，再次查询时更新
+
+优势：简单方便
+缺点：时效性差，缓存过期之前可能不一致
+场景：更新频率较低，时效性要求较低的业务
+
+
+同步双写：在修改数据库的同时，直接修改缓存
+
+优势：时效性强，缓存与数据库强一致
+缺点：有代码侵入，耦合度高
+场景：对一致性，时效性要求较高的缓存数据
+
+
+异步通知：在修改数据库时发送事件通知，相关服务监听到通知后修改缓存数据
+
+优势：低耦合，可以同时通知多个缓存服务
+缺点：时效性一般，可能存在中间不一致状态
+场景：时效性要求一般，有多个服务需要同步
+
+
+
+
+
+
+基于MQ的异步通知，对业务代码仍然有一定侵入性
+
+
+
+
+基于Cannal的异步通知，可以做到几乎0侵入
+
+4.1 缓存更新策略
+
+删除缓存而不是更新缓存
+先删数据，后删缓存
+
+4.2 缓存不一致处理
+
+使用消息队列，把要删除和删除失败的key放入消息队列，利用重试机制，删除对应的key
+
+对代码有侵入性
+
+
+数据库订阅+消息队列保证key被删除
+
+利用canal或其他服务监听binlog
+复杂度提升
+
+
+延时双删防止脏数据
+
+延迟时间需要具体的考量和测试
+
+
+设置过期时间兜底
+
+5 热key重建
+
+使用互斥锁，保证只有一个线程重建，其他线程等待该线程重建完后，获取缓存数据即可。
+不显示设置过期时间，而是设置逻辑过期字段，发现逻辑过期后，采用单独的线程构建缓存。
+
+6 大key问题
+单个简单key存储的value过大，hash、set、zset、list中存储过多元素。"><meta property="og:type" content="article"><meta property="og:url" content="https://roaraeonliou.github.io/posts/interviewnotes/redis/redis%E8%A1%A5%E5%85%85/"><meta property="og:image" content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-26T00:00:00+00:00"><meta property="article:modified_time" content="2024-09-26T00:00:00+00:00"><meta property="og:site_name" content="RLTEA BLOG"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="Redis补充"><meta name=twitter:description content="Redis补充
+1 Redis网络模型
+Redis的核心业务部分（命令处理）是单线程，但是整个Redis是多线程的。
+
+v4.0：引入多线程异步处理一些耗时较长的任务，例如异步删除命令unlink。
+v6.0：在核心网络模型中引入多线程，进一步提高对于多核CPU的利用率，但是核心部分依然是单线程。
+
+为什么选择单线程？
+
+性能瓶颈是网络延迟，不是执行速度，多线程并不会带来巨大性能提升。
+多线程会导致过多的上下文切换，带来不必要的开销。
+引入多线程可能会面临线程安全问题，必须引入线程锁这样的安全手段，实现复杂度增高，性能也大打折扣。
+
+原理篇-27.Redis网络模型-Redis单线程及多线程网络模型变更_哔哩哔哩_bilibili
+2 Redis通信协议
+RESP协议
+原理篇-28.Redis通信协议-RESP协议_哔哩哔哩_bilibili
+3 Redis事务
+Redis事务的三个阶段
+MULTI %事务开始
+  ... %命令入队
+EXEC %事务执行
+Redis事务特点
+
+redis不支持回滚，事务失败，继续执行余下的命令
+事物内部命令错误，所有命令都不会执行
+事物内部出现运行错误，正确的命令会被执行
+Redis事务没有原子性，持久性仅在开启AOF的always模式下支持。
+Redis事务总是有隔离性（单线程）和一致性。
+
+Redis事务相关命令
+
+WATCH：乐观锁，给事务提供CAS机制，可以监控一个或者多个键，一旦其中有一个被修改，之后的事务就不会执行，监控一直持续到EXEC或者UNWATCH。
+MULTI：用于开启事务，开启后可以继续送入命令，当EXEC被调用时，才被执行。
+EXEC：执行事务块内所有命令，返回所有命令的返回值，按照命令先后排序。
+DISCARD：清空事务队列，放弃执行事务。
+UNWATCH：取消watch对所有key的监控。
+
+4 缓存和数据库的一致性
+
+设置有效期：给缓存设置有效期，到期自动删除，再次查询时更新
+
+优势：简单方便
+缺点：时效性差，缓存过期之前可能不一致
+场景：更新频率较低，时效性要求较低的业务
+
+
+同步双写：在修改数据库的同时，直接修改缓存
+
+优势：时效性强，缓存与数据库强一致
+缺点：有代码侵入，耦合度高
+场景：对一致性，时效性要求较高的缓存数据
+
+
+异步通知：在修改数据库时发送事件通知，相关服务监听到通知后修改缓存数据
+
+优势：低耦合，可以同时通知多个缓存服务
+缺点：时效性一般，可能存在中间不一致状态
+场景：时效性要求一般，有多个服务需要同步
+
+
+
+
+
+
+基于MQ的异步通知，对业务代码仍然有一定侵入性
+
+
+
+
+基于Cannal的异步通知，可以做到几乎0侵入
+
+4.1 缓存更新策略
+
+删除缓存而不是更新缓存
+先删数据，后删缓存
+
+4.2 缓存不一致处理
+
+使用消息队列，把要删除和删除失败的key放入消息队列，利用重试机制，删除对应的key
+
+对代码有侵入性
+
+
+数据库订阅+消息队列保证key被删除
+
+利用canal或其他服务监听binlog
+复杂度提升
+
+
+延时双删防止脏数据
+
+延迟时间需要具体的考量和测试
+
+
+设置过期时间兜底
+
+5 热key重建
+
+使用互斥锁，保证只有一个线程重建，其他线程等待该线程重建完后，获取缓存数据即可。
+不显示设置过期时间，而是设置逻辑过期字段，发现逻辑过期后，采用单独的线程构建缓存。
+
+6 大key问题
+单个简单key存储的value过大，hash、set、zset、list中存储过多元素。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://roaraeonliou.github.io/posts/"},{"@type":"ListItem","position":2,"name":"Redis补充","item":"https://roaraeonliou.github.io/posts/interviewnotes/redis/redis%E8%A1%A5%E5%85%85/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Redis补充","name":"Redis补充","description":"Redis补充 1 Redis网络模型 Redis的核心业务部分（命令处理）是单线程，但是整个Redis是多线程的。\nv4.0：引入多线程异步处理一些耗时较长的任务，例如异步删除命令unlink。 v6.0：在核心网络模型中引入多线程，进一步提高对于多核CPU的利用率，但是核心部分依然是单线程。 为什么选择单线程？\n性能瓶颈是网络延迟，不是执行速度，多线程并不会带来巨大性能提升。 多线程会导致过多的上下文切换，带来不必要的开销。 引入多线程可能会面临线程安全问题，必须引入线程锁这样的安全手段，实现复杂度增高，性能也大打折扣。 原理篇-27.Redis网络模型-Redis单线程及多线程网络模型变更_哔哩哔哩_bilibili\n2 Redis通信协议 RESP协议\n原理篇-28.Redis通信协议-RESP协议_哔哩哔哩_bilibili\n3 Redis事务 Redis事务的三个阶段\nMULTI %事务开始 ... %命令入队 EXEC %事务执行 Redis事务特点\nredis不支持回滚，事务失败，继续执行余下的命令 事物内部命令错误，所有命令都不会执行 事物内部出现运行错误，正确的命令会被执行 Redis事务没有原子性，持久性仅在开启AOF的always模式下支持。 Redis事务总是有隔离性（单线程）和一致性。 Redis事务相关命令\nWATCH：乐观锁，给事务提供CAS机制，可以监控一个或者多个键，一旦其中有一个被修改，之后的事务就不会执行，监控一直持续到EXEC或者UNWATCH。 MULTI：用于开启事务，开启后可以继续送入命令，当EXEC被调用时，才被执行。 EXEC：执行事务块内所有命令，返回所有命令的返回值，按照命令先后排序。 DISCARD：清空事务队列，放弃执行事务。 UNWATCH：取消watch对所有key的监控。 4 缓存和数据库的一致性 设置有效期：给缓存设置有效期，到期自动删除，再次查询时更新 优势：简单方便 缺点：时效性差，缓存过期之前可能不一致 场景：更新频率较低，时效性要求较低的业务 同步双写：在修改数据库的同时，直接修改缓存 优势：时效性强，缓存与数据库强一致 缺点：有代码侵入，耦合度高 场景：对一致性，时效性要求较高的缓存数据 异步通知：在修改数据库时发送事件通知，相关服务监听到通知后修改缓存数据 优势：低耦合，可以同时通知多个缓存服务 缺点：时效性一般，可能存在中间不一致状态 场景：时效性要求一般，有多个服务需要同步 基于MQ的异步通知，对业务代码仍然有一定侵入性 基于Cannal的异步通知，可以做到几乎0侵入 4.1 缓存更新策略 删除缓存而不是更新缓存 先删数据，后删缓存 4.2 缓存不一致处理 使用消息队列，把要删除和删除失败的key放入消息队列，利用重试机制，删除对应的key 对代码有侵入性 数据库订阅+消息队列保证key被删除 利用canal或其他服务监听binlog 复杂度提升 延时双删防止脏数据 延迟时间需要具体的考量和测试 设置过期时间兜底 5 热key重建 使用互斥锁，保证只有一个线程重建，其他线程等待该线程重建完后，获取缓存数据即可。 不显示设置过期时间，而是设置逻辑过期字段，发现逻辑过期后，采用单独的线程构建缓存。 6 大key问题 单个简单key存储的value过大，hash、set、zset、list中存储过多元素。\n","keywords":["笔记","Redis","NoSQL","数据库"],"articleBody":"Redis补充 1 Redis网络模型 Redis的核心业务部分（命令处理）是单线程，但是整个Redis是多线程的。\nv4.0：引入多线程异步处理一些耗时较长的任务，例如异步删除命令unlink。 v6.0：在核心网络模型中引入多线程，进一步提高对于多核CPU的利用率，但是核心部分依然是单线程。 为什么选择单线程？\n性能瓶颈是网络延迟，不是执行速度，多线程并不会带来巨大性能提升。 多线程会导致过多的上下文切换，带来不必要的开销。 引入多线程可能会面临线程安全问题，必须引入线程锁这样的安全手段，实现复杂度增高，性能也大打折扣。 原理篇-27.Redis网络模型-Redis单线程及多线程网络模型变更_哔哩哔哩_bilibili\n2 Redis通信协议 RESP协议\n原理篇-28.Redis通信协议-RESP协议_哔哩哔哩_bilibili\n3 Redis事务 Redis事务的三个阶段\nMULTI %事务开始 ... %命令入队 EXEC %事务执行 Redis事务特点\nredis不支持回滚，事务失败，继续执行余下的命令 事物内部命令错误，所有命令都不会执行 事物内部出现运行错误，正确的命令会被执行 Redis事务没有原子性，持久性仅在开启AOF的always模式下支持。 Redis事务总是有隔离性（单线程）和一致性。 Redis事务相关命令\nWATCH：乐观锁，给事务提供CAS机制，可以监控一个或者多个键，一旦其中有一个被修改，之后的事务就不会执行，监控一直持续到EXEC或者UNWATCH。 MULTI：用于开启事务，开启后可以继续送入命令，当EXEC被调用时，才被执行。 EXEC：执行事务块内所有命令，返回所有命令的返回值，按照命令先后排序。 DISCARD：清空事务队列，放弃执行事务。 UNWATCH：取消watch对所有key的监控。 4 缓存和数据库的一致性 设置有效期：给缓存设置有效期，到期自动删除，再次查询时更新 优势：简单方便 缺点：时效性差，缓存过期之前可能不一致 场景：更新频率较低，时效性要求较低的业务 同步双写：在修改数据库的同时，直接修改缓存 优势：时效性强，缓存与数据库强一致 缺点：有代码侵入，耦合度高 场景：对一致性，时效性要求较高的缓存数据 异步通知：在修改数据库时发送事件通知，相关服务监听到通知后修改缓存数据 优势：低耦合，可以同时通知多个缓存服务 缺点：时效性一般，可能存在中间不一致状态 场景：时效性要求一般，有多个服务需要同步 基于MQ的异步通知，对业务代码仍然有一定侵入性 基于Cannal的异步通知，可以做到几乎0侵入 4.1 缓存更新策略 删除缓存而不是更新缓存 先删数据，后删缓存 4.2 缓存不一致处理 使用消息队列，把要删除和删除失败的key放入消息队列，利用重试机制，删除对应的key 对代码有侵入性 数据库订阅+消息队列保证key被删除 利用canal或其他服务监听binlog 复杂度提升 延时双删防止脏数据 延迟时间需要具体的考量和测试 设置过期时间兜底 5 热key重建 使用互斥锁，保证只有一个线程重建，其他线程等待该线程重建完后，获取缓存数据即可。 不显示设置过期时间，而是设置逻辑过期字段，发现逻辑过期后，采用单独的线程构建缓存。 6 大key问题 单个简单key存储的value过大，hash、set、zset、list中存储过多元素。\n大Key会造成什么问题？\n客户端耗时增加 对大key进行IO操作时，会严重占用带宽和CPU 造成Redis集群中的数据倾斜 主动删除、被动删除，可能会导致阻塞。 如何找到大Key？\nbigkeys命令：以遍历方式分析Redis实例中所有key，并返回整体统计信息和每个数据类型中top1的大key。 redis-rdb-tools：是由Python写的用来分析Redis的rdb快照文件的工具，可以把rdb文件生成json文件或报表来分析Redis的使用详情。 如何处理大Key？\n删除大Key unlink非阻塞删除 压缩和拆分大Key string优先进行压缩，然后进行拆分 list、set等，进行分片 7 Redis实践 7.1 基于Redis的消息队列 Redis提供了三种不同方式实现消息队列：\nlist结构：模拟消息队列 PubSub：基本的点对点消息模型 Stream：比较完善的消息队列模型 List模拟消息队列\n利用LPUSH结合RPOP、或者RPUSH结合LPOP来实现。\n当没有消息时，RPOP和LPOP命令会返回NULL，并不会像JVM阻塞队列那样阻塞并等待消息。所以应当使用BRPOP或者BLPOP来实现阻塞效果。\n利用Redis存储，不受JVM内存上限限制 基于Redis的持久化机制，数据安全性有保证 可以满足消息的有序性 无法避免消息丢失 只支持单消费者 PubSub消息队列\n消费者可以订阅一个或者多个channel，生产者向对应的channel发送消息后，所有订阅者都能收到相关消息。\nSUBSCRIBE channel [channel]：订阅一个或多个频道 PUBLISH channel msg：向一个频道发送消息 PSUBSCRIBE pattern [pattern]：订阅与pattern格式匹配的所有频道 采用发布订阅模型，支持多生产、多消费。 不支持数据持久化，该数据结构设计用于做数据发送，数据没有人接受会直接丢弃。 无法避免消息丢失。 消费者方消息堆积有上线，超出时数据丢失。 Stream消息队列\nXREAD 消息可回溯 一个消息可以被多个消费者读取 可以阻塞读取 有消息漏读的风险 消费者组 消息分流 消息标识 消息确认 可以多消费者争抢消息，加快消费速度 没有消息漏读风险 有消息确认机制，保证消息至少被消费一次 List PubSub Stream 消息持久化 支持 不支持 支持 阻塞读取 支持 支持 支持 消息堆积处理 受限于内存空间，可以利用多消费者加速处理 受限于消费者缓冲区 受限于队列长度，可以利用消费者组提高消费速度，减少堆积 消息确认机制 不支持 不支持 支持 消息回溯 不支持 不支持 支持 7.2 商品缓存 7.3 优惠券秒杀 7.4 好友关注 7.5 用户签到 7.6 UV统计 7.7 秒杀优化 ","wordCount":"166","inLanguage":"en","image":"https://roaraeonliou.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2024-09-26T00:00:00Z","dateModified":"2024-09-26T00:00:00Z","author":{"@type":"Person","name":"RLTEA"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://roaraeonliou.github.io/posts/interviewnotes/redis/redis%E8%A1%A5%E5%85%85/"},"publisher":{"@type":"Organization","name":"RLTEA BLOG","logo":{"@type":"ImageObject","url":"https://roaraeonliou.github.io/%3Clink%20/%20abs%20url%3E"}}}</script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["\\[","\\]"],["$$","$$"]],inlineMath:[["\\(","\\)"],["$","$"]]}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://roaraeonliou.github.io/ accesskey=h title="Home (Alt + H)"><img src=https://roaraeonliou.github.io/apple-touch-icon.png alt aria-label=logo height=35>Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://roaraeonliou.github.io/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://roaraeonliou.github.io/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://roaraeonliou.github.io/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://roaraeonliou.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://roaraeonliou.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://roaraeonliou.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">Redis补充</h1><div class=post-meta><span title='2024-09-26 00:00:00 +0000 UTC'>September 26, 2024</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;166 words&nbsp;·&nbsp;RLTEA&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/InterviewNotes/Redis/Redis%e8%a1%a5%e5%85%85.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><aside id=toc-container class="toc-container wide"><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#redis%e8%a1%a5%e5%85%85 aria-label=Redis补充>Redis补充</a></li><li><a href=#1-redis%e7%bd%91%e7%bb%9c%e6%a8%a1%e5%9e%8b aria-label="1 Redis网络模型">1 Redis网络模型</a></li><li><a href=#2-redis%e9%80%9a%e4%bf%a1%e5%8d%8f%e8%ae%ae aria-label="2 Redis通信协议">2 Redis通信协议</a></li><li><a href=#3-redis%e4%ba%8b%e5%8a%a1 aria-label="3 Redis事务">3 Redis事务</a></li><li><a href=#4-%e7%bc%93%e5%ad%98%e5%92%8c%e6%95%b0%e6%8d%ae%e5%ba%93%e7%9a%84%e4%b8%80%e8%87%b4%e6%80%a7 aria-label="4 缓存和数据库的一致性">4 缓存和数据库的一致性</a><ul><li><a href=#41-%e7%bc%93%e5%ad%98%e6%9b%b4%e6%96%b0%e7%ad%96%e7%95%a5 aria-label="4.1 缓存更新策略">4.1 缓存更新策略</a></li><li><a href=#42-%e7%bc%93%e5%ad%98%e4%b8%8d%e4%b8%80%e8%87%b4%e5%a4%84%e7%90%86 aria-label="4.2 缓存不一致处理">4.2 缓存不一致处理</a></li></ul></li><li><a href=#5-%e7%83%adkey%e9%87%8d%e5%bb%ba aria-label="5 热key重建">5 热key重建</a></li><li><a href=#6-%e5%a4%a7key%e9%97%ae%e9%a2%98 aria-label="6 大key问题">6 大key问题</a></li><li><a href=#7-redis%e5%ae%9e%e8%b7%b5 aria-label="7 Redis实践">7 Redis实践</a><ul><li><a href=#71-%e5%9f%ba%e4%ba%8eredis%e7%9a%84%e6%b6%88%e6%81%af%e9%98%9f%e5%88%97 aria-label="7.1 基于Redis的消息队列">7.1 基于Redis的消息队列</a></li><li><a href=#72-%e5%95%86%e5%93%81%e7%bc%93%e5%ad%98 aria-label="7.2 商品缓存">7.2 商品缓存</a></li><li><a href=#73-%e4%bc%98%e6%83%a0%e5%88%b8%e7%a7%92%e6%9d%80 aria-label="7.3 优惠券秒杀">7.3 优惠券秒杀</a></li><li><a href=#74-%e5%a5%bd%e5%8f%8b%e5%85%b3%e6%b3%a8 aria-label="7.4 好友关注">7.4 好友关注</a></li><li><a href=#75-%e7%94%a8%e6%88%b7%e7%ad%be%e5%88%b0 aria-label="7.5 用户签到">7.5 用户签到</a></li><li><a href=#76-uv%e7%bb%9f%e8%ae%a1 aria-label="7.6 UV统计">7.6 UV统计</a></li><li><a href=#77-%e7%a7%92%e6%9d%80%e4%bc%98%e5%8c%96 aria-label="7.7 秒杀优化">7.7 秒杀优化</a></li></ul></li></ul></div></details></div></aside><script>let activeElement,elements;window.addEventListener("DOMContentLoaded",function(){checkTocPosition(),elements=document.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]"),activeElement=elements[0];const t=encodeURI(activeElement.getAttribute("id")).toLowerCase();document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active")},!1),window.addEventListener("resize",function(){checkTocPosition()},!1),window.addEventListener("scroll",()=>{activeElement=Array.from(elements).find(e=>{if(getOffsetTop(e)-window.pageYOffset>0&&getOffsetTop(e)-window.pageYOffset<window.innerHeight/2)return e})||activeElement,elements.forEach(e=>{const t=encodeURI(e.getAttribute("id")).toLowerCase();e===activeElement?document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active"):document.querySelector(`.inner ul li a[href="#${t}"]`).classList.remove("active")})},!1);const main=parseInt(getComputedStyle(document.body).getPropertyValue("--article-width"),10),toc=parseInt(getComputedStyle(document.body).getPropertyValue("--toc-width"),10),gap=parseInt(getComputedStyle(document.body).getPropertyValue("--gap"),10);function checkTocPosition(){const e=document.body.scrollWidth;e-main-toc*2-gap*4>0?document.getElementById("toc-container").classList.add("wide"):document.getElementById("toc-container").classList.remove("wide")}function getOffsetTop(e){if(!e.getClientRects().length)return 0;let t=e.getBoundingClientRect(),n=e.ownerDocument.defaultView;return t.top+n.pageYOffset}</script><div class=post-content><h1 id=redis补充>Redis补充<a hidden class=anchor aria-hidden=true href=#redis补充>#</a></h1><h1 id=1-redis网络模型>1 Redis网络模型<a hidden class=anchor aria-hidden=true href=#1-redis网络模型>#</a></h1><p>Redis的核心业务部分（命令处理）是单线程，但是整个Redis是多线程的。</p><ul><li>v4.0：引入多线程异步处理一些耗时较长的任务，例如异步删除命令unlink。</li><li>v6.0：在核心网络模型中引入多线程，进一步提高对于多核CPU的利用率，但是核心部分依然是单线程。</li></ul><p><strong>为什么选择单线程？</strong></p><ol><li>性能瓶颈是网络延迟，不是执行速度，多线程并不会带来巨大性能提升。</li><li>多线程会导致过多的上下文切换，带来不必要的开销。</li><li>引入多线程可能会面临线程安全问题，必须引入线程锁这样的安全手段，实现复杂度增高，性能也大打折扣。</li></ol><p><a href="https://www.bilibili.com/video/BV1cr4y1671t/?p=171&spm_id_from=pageDriver&vd_source=5e81fa8ad2645ace69cd01959323966a">原理篇-27.Redis网络模型-Redis单线程及多线程网络模型变更_哔哩哔哩_bilibili</a></p><h1 id=2-redis通信协议>2 Redis通信协议<a hidden class=anchor aria-hidden=true href=#2-redis通信协议>#</a></h1><p>RESP协议</p><p><a href="https://www.bilibili.com/video/BV1cr4y1671t?p=172&vd_source=5e81fa8ad2645ace69cd01959323966a">原理篇-28.Redis通信协议-RESP协议_哔哩哔哩_bilibili</a></p><h1 id=3-redis事务>3 Redis事务<a hidden class=anchor aria-hidden=true href=#3-redis事务>#</a></h1><p><strong>Redis事务的三个阶段</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>MULTI</span> <span class=o>%</span><span class=err>事务开始</span>
+</span></span><span class=line><span class=cl>  <span class=p>...</span> <span class=o>%</span><span class=err>命令入队</span>
+</span></span><span class=line><span class=cl><span class=n>EXEC</span> <span class=o>%</span><span class=err>事务执行</span>
+</span></span></code></pre></div><p><strong>Redis事务特点</strong></p><ol><li><strong>redis不支持回滚</strong>，事务失败，继续执行余下的命令</li><li>事物内部命令错误，所有命令都不会执行</li><li>事物内部出现运行错误，正确的命令会被执行</li><li>Redis事务没有<strong>原子性，持久性</strong>仅在开启AOF的always模式下支持。</li><li>Redis事务总是有<strong>隔离性（单线程）<strong>和</strong>一致性。</strong></li></ol><p><strong>Redis事务相关命令</strong></p><ul><li>WATCH：乐观锁，给事务提供CAS机制，可以监控一个或者多个键，一旦其中有一个被修改，之后的事务就不会执行，监控一直持续到EXEC或者UNWATCH。</li><li>MULTI：用于开启事务，开启后可以继续送入命令，当EXEC被调用时，才被执行。</li><li>EXEC：执行事务块内所有命令，返回所有命令的返回值，按照命令先后排序。</li><li>DISCARD：清空事务队列，放弃执行事务。</li><li>UNWATCH：取消watch对所有key的监控。</li></ul><h1 id=4-缓存和数据库的一致性>4 缓存和数据库的一致性<a hidden class=anchor aria-hidden=true href=#4-缓存和数据库的一致性>#</a></h1><ul><li>设置有效期：给缓存设置有效期，到期自动删除，再次查询时更新<ul><li>优势：简单方便</li><li>缺点：时效性差，缓存过期之前可能不一致</li><li>场景：更新频率较低，时效性要求较低的业务</li></ul></li><li>同步双写：在修改数据库的同时，直接修改缓存<ul><li>优势：时效性强，缓存与数据库强一致</li><li>缺点：有代码侵入，耦合度高</li><li>场景：对一致性，时效性要求较高的缓存数据</li></ul></li><li>异步通知：在修改数据库时发送事件通知，相关服务监听到通知后修改缓存数据<ul><li>优势：低耦合，可以同时通知多个缓存服务</li><li>缺点：时效性一般，可能存在中间不一致状态</li><li>场景：时效性要求一般，有多个服务需要同步</li></ul></li></ul><p><img loading=lazy src=https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/b3b47c9dd44a526e40dd810deb15808a/8abb25a2b116eaf0abcdb0ae98618474.png alt=image.png></p><ul><li>基于MQ的异步通知，对业务代码仍然有一定侵入性</li></ul><p><img loading=lazy src=https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/b3b47c9dd44a526e40dd810deb15808a/dc15605693d4169fc32a3e8e780bb3a0.png alt=image.png></p><ul><li>基于Cannal的异步通知，可以做到几乎0侵入</li></ul><h2 id=41-缓存更新策略>4.1 缓存更新策略<a hidden class=anchor aria-hidden=true href=#41-缓存更新策略>#</a></h2><ol><li>删除缓存而不是更新缓存</li><li>先删数据，后删缓存</li></ol><h2 id=42-缓存不一致处理>4.2 缓存不一致处理<a hidden class=anchor aria-hidden=true href=#42-缓存不一致处理>#</a></h2><ol><li>使用消息队列，把要删除和删除失败的key放入消息队列，利用重试机制，删除对应的key<ul><li>对代码有侵入性</li></ul></li><li>数据库订阅+消息队列保证key被删除<ul><li>利用canal或其他服务监听binlog</li><li>复杂度提升</li></ul></li><li>延时双删防止脏数据<ul><li>延迟时间需要具体的考量和测试</li></ul></li><li>设置过期时间兜底</li></ol><h1 id=5-热key重建>5 热key重建<a hidden class=anchor aria-hidden=true href=#5-热key重建>#</a></h1><ol><li>使用互斥锁，保证只有一个线程重建，其他线程等待该线程重建完后，获取缓存数据即可。</li><li>不显示设置过期时间，而是设置逻辑过期字段，发现逻辑过期后，采用单独的线程构建缓存。</li></ol><h1 id=6-大key问题>6 大key问题<a hidden class=anchor aria-hidden=true href=#6-大key问题>#</a></h1><p>单个简单key存储的value过大，hash、set、zset、list中存储过多元素。</p><p><strong>大Key会造成什么问题？</strong></p><ol><li>客户端耗时增加</li><li>对大key进行IO操作时，会严重占用带宽和CPU</li><li>造成Redis集群中的数据倾斜</li><li>主动删除、被动删除，可能会导致阻塞。</li></ol><p><strong>如何找到大Key？</strong></p><ul><li>bigkeys命令：以遍历方式分析Redis实例中所有key，并返回整体统计信息和每个数据类型中top1的大key。</li><li>redis-rdb-tools：是由Python写的用来分析Redis的rdb快照文件的工具，可以把rdb文件生成json文件或报表来分析Redis的使用详情。</li></ul><p><strong>如何处理大Key？</strong></p><ul><li>删除大Key<ul><li>unlink非阻塞删除</li></ul></li><li>压缩和拆分大Key<ul><li>string优先进行压缩，然后进行拆分</li><li>list、set等，进行分片</li></ul></li></ul><h1 id=7-redis实践>7 Redis实践<a hidden class=anchor aria-hidden=true href=#7-redis实践>#</a></h1><h2 id=71-基于redis的消息队列>7.1 基于Redis的消息队列<a hidden class=anchor aria-hidden=true href=#71-基于redis的消息队列>#</a></h2><p>Redis提供了三种不同方式实现消息队列：</p><ul><li>list结构：模拟消息队列</li><li>PubSub：基本的点对点消息模型</li><li>Stream：比较完善的消息队列模型</li></ul><p><strong>List模拟消息队列</strong></p><p>利用LPUSH结合RPOP、或者RPUSH结合LPOP来实现。</p><p><img loading=lazy src=https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/b3b47c9dd44a526e40dd810deb15808a/4cd8560c6e12c750a399c5abc1d8e60d.png alt=image.png></p><p>当没有消息时，RPOP和LPOP命令会返回NULL，并不会像JVM阻塞队列那样阻塞并等待消息。所以应当使用<strong>BRPOP</strong>或者<strong>BLPOP</strong>来实现阻塞效果。</p><ul><li>利用Redis存储，不受JVM内存上限限制</li><li>基于Redis的持久化机制，数据安全性有保证</li><li>可以满足消息的有序性</li><li>无法避免消息丢失</li><li>只支持单消费者</li></ul><p><strong>PubSub消息队列</strong></p><p>消费者可以订阅一个或者多个channel，生产者向对应的channel发送消息后，所有订阅者都能收到相关消息。</p><ul><li>SUBSCRIBE channel [channel]：订阅一个或多个频道</li><li>PUBLISH channel msg：向一个频道发送消息</li><li>PSUBSCRIBE pattern [pattern]：订阅与pattern格式匹配的所有频道</li></ul><p><img loading=lazy src=https://raw.githubusercontent.com/roaraeonliou/roaraeonliou.github.io/static/b3b47c9dd44a526e40dd810deb15808a/0378fd512c9b62d5c3eefdc07c9e3d8a.png alt=image.png></p><ul><li>采用发布订阅模型，支持多生产、多消费。</li><li>不支持数据持久化，该数据结构设计用于做数据发送，数据没有人接受会直接丢弃。</li><li>无法避免消息丢失。</li><li>消费者方消息堆积有上线，超出时数据丢失。</li></ul><p><strong>Stream消息队列</strong></p><ul><li>XREAD<ul><li>消息可回溯</li><li>一个消息可以被多个消费者读取</li><li>可以阻塞读取</li><li>有消息漏读的风险</li></ul></li><li>消费者组<ul><li>消息分流</li><li>消息标识</li><li>消息确认</li><li>可以多消费者争抢消息，加快消费速度</li><li>没有消息漏读风险</li><li>有消息确认机制，保证消息至少被消费一次</li></ul></li></ul><table><thead><tr><th style=text-align:left></th><th style=text-align:left>List</th><th style=text-align:left>PubSub</th><th style=text-align:left>Stream</th></tr></thead><tbody><tr><td style=text-align:left>消息持久化</td><td style=text-align:left>支持</td><td style=text-align:left>不支持</td><td style=text-align:left>支持</td></tr><tr><td style=text-align:left>阻塞读取</td><td style=text-align:left>支持</td><td style=text-align:left>支持</td><td style=text-align:left>支持</td></tr><tr><td style=text-align:left>消息堆积处理</td><td style=text-align:left>受限于内存空间，可以利用多消费者加速处理</td><td style=text-align:left>受限于消费者缓冲区</td><td style=text-align:left>受限于队列长度，可以利用消费者组提高消费速度，减少堆积</td></tr><tr><td style=text-align:left>消息确认机制</td><td style=text-align:left>不支持</td><td style=text-align:left>不支持</td><td style=text-align:left>支持</td></tr><tr><td style=text-align:left>消息回溯</td><td style=text-align:left>不支持</td><td style=text-align:left>不支持</td><td style=text-align:left>支持</td></tr></tbody></table><h2 id=72-商品缓存>7.2 商品缓存<a hidden class=anchor aria-hidden=true href=#72-商品缓存>#</a></h2><h2 id=73-优惠券秒杀>7.3 优惠券秒杀<a hidden class=anchor aria-hidden=true href=#73-优惠券秒杀>#</a></h2><h2 id=74-好友关注>7.4 好友关注<a hidden class=anchor aria-hidden=true href=#74-好友关注>#</a></h2><h2 id=75-用户签到>7.5 用户签到<a hidden class=anchor aria-hidden=true href=#75-用户签到>#</a></h2><h2 id=76-uv统计>7.6 UV统计<a hidden class=anchor aria-hidden=true href=#76-uv统计>#</a></h2><h2 id=77-秒杀优化>7.7 秒杀优化<a hidden class=anchor aria-hidden=true href=#77-秒杀优化>#</a></h2></div><footer class=post-footer><ul class=post-tags><li><a href=https://roaraeonliou.github.io/tags/%E7%AC%94%E8%AE%B0/>笔记</a></li><li><a href=https://roaraeonliou.github.io/tags/redis/>Redis</a></li><li><a href=https://roaraeonliou.github.io/tags/nosql/>NoSQL</a></li><li><a href=https://roaraeonliou.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/>数据库</a></li></ul><nav class=paginav><a class=prev href=https://roaraeonliou.github.io/posts/interviewnotes/redis/redis/><span class=title>« Prev</span><br><span>Redis</span>
+</a><a class=next href=https://roaraeonliou.github.io/posts/interviewnotes/new/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/tcp/><span class=title>Next »</span><br><span>TCP</span></a></nav></footer><div id=comments><script src=https://giscus.app/client.js data-repo=RoaraeonLiou/roaraeonliou.github.io data-repo-id=R_kgDOMIxQ4w data-category=Announcements data-category-id=DIC_kwDOMIxQ484CgZUR data-mapping=title data-strict=1 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=top data-theme=preferred_color_scheme data-lang=zh-CN data-loading=lazy crossorigin=anonymous async></script></div></article></main><footer class=footer><span>&copy; 2024 <a href=https://roaraeonliou.github.io/>RLTEA BLOG</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
